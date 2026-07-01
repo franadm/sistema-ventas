@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sistema de Ventas</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 10px; 
+            padding-bottom: 160px; 
+            color: #333;
+            /* Configuración del fondo */
+            background-image: url('1044855.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .app-container { max-width: 500px; margin: 0 auto; }
+        
+        h1 { color: #fff; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        
+        /* Cajas con fondo blanco semi-transparente para legibilidad */
+        .admin-section, .prices-config, .ticket { 
+            background: rgba(255, 255, 255, 0.92); 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+        }
+
+        .admin-section h3 { margin-top: 0; color: #2980b9; }
+        .admin-section input { width: 35%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .admin-section button { padding: 8px 15px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        
+        .prices-config h3 { margin-top: 0; color: #d35400; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; }
+        .price-row input { width: 80px; text-align: right; border: 1px solid #ccc; border-radius: 4px; padding: 4px; color: #c0392b; }
+        
+        .ticket { position: relative; border-top: 5px solid #34495e; }
+        .btn-delete { position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-weight: bold; }
+        .ticket strong { color: #34495e; font-size: 1.1rem; display: block; margin-bottom: 10px; }
+        .quick-add { display: flex; flex-wrap: wrap; gap: 5px; margin: 15px 0; }
+        .quick-add button { padding: 6px 10px; cursor: pointer; background: #3498db; color: white; border: none; border-radius: 4px; font-size: 0.8rem; }
+        
+        .item-row.hidden { display: none; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; color: #555; }
+        .col-name { width: 40%; font-weight: bold; }
+        .col-qty { width: 25%; display: flex; justify-content: center; }
+        .col-sub { width: 30%; text-align: right; color: #27ae60; font-weight: bold; }
+        .col-qty input { width: 45px; text-align: center; border: 1px solid #ccc; border-radius: 4px; }
+        
+        .total-row { border-top: 2px solid #eee; margin-top: 10px; padding-top: 10px; font-weight: bold; color: #c0392b; }
+        .note-row { margin-top: 10px; }
+        .note-row input { width: 100%; box-sizing: border-box; padding: 5px; border: 1px dashed #aaa; border-radius: 4px; font-style: italic; color: #666; }
+        
+        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: #2c3e50; color: #2ecc71; padding: 15px; text-align: center; font-weight: bold; font-size: 1.2rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1>SISTEMA DE VENTAS</h1>
+
+    <div class="admin-section">
+        <h3>Agregar nuevo producto</h3>
+        <input type="text" id="new-prod-name" placeholder="Nombre">
+        <input type="number" id="new-prod-price" placeholder="Precio">
+        <button onclick="agregarNuevoProducto()">Agregar</button>
+    </div>
+
+    <div class="prices-config" id="prices-list">
+        <h3>PRECIOS UNITARIOS ($)</h3>
+    </div>
+
+    <div class="admin-section">
+        <input type="text" id="new-client-name" placeholder="Nombre cliente...">
+        <button onclick="agregarCliente()">Crear Ticket</button>
+    </div>
+
+    <div id="tickets-container"></div>
+</div>
+
+<div class="global-totals">TOTAL GENERAL: <span id="grand-total">$0</span></div>
+
+<script>
+    let productos = [];
+
+    function agregarNuevoProducto() {
+        const nombre = document.getElementById('new-prod-name').value.trim();
+        const precio = document.getElementById('new-prod-price').value;
+        if (!nombre || !precio) return;
+
+        const id = nombre.toLowerCase().replace(/\s+/g, '');
+        productos.push({ id, nombre, precio });
+
+        const div = document.createElement('div');
+        div.className = 'price-row';
+        div.innerHTML = `<span>${nombre.toUpperCase()}</span> <span>$<input type="number" id="p-${id}" value="${precio}" oninput="calcular()"></span>`;
+        document.getElementById('prices-list').appendChild(div);
+
+        document.querySelectorAll('.ticket').forEach(ticket => {
+            const btn = document.createElement('button');
+            btn.innerText = "+ " + nombre;
+            btn.onclick = function() { sumarItem(this, id); };
+            ticket.querySelector('.quick-add').appendChild(btn);
+
+            const row = document.createElement('div');
+            row.className = 'item-row hidden';
+            row.dataset.prod = id;
+            row.innerHTML = `<span class="col-name">${nombre}</span><span class="col-qty"><input type="number" class="q-${id}" min="0" value="0" oninput="calcular()"></span><span class="col-sub">$<span class="sub-${id}">0</span></span>`;
+            ticket.querySelector('.ticket-content').appendChild(row);
+        });
+
+        document.getElementById('new-prod-name').value = '';
+        document.getElementById('new-prod-price').value = '';
+    }
+
+    function agregarCliente() {
+        const nombre = document.getElementById('new-client-name').value.trim();
+        if (!nombre) return;
+
+        const ticket = document.createElement('div');
+        ticket.className = 'ticket';
+        
+        let botones = '';
+        let filas = '';
+        productos.forEach(p => {
+            botones += `<button onclick="sumarItem(this, '${p.id}')">+ ${p.nombre}</button>`;
+            filas += `<div class="item-row hidden" data-prod="${p.id}"><span class="col-name">${p.nombre}</span><span class="col-qty"><input type="number" class="q-${p.id}" min="0" value="0" oninput="calcular()"></span><span class="col-sub">$<span class="sub-${p.id}">0</span></span></div>`;
+        });
+
+        ticket.innerHTML = `
+            <button class="btn-delete" onclick="eliminarTicket(this)">X</button>
+            <strong>CLIENTE: ${nombre.toUpperCase()}</strong>
+            <div class="quick-add">${botones}</div>
+            <div class="ticket-content">${filas}</div>
+            <div class="total-row">TOTAL: $<span class="row-total">0</span></div>
+            <div class="note-row"><input type="text" placeholder="Nota o deuda pendiente..."></div>
+        `;
+        document.getElementById('tickets-container').appendChild(ticket);
+        document.getElementById('new-client-name').value = '';
+    }
+
+    function eliminarTicket(btn) {
+        if (confirm("¿Estás seguro de que quieres eliminar este ticket?")) {
+            btn.parentElement.remove();
+            calcular();
+        }
+    }
+
+    function sumarItem(btn, id) {
+        const input = btn.closest('.ticket').querySelector('.q-' + id);
+        input.value = parseInt(input.value) + 1;
+        calcular();
+    }
+
+    function calcular() {
+        let grandTotal = 0;
+        document.querySelectorAll('.ticket').forEach(ticket => {
+            let rowTotal = 0;
+            productos.forEach(p => {
+                const input = ticket.querySelector('.q-' + p.id);
+                const precioEl = document.getElementById('p-'+p.id);
+                if (!input || !precioEl) return;
+                
+                const precio = parseInt(precioEl.value) || 0;
+                const val = parseInt(input.value) || 0;
+                const row = input.closest('.item-row');
+                
+                if (val > 0) {
+                    row.classList.remove('hidden');
+                    const sub = val * precio;
+                    ticket.querySelector('.sub-'+p.id).innerText = sub.toLocaleString();
+                    rowTotal += sub;
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+            ticket.querySelector('.row-total').innerText = rowTotal.toLocaleString();
+            grandTotal += rowTotal;
+        });
+        document.getElementById('grand-total').innerText = '$' + grandTotal.toLocaleString();
+    }
+</script>
+</body>
+</html>
