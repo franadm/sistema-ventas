@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sistema de Ventas</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; padding-bottom: 160px; color: #333; 
-               background-image: url('1044855.jpg'); background-size: cover; background-position: center; 
-               background-attachment: fixed; background-repeat: no-repeat; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; padding-bottom: 160px; color: #333; background-image: url('1044855.jpg'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; }
         .app-container { max-width: 500px; margin: 0 auto; }
         h1 { color: #fff; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         .admin-section, .prices-config, .ticket { background: rgba(255, 255, 255, 0.92); padding: 15px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
@@ -38,31 +36,24 @@
 
 <div class="app-container">
     <h1>SISTEMA DE VENTAS</h1>
-
     <div class="admin-section">
         <h3>Agregar nuevo producto</h3>
         <input type="text" id="new-prod-name" placeholder="Nombre">
         <input type="number" id="new-prod-price" placeholder="Precio">
         <button onclick="agregarNuevoProducto()">Agregar</button>
     </div>
-
-    <div class="prices-config" id="prices-list">
-        <h3>PRECIOS UNITARIOS ($)</h3>
-    </div>
-
+    <div class="prices-config" id="prices-list"><h3>PRECIOS UNITARIOS ($)</h3></div>
     <div class="admin-section">
         <input type="text" id="new-client-name" placeholder="Nombre cliente...">
         <button onclick="agregarCliente()">Crear Ticket</button>
     </div>
-
     <div id="tickets-container"></div>
 </div>
-
 <div class="global-totals">TOTAL GENERAL: <span id="grand-total">$0</span></div>
 
 <script>
     let productos = JSON.parse(localStorage.getItem('productos')) || [];
-
+    
     function guardarTodo() {
         localStorage.setItem('productos', JSON.stringify(productos));
         localStorage.setItem('ticketsHTML', document.getElementById('tickets-container').innerHTML);
@@ -165,7 +156,6 @@
                 const precio = parseInt(precioEl.value) || 0;
                 const val = parseInt(input.value) || 0;
                 const row = input.closest('.item-row');
-                
                 if (val > 0) {
                     row.classList.remove('hidden');
                     const sub = val * precio;
