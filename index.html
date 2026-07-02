@@ -6,55 +6,55 @@
     <title>Sistema de Ventas</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 10px; background-image: url('1044855.jpg'); background-size: cover; background-attachment: fixed; color: #333; }
-        .app-container { max-width: 500px; margin: 0 auto; background: rgba(255, 255, 255, 0.96); padding: 15px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-        h1 { text-align: center; color: #2c3e50; text-transform: uppercase; font-size: 1.5rem; }
+        .app-container { max-width: 500px; margin: 0 auto; padding: 10px; }
+        h1 { text-align: center; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; }
         
-        /* Sección de edición */
-        .admin-section { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; }
+        /* BLOQUES CON TRANSPARENCIA */
+        .glass-block { background: rgba(255, 255, 255, 0.85); padding: 20px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); backdrop-filter: blur(5px); }
+        
         .admin-section h3 { margin-top: 0; color: #2980b9; }
-        .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .edit-input { border: 1px dashed #ccc; padding: 4px; border-radius: 4px; }
+        .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+        .edit-input { border: 1px solid #ccc; padding: 5px; border-radius: 5px; }
         .edit-name { width: 50%; font-weight: bold; }
         .edit-price { width: 30%; text-align: right; color: #c0392b; font-weight: bold; }
         
-        /* Ticket con colores */
-        .ticket { border: 2px solid #34495e; padding: 15px; margin-top: 20px; border-radius: 10px; background: #fff; position: relative; }
+        .ticket { border: 2px solid #34495e; padding: 15px; margin-top: 20px; border-radius: 15px; background: rgba(255,255,255,0.95); position: relative; }
         .btn-delete { position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; }
         
-        /* Botones de acción */
         .quick-add { margin: 15px 0; display: flex; flex-wrap: wrap; gap: 8px; }
         .quick-add button { background: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
         
-        /* Cuadrícula organizada */
-        .items-grid { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin: 8px 0; border-top: 1px solid #eee; padding-top: 8px; }
+        .items-grid { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin: 10px 0; border-top: 1px solid #eee; padding-top: 8px; }
         .prod-name { font-weight: bold; color: #2c3e50; }
         .prod-qty-price { display: flex; align-items: center; gap: 10px; }
-        .prod-qty-price input { width: 50px; text-align: center; border: 1px solid #ccc; border-radius: 4px; }
+        .prod-qty-price input { width: 50px; text-align: center; border: 1px solid #ccc; border-radius: 5px; }
         .price-text { color: #27ae60; font-weight: bold; min-width: 60px; text-align: right; }
         
-        .total-display { font-size: 1.3rem; color: #c0392b; font-weight: bold; margin-top: 10px; }
-        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: #2c3e50; color: #2ecc71; padding: 20px; text-align: center; font-size: 1.6rem; font-weight: bold; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
+        .total-display { font-size: 1.4rem; color: #c0392b; font-weight: bold; margin-top: 15px; }
+        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(44, 62, 80, 0.9); color: #2ecc71; padding: 20px; text-align: center; font-size: 1.6rem; font-weight: bold; backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <h1>SISTEMA DE VENTAS</h1>
-    <div class="admin-section">
+    
+    <div class="glass-block">
         <h3>Agregar nuevo producto</h3>
-        <input type="text" id="p-name" placeholder="Nombre" style="width:40%">
-        <input type="number" id="p-price" placeholder="Precio" style="width:30%">
+        <input type="text" id="p-name" placeholder="Nombre" style="width:40%; padding:8px;">
+        <input type="number" id="p-price" placeholder="Precio" style="width:30%; padding:8px;">
         <button onclick="addProd()" style="background:#27ae60; color:white; border:none; padding:8px 15px; border-radius:5px;">Agregar</button>
     </div>
 
-    <div id="price-list"></div>
-    <hr>
+    <div class="glass-block" id="price-list"></div>
     
-    <input type="text" id="client-name" placeholder="Nombre cliente...">
-    <button onclick="addTicket()" style="background:#2980b9; color:white; border:none; padding:8px 15px; border-radius:5px;">Crear Ticket</button>
+    <div class="glass-block">
+        <input type="text" id="client-name" placeholder="Nombre cliente..." style="padding:8px; width:50%;">
+        <button onclick="addTicket()" style="background:#2980b9; color:white; border:none; padding:8px 15px; border-radius:5px;">Crear Ticket</button>
+    </div>
     
     <div id="tickets-container"></div>
-    <div style="height: 80px;"></div>
+    <div style="height: 100px;"></div>
 </div>
 
 <div class="global-totals">TOTAL: <span id="grand-total">$0</span></div>
@@ -92,7 +92,13 @@
         document.getElementById('client-name').value = '';
     }
 
-    function removeTicket(id) { tickets = tickets.filter(t => t.id !== id); save(); }
+    function confirmRemove(id) {
+        if(confirm("¿Estás seguro de que quieres eliminar este ticket?")) {
+            tickets = tickets.filter(t => t.id !== id);
+            save();
+        }
+    }
+
     function updateItem(tId, pId, val) { tickets.find(t => t.id === tId).items[pId] = parseInt(val) || 0; save(); }
     function updateNote(tId, note) { tickets.find(t => t.id === tId).note = note; localStorage.setItem('tickets', JSON.stringify(tickets)); }
 
@@ -109,7 +115,7 @@
             let tTotal = 0;
             const div = document.createElement('div');
             div.className = 'ticket';
-            let html = `<button class="btn-delete" onclick="removeTicket(${t.id})">X</button><h3>CLIENTE: ${t.name}</h3><div class="quick-add">`;
+            let html = `<button class="btn-delete" onclick="confirmRemove(${t.id})">X</button><h3>CLIENTE: ${t.name}</h3><div class="quick-add">`;
             productos.forEach(p => html += `<button onclick="updateItem(${t.id}, ${p.id}, (${t.items[p.id] || 0} + 1))">+ ${p.name}</button>`);
             html += `</div>`;
             
@@ -121,7 +127,7 @@
                 }
             });
             
-            html += `<div class="total-display">TOTAL: $${tTotal}</div><input type="text" placeholder="Nota o deuda..." value="${t.note}" oninput="updateNote(${t.id}, this.value)" style="width:90%; margin-top:10px;">`;
+            html += `<div class="total-display">TOTAL: $${tTotal}</div><input type="text" placeholder="Nota..." value="${t.note}" oninput="updateNote(${t.id}, this.value)" style="width:90%; margin-top:10px; padding:5px;">`;
             div.innerHTML = html;
             tCont.appendChild(div);
             grandTotal += tTotal;
