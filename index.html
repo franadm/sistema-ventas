@@ -96,7 +96,7 @@
         if (p) {
             p.nombre = nuevoNombre;
             guardarTodo();
-            location.reload(); // Recarga para actualizar etiquetas en tickets
+            location.reload(); 
         }
     }
 
@@ -145,10 +145,13 @@
     }
 
     function sumarItem(btn, id) {
-        const input = btn.closest('.ticket').querySelector('.q-' + id);
-        input.value = parseInt(input.value) + 1;
-        calcular();
-        guardarTodo();
+        const ticket = btn.closest('.ticket');
+        const input = ticket.querySelector('.q-' + id);
+        if (input) {
+            input.value = (parseInt(input.value) || 0) + 1;
+            calcular();
+            guardarTodo();
+        }
     }
 
     function calcular() {
@@ -162,12 +165,16 @@
                 const precio = parseInt(precioEl.value) || 0;
                 const val = parseInt(input.value) || 0;
                 const row = input.closest('.item-row');
+                
                 if (val > 0) {
                     row.classList.remove('hidden');
                     const sub = val * precio;
                     ticket.querySelector('.sub-'+p.id).innerText = sub.toLocaleString();
                     rowTotal += sub;
-                } else { row.classList.add('hidden'); }
+                } else { 
+                    row.classList.add('hidden');
+                    input.value = 0;
+                }
             });
             ticket.querySelector('.row-total').innerText = rowTotal.toLocaleString();
             grandTotal += rowTotal;
