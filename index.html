@@ -2,34 +2,36 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Ventas</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; padding-bottom: 160px; color: #333; background-image: url('1044855.jpg'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; }
-        .app-container { max-width: 500px; margin: 0 auto; }
-        h1 { color: #fff; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-        .admin-section, .prices-config, .ticket { background: rgba(255, 255, 255, 0.92); padding: 15px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 10px; background-image: url('1044855.jpg'); background-size: cover; background-attachment: fixed; color: #333; }
+        .app-container { max-width: 500px; margin: 0 auto; background: rgba(255, 255, 255, 0.96); padding: 20px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        h1 { text-align: center; color: #2c3e50; text-transform: uppercase; }
+        
+        .admin-section { background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 20px; }
         .admin-section h3 { margin-top: 0; color: #2980b9; }
         .admin-section input { width: 35%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
         .admin-section button { padding: 8px 15px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: bold; }
-        .price-row input { width: 80px; text-align: right; border: 1px solid #ccc; border-radius: 4px; padding: 4px; color: #c0392b; }
-        .edit-name-input { width: 150px !important; text-align: left !important; color: #333 !important; font-weight: bold; border: 1px dashed #ccc !important; }
-        .ticket { position: relative; border-top: 5px solid #34495e; }
-        .btn-delete { position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-weight: bold; }
-        .ticket strong { color: #34495e; font-size: 1.1rem; display: block; margin-bottom: 10px; }
-        .quick-add { display: flex; flex-wrap: wrap; gap: 5px; margin: 15px 0; }
-        .quick-add button { padding: 6px 10px; cursor: pointer; background: #3498db; color: white; border: none; border-radius: 4px; font-size: 0.8rem; }
-        .item-row.hidden { display: none; }
-        .item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; color: #555; }
-        .col-name { width: 40%; font-weight: bold; }
-        .col-qty { width: 25%; display: flex; justify-content: center; }
-        .col-sub { width: 30%; text-align: right; color: #27ae60; font-weight: bold; }
-        .col-qty input { width: 45px; text-align: center; border: 1px solid #ccc; border-radius: 4px; }
-        .total-row { border-top: 2px solid #eee; margin-top: 10px; padding-top: 10px; font-weight: bold; color: #c0392b; }
-        .note-row { margin-top: 10px; }
-        .note-row input { width: 100%; box-sizing: border-box; padding: 5px; border: 1px dashed #aaa; border-radius: 4px; font-style: italic; color: #666; }
-        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: #2c3e50; color: #2ecc71; padding: 15px; text-align: center; font-weight: bold; font-size: 1.2rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); }
+        
+        /* ESTILO PARA EDITAR NOMBRES Y PRECIOS */
+        .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .edit-input { border: 1px dashed #ccc; padding: 2px 5px; border-radius: 4px; }
+        .edit-name { width: 140px; font-weight: bold; }
+        .edit-price { width: 60px; text-align: right; color: #c0392b; font-weight: bold; }
+        
+        .ticket { border: 2px solid #34495e; padding: 15px; margin-top: 25px; border-radius: 10px; background: #fff; position: relative; }
+        .btn-delete { position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; }
+        
+        .quick-add { margin: 15px 0; display: flex; flex-wrap: wrap; gap: 8px; }
+        .quick-add button { background: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+        
+        .items-table { width: 100%; margin: 10px 0; border-collapse: collapse; }
+        .items-table .col-name { font-weight: bold; color: #2c3e50; }
+        .items-table .col-sub { color: #27ae60; font-weight: bold; text-align: right; }
+        
+        .total-display { font-size: 1.3rem; color: #c0392b; font-weight: bold; margin-top: 10px; }
+        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: #2c3e50; color: #2ecc71; padding: 20px; text-align: center; font-size: 1.6rem; font-weight: bold; box-shadow: 0 -4px 10px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -38,141 +40,121 @@
     <h1>SISTEMA DE VENTAS</h1>
     <div class="admin-section">
         <h3>Agregar nuevo producto</h3>
-        <input type="text" id="new-prod-name" placeholder="Nombre">
-        <input type="number" id="new-prod-price" placeholder="Precio">
-        <button onclick="agregarNuevoProducto()">Agregar</button>
+        <input type="text" id="p-name" placeholder="Nombre">
+        <input type="number" id="p-price" placeholder="Precio">
+        <button onclick="addProd()">Agregar</button>
     </div>
-    <div class="prices-config" id="prices-list"><h3>PRECIOS UNITARIOS ($)</h3></div>
-    <div class="admin-section">
-        <input type="text" id="new-client-name" placeholder="Nombre cliente...">
-        <button onclick="agregarCliente()">Crear Ticket</button>
-    </div>
+
+    <div id="price-list"></div>
+    <hr>
+    
+    <input type="text" id="client-name" placeholder="Nombre cliente...">
+    <button onclick="addTicket()" style="background:#2980b9; color:white; border:none; padding:8px 15px; border-radius:5px;">Crear Ticket</button>
+    
     <div id="tickets-container"></div>
+    <div style="height: 80px;"></div>
 </div>
-<div class="global-totals">TOTAL GENERAL: <span id="grand-total">$0</span></div>
+
+<div class="global-totals">TOTAL: <span id="grand-total">$0</span></div>
 
 <script>
     let productos = JSON.parse(localStorage.getItem('productos')) || [];
-    
-    function guardarTodo() {
+    let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+
+    function save() {
         localStorage.setItem('productos', JSON.stringify(productos));
-        localStorage.setItem('ticketsHTML', document.getElementById('tickets-container').innerHTML);
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+        render();
     }
 
-    function cargarTodo() {
-        const savedProd = localStorage.getItem('productos');
-        const savedTickets = localStorage.getItem('ticketsHTML');
-        if (savedProd) {
-            productos = JSON.parse(savedProd);
-            productos.forEach(p => renderProductoEnLista(p));
-        }
-        if (savedTickets) {
-            document.getElementById('tickets-container').innerHTML = savedTickets;
-        }
-        calcular();
+    function addProd() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        if(!name || !price) return;
+        productos.push({id: Date.now(), name, price: parseInt(price)});
+        save();
+        document.getElementById('p-name').value = '';
+        document.getElementById('p-price').value = '';
     }
 
-    function renderProductoEnLista(p) {
-        const div = document.createElement('div');
-        div.className = 'price-row';
-        div.innerHTML = `
-            <input class="edit-name-input" value="${p.nombre}" onblur="actualizarNombre('${p.id}', this.value)">
-            <span>$<input type="number" id="p-${p.id}" value="${p.precio}" oninput="calcular(); guardarTodo()"></span>
-        `;
-        document.getElementById('prices-list').appendChild(div);
-    }
-
-    function actualizarNombre(id, nuevoNombre) {
+    function updateProduct(id, field, value) {
         const p = productos.find(prod => prod.id === id);
-        if (p) {
-            p.nombre = nuevoNombre;
-            guardarTodo();
-            location.reload(); 
+        if(p) { 
+            if(field === 'name') p.name = value;
+            if(field === 'price') p.price = parseInt(value) || 0;
+            save(); 
         }
     }
 
-    function agregarNuevoProducto() {
-        const nombre = document.getElementById('new-prod-name').value.trim();
-        const precio = document.getElementById('new-prod-price').value;
-        if (!nombre || !precio) return;
-        const id = 'prod_' + Date.now();
-        const p = { id, nombre, precio };
-        productos.push(p);
-        renderProductoEnLista(p);
-        guardarTodo();
-        document.getElementById('new-prod-name').value = '';
-        document.getElementById('new-prod-price').value = '';
+    function addTicket() {
+        const name = document.getElementById('client-name').value;
+        if(!name) return;
+        tickets.push({id: Date.now(), name: name.toUpperCase(), items: {}, note: ''});
+        save();
+        document.getElementById('client-name').value = '';
     }
 
-    function agregarCliente() {
-        const nombre = document.getElementById('new-client-name').value.trim();
-        if (!nombre) return;
-        const ticket = document.createElement('div');
-        ticket.className = 'ticket';
-        let botones = ''; let filas = '';
+    function removeTicket(id) { tickets = tickets.filter(t => t.id !== id); save(); }
+
+    function updateItem(tId, pId, val) {
+        const t = tickets.find(t => t.id === tId);
+        t.items[pId] = parseInt(val) || 0;
+        save();
+    }
+
+    function updateNote(tId, note) {
+        const t = tickets.find(t => t.id === tId);
+        t.note = note;
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+    }
+
+    function render() {
+        const pList = document.getElementById('price-list');
+        pList.innerHTML = '<h3>PRECIOS UNITARIOS ($)</h3>';
         productos.forEach(p => {
-            botones += `<button onclick="sumarItem(this, '${p.id}')">+ ${p.nombre}</button>`;
-            filas += `<div class="item-row hidden" data-prod="${p.id}"><span class="col-name">${p.nombre}</span><span class="col-qty"><input type="number" class="q-${p.id}" min="0" value="0" oninput="calcular(); guardarTodo()"></span><span class="col-sub">$<span class="sub-${p.id}">0</span></span></div>`;
+            pList.innerHTML += `<div class="price-edit-row">
+                <input class="edit-input edit-name" value="${p.name}" onblur="updateProduct(${p.id}, 'name', this.value)">
+                <input class="edit-input edit-price" value="${p.price}" onblur="updateProduct(${p.id}, 'price', this.value)">
+            </div>`;
         });
-        ticket.innerHTML = `
-            <button class="btn-delete" onclick="eliminarTicket(this)">X</button>
-            <strong>CLIENTE: ${nombre.toUpperCase()}</strong>
-            <div class="quick-add">${botones}</div>
-            <div class="ticket-content">${filas}</div>
-            <div class="total-row">TOTAL: $<span class="row-total">0</span></div>
-            <div class="note-row"><input type="text" placeholder="Nota o deuda pendiente..." oninput="guardarTodo()"></div>
-        `;
-        document.getElementById('tickets-container').appendChild(ticket);
-        document.getElementById('new-client-name').value = '';
-        guardarTodo();
-    }
 
-    function eliminarTicket(btn) {
-        if (confirm("¿Borrar ticket?")) {
-            btn.parentElement.remove();
-            calcular();
-            guardarTodo();
-        }
-    }
-
-    function sumarItem(btn, id) {
-        const ticket = btn.closest('.ticket');
-        const input = ticket.querySelector('.q-' + id);
-        if (input) {
-            input.value = (parseInt(input.value) || 0) + 1;
-            calcular();
-            guardarTodo();
-        }
-    }
-
-    function calcular() {
+        const tCont = document.getElementById('tickets-container');
+        tCont.innerHTML = '';
         let grandTotal = 0;
-        document.querySelectorAll('.ticket').forEach(ticket => {
-            let rowTotal = 0;
+
+        tickets.forEach(t => {
+            let tTotal = 0;
+            const div = document.createElement('div');
+            div.className = 'ticket';
+            
+            let html = `<button class="btn-delete" onclick="removeTicket(${t.id})">X</button>
+                        <h3 style="margin-top:0">CLIENTE: ${t.name}</h3>`;
+            html += `<div class="quick-add">`;
+            productos.forEach(p => html += `<button onclick="updateItem(${t.id}, ${p.id}, (${t.items[p.id] || 0} + 1))">+ ${p.name}</button>`);
+            html += `</div><table class="items-table">`;
+            
             productos.forEach(p => {
-                const input = ticket.querySelector('.q-' + p.id);
-                const precioEl = document.getElementById('p-'+p.id);
-                if (!input || !precioEl) return;
-                const precio = parseInt(precioEl.value) || 0;
-                const val = parseInt(input.value) || 0;
-                const row = input.closest('.item-row');
-                if (val > 0) {
-                    row.classList.remove('hidden');
-                    const sub = val * precio;
-                    ticket.querySelector('.sub-'+p.id).innerText = sub.toLocaleString();
-                    rowTotal += sub;
-                } else { 
-                    row.classList.add('hidden');
-                    input.value = 0;
+                const qty = t.items[p.id] || 0;
+                if(qty > 0) {
+                    const sub = qty * p.price;
+                    tTotal += sub;
+                    html += `<tr>
+                        <td class="col-name">${p.name}</td>
+                        <td style="text-align:center"><input type="number" value="${qty}" oninput="updateItem(${t.id}, ${p.id}, this.value)"></td>
+                        <td class="col-sub">$${sub}</td>
+                    </tr>`;
                 }
             });
-            ticket.querySelector('.row-total').innerText = rowTotal.toLocaleString();
-            grandTotal += rowTotal;
+            
+            html += `</table><div class="total-display">TOTAL: $${tTotal}</div>
+                     <input type="text" placeholder="Nota o deuda..." value="${t.note}" oninput="updateNote(${t.id}, this.value)" style="width:90%; margin-top:10px;">`;
+            div.innerHTML = html;
+            tCont.appendChild(div);
+            grandTotal += tTotal;
         });
-        document.getElementById('grand-total').innerText = '$' + grandTotal.toLocaleString();
+        document.getElementById('grand-total').innerText = '$' + grandTotal;
     }
-
-    window.onload = cargarTodo;
+    render();
 </script>
 </body>
 </html>
