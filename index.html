@@ -14,6 +14,9 @@
             --history-bg: rgba(10, 30, 20, 0.85);
             --global-bg: rgba(15, 23, 42, 0.92);
             --text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            --search-result-bg: rgba(15, 23, 42, 0.95);
+            --search-result-text: #ffffff;
+            --search-result-hover: rgba(52, 152, 219, 0.4);
         }
 
         [data-theme="light"] {
@@ -25,6 +28,9 @@
             --history-bg: rgba(240, 255, 240, 0.88);
             --global-bg: rgba(44, 62, 80, 0.9);
             --text-shadow: none;
+            --search-result-bg: #ffffff;
+            --search-result-text: #2c3e50;
+            --search-result-hover: #ebf5fb;
         }
 
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 10px; background-image: url('1044855.jpg'); background-size: cover; background-attachment: fixed; color: var(--text-color); transition: 0.3s; }
@@ -74,10 +80,15 @@
         .history-ticket { border: 1px solid rgba(46, 204, 113, 0.5); background: var(--history-bg); }
         .btn-delete { position: absolute; top: 12px; right: 12px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         
-        .quick-add { margin: 15px 0; display: flex; flex-wrap: wrap; gap: 8px; }
-        .quick-add button { background: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .quick-add button:disabled { background: #7f8c8d; opacity: 0.6; cursor: not-allowed; }
-        
+        .ticket-prod-search-container { position: relative; margin-bottom: 15px; display: flex; gap: 6px; }
+        .ticket-search-wrapper { flex: 1; position: relative; }
+        .ticket-search-input { width: 100%; box-sizing: border-box; border-radius: 8px; font-size: 0.95rem; }
+        .ticket-qty-input { width: 55px; text-align: center; border-radius: 8px; font-weight: bold; font-size: 0.95rem; }
+        .ticket-search-results { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--search-result-bg); color: var(--search-result-text); border: 1px solid var(--input-border); border-radius: 8px; max-height: 160px; overflow-y: auto; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top: 3px; }
+        .ticket-search-results.active { display: block; }
+        .ticket-search-item { padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid var(--input-border); font-size: 0.9rem; }
+        .ticket-search-item:hover { background: var(--search-result-hover); }
+
         .items-grid { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin: 10px 0; border-top: 1px solid var(--input-border); padding-top: 8px; }
         .prod-name { font-weight: bold; color: var(--text-color); text-shadow: var(--text-shadow); }
         .prod-qty-price { display: flex; align-items: center; gap: 10px; }
@@ -85,43 +96,51 @@
         .price-text { color: #27ae60; font-weight: bold; min-width: 60px; text-align: right; text-shadow: var(--text-shadow); }
         
         .ticket-actions { display: flex; gap: 8px; margin-top: 12px; }
-        .btn-action { background: #34495e; color: white; border: none; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; gap: 5px; flex: 1; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
+        .btn-action { background: #34495e; color: white; border: none; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
         .btn-whatsapp { background: #27ae60; }
         .btn-whatsapp:hover { background: #219653; }
         .btn-print { background: #2980b9; }
         .btn-print:hover { background: #2471a3; }
 
-        .total-display { font-size: 1.4rem; color: #c0392b; font-weight: bold; margin-top: 15px; text-shadow: var(--text-shadow); }
+        .total-display { font-size: 1.4rem; color: #c0392b; font-weight: bold; margin-top: 12px; margin-bottom: 12px; text-shadow: var(--text-shadow); }
         .history-total { color: #27ae60; }
         
-        .payment-section { margin-top: 12px; display: flex; gap: 10px; align-items: center; }
-        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 8px; border-radius: 5px; border: 1px solid var(--input-border); font-weight: bold; }
+        .payment-section { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 9px; border-radius: 8px; border: 1px solid var(--input-border); font-weight: bold; width: 130px; }
         .payment-select option { background: #2c3e50; color: #fff; }
-        .btn-cobrar { background: #27ae60; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        
+        /* Sección de Vuelto con color mejorado */
+        .vuelto-container { width: 100%; display: none; background: rgba(0,0,0,0.25); padding: 10px; border-radius: 8px; border: 1px dashed var(--input-border); margin-top: 5px; }
+        .vuelto-container.active { display: flex; justify-content: space-between; align-items: center; }
+        .vuelto-input { width: 110px; text-align: center; font-weight: bold; color: #2ecc71; }
+        .vuelto-resultado { font-weight: 900; font-size: 1.15rem; color: #00ffcc; text-shadow: 0 0 8px rgba(0,255,204,0.6), var(--text-shadow); }
 
-        .date-badge { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 5px; font-weight: bold; }
+        .btn-cobrar { background: #27ae60; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
+        .btn-cobrar:hover { background: #219653; }
+
+        .client-title { font-size: 1.15rem; color: #2980b9; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: var(--text-shadow); }
         .payment-badge { display: inline-block; background: #2980b9; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.85rem; margin-top: 8px; font-weight: bold; }
 
         .btn-clear-history { background: #c0392b; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 15px; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--global-bg); color: #2ecc71; padding: 15px; text-align: center; font-size: 1.5rem; font-weight: bold; backdrop-filter: blur(10px); z-index: 1000; border-top: 1px solid var(--input-border); box-shadow: -4px 15px rgba(0,0,0,0.5); box-sizing: border-box; }
 
-        /* ESTILOS PARA REPORTES Y ESTADÍSTICAS */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
         .stat-card { background: var(--input-bg); border: 1px solid var(--input-border); padding: 12px; border-radius: 10px; text-align: center; }
         .stat-card h4 { margin: 0 0 5px 0; font-size: 0.85rem; opacity: 0.8; color: var(--accent-title); }
         .stat-card .stat-value { font-size: 1.2rem; font-weight: bold; color: #2ecc71; }
         .ranking-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--input-border); font-size: 0.9rem; }
 
-        /* ESTILO EXCLUSIVO PARA IMPRESIÓN */
         @media print {
             body { background: white !important; color: black !important; font-family: monospace; }
-            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .global-totals, .btn-delete, .quick-add, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, #search-client, .glass-block > h3 { display: none !important; }
+            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .global-totals, .btn-delete, .ticket-prod-search-container, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, #search-client, .glass-block > h3 { display: none !important; }
             #tab-clientes { display: block !important; background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
             .ticket { display: none !important; }
             .ticket.printing-ticket { display: block !important; background: white !important; border: none !important; box-shadow: none !important; color: black !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
             .price-text { color: black !important; }
             .total-display { color: black !important; font-size: 1.2rem !important; }
+            .vuelto-container { border: none !important; background: none !important; padding: 0 !important; margin-top: 5px !important; display: flex !important; color: black !important; }
+            .vuelto-resultado { color: black !important; text-shadow: none !important; }
         }
     </style>
 </head>
@@ -187,7 +206,9 @@
         </div>
 
         <div class="glass-block" id="price-list"></div>
-        
+    </div>
+
+    <div id="tab-clientes" class="tab-content">
         <div class="glass-block">
             <h3>Nuevo Cliente / Ticket</h3>
             <div style="display: flex; gap: 8px;">
@@ -195,9 +216,7 @@
                 <button id="btn-add-ticket" style="background:#2980b9; color:white; border:none; padding:8px 15px; border-radius:5px; font-weight:bold; cursor:pointer;">Crear</button>
             </div>
         </div>
-    </div>
 
-    <div id="tab-clientes" class="tab-content">
         <div class="glass-block">
             <h3 style="margin-top:0;">Listado de Clientes Activos</h3>
             <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." class="edit-input" style="width: 100%; box-sizing: border-box; border-radius: 8px; margin-bottom: 10px; font-size: 1rem;">
@@ -213,7 +232,6 @@
         </div>
     </div>
 
-    <!-- NUEVA PESTAÑA DE REPORTES Y ESTADÍSTICAS -->
     <div id="tab-reportes" class="tab-content">
         <div class="glass-block">
             <h3 style="margin-top:0; color:#6bb6ff;">📊 Estadísticas y Reportes</h3>
@@ -268,6 +286,9 @@
         const btn = document.getElementById('btn-settings');
         if (!menu.contains(e.target) && e.target !== btn) {
             menu.classList.remove('active');
+        }
+        if (!e.target.closest('.ticket-prod-search-container')) {
+            document.querySelectorAll('.ticket-search-results').forEach(el => el.classList.remove('active'));
         }
     });
 
@@ -379,7 +400,7 @@
         const nameInput = document.getElementById('client-name');
         const name = nameInput.value.trim();
         if(!name) return;
-        tickets.push({id: Date.now(), name: name.toUpperCase(), items: {}, note: '', payment: 'Efectivo'});
+        tickets.push({id: Date.now(), name: name.toUpperCase(), items: {}, note: '', payment: 'Efectivo', efectivoRecibido: ''});
         save();
         nameInput.value = '';
         cambiarTab('clientes');
@@ -412,7 +433,17 @@
             mensaje += `📝 Nota: ${ticket.note}\n`;
         }
 
-        mensaje += `--------------------------\n💰 *TOTAL A PAGAR: $${tTotal}*\n💳 Método: ${ticket.payment}\n\n_¡Gracias por tu preferencia!_`;
+        mensaje += `--------------------------\n💰 *TOTAL A PAGAR: $${tTotal}*\n💳 Método: ${ticket.payment}`;
+        
+        if(ticket.payment === 'Efectivo' && ticket.efectivoRecibido) {
+            const pagaCon = parseFloat(ticket.efectivoRecibido) || 0;
+            const vuelto = pagaCon - tTotal;
+            if(vuelto >= 0) {
+                mensaje += `\n💵 Paga con: $${pagaCon}\n🪙 Vuelto: $${vuelto}`;
+            }
+        }
+
+        mensaje += `\n\n_¡Gracias por tu preferencia!_`;
 
         const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
         window.open(url, '_blank');
@@ -515,7 +546,11 @@
             nuevaCantidad = prod.stock;
         }
 
-        ticket.items[pId] = nuevaCantidad; 
+        if (nuevaCantidad <= 0) {
+            delete ticket.items[pId];
+        } else {
+            ticket.items[pId] = nuevaCantidad;
+        }
         save(); 
     }
 
@@ -525,8 +560,99 @@
     }
     
     window.updatePayment = function(tId, payment) { 
-        tickets.find(t => t.id === tId).payment = payment; 
-        localStorage.setItem('tickets', JSON.stringify(tickets)); 
+        const ticket = tickets.find(t => t.id === tId);
+        ticket.payment = payment;
+        if(payment !== 'Efectivo') {
+            ticket.efectivoRecibido = '';
+        }
+        localStorage.setItem('tickets', JSON.stringify(tickets));
+        render();
+    }
+
+    window.updateEfectivoRecibido = function(tId, val) {
+        const ticket = tickets.find(t => t.id === tId);
+        if(ticket) {
+            ticket.efectivoRecibido = val;
+            localStorage.setItem('tickets', JSON.stringify(tickets));
+            
+            const vueltoSpan = document.getElementById(`vuelto-calc-${tId}`);
+            if(vueltoSpan) {
+                let tTotal = 0;
+                Object.keys(ticket.items).forEach(pId => {
+                    const qty = ticket.items[pId] || 0;
+                    const p = productos.find(prod => prod.id == pId);
+                    if(p) tTotal += (qty * p.price);
+                });
+                const pago = parseFloat(val) || 0;
+                if(pago >= tTotal && tTotal > 0) {
+                    vueltoSpan.innerText = `$${pago - tTotal}`;
+                } else {
+                    vueltoSpan.innerText = `$0`;
+                }
+            }
+        }
+    }
+
+    window.agregarProductoATicket = function(tId, pId) {
+        const ticket = tickets.find(t => t.id === tId);
+        const prod = productos.find(p => p.id === pId);
+        
+        const qtyInput = document.getElementById(`ticket-qty-${tId}`);
+        const cantidadAgregar = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+
+        const currentQty = ticket.items[pId] || 0;
+
+        if(prod && currentQty + cantidadAgregar > prod.stock) {
+            alert(`¡Atención! No hay suficiente stock disponible de "${prod.name}" (Stock disponible: ${prod.stock}).`);
+            return;
+        }
+
+        ticket.items[pId] = currentQty + cantidadAgregar;
+        
+        if(qtyInput) qtyInput.value = '1';
+        const searchInput = document.getElementById(`ticket-search-${tId}`);
+        if(searchInput) searchInput.value = '';
+        const resultsContainer = document.getElementById(`search-results-${tId}`);
+        if(resultsContainer) {
+            resultsContainer.classList.remove('active');
+            resultsContainer.innerHTML = '';
+        }
+
+        save();
+    }
+
+    window.filtrarProductosTicket = function(tId, query) {
+        const resultsContainer = document.getElementById(`search-results-${tId}`);
+        query = query.toLowerCase().trim();
+
+        if (!query) {
+            resultsContainer.classList.remove('active');
+            resultsContainer.innerHTML = '';
+            return;
+        }
+
+        const filtrados = productos.filter(p => p.name.toLowerCase().includes(query));
+        if (filtrados.length === 0) {
+            resultsContainer.innerHTML = '<div class="ticket-search-item" style="opacity:0.7; cursor:default;">Sin resultados</div>';
+            resultsContainer.classList.add('active');
+            return;
+        }
+
+        let html = '';
+        filtrados.forEach(p => {
+            const stockBadge = p.stock <= 0 ? ' (Sin stock)' : ` (Stock: ${p.stock})`;
+            html += `
+                <div class="ticket-search-item" onclick="seleccionarProductoDesdeBuscador(${tId}, ${p.id})">
+                    <span><strong>${p.name}</strong> <span style="opacity:0.7; font-size:0.8rem;">$${p.price}${stockBadge}</span></span>
+                    <span style="color:#27ae60; font-weight:bold;">+ Agregar</span>
+                </div>`;
+        });
+        resultsContainer.innerHTML = html;
+        resultsContainer.classList.add('active');
+    }
+
+    window.seleccionarProductoDesdeBuscador = function(tId, pId) {
+        agregarProductoATicket(tId, pId);
     }
 
     function renderReportes() {
@@ -599,67 +725,84 @@
         tCont.innerHTML = '';
         let grandTotal = 0;
 
-        const searchText = document.getElementById('search-client').value.toUpperCase();
-        const ticketsFiltrados = tickets.filter(t => t.name.includes(searchText));
+        const searchText = document.getElementById('search-client').value.toLowerCase();
+        const ticketsFiltrados = tickets.filter(t => t.name.toLowerCase().includes(searchText));
 
-        if(tickets.length === 0) {
-            tCont.innerHTML = '<p style="text-align:center; opacity: 0.7; margin-top: 15px;">No hay clientes ni tickets creados todavía.</p>';
-        } else if(ticketsFiltrados.length === 0) {
-            tCont.innerHTML = '<p style="text-align:center; color:#e74c3c; margin-top: 15px;">No se encontró ningún cliente con ese nombre.</p>';
+        if(ticketsFiltrados.length === 0) {
+            tCont.innerHTML = '<p style="text-align:center; opacity: 0.7;">No hay tickets activos.</p>';
         }
 
         ticketsFiltrados.forEach(t => {
             let tTotal = 0;
-            const div = document.createElement('div');
-            div.className = 'ticket';
-            div.id = `ticket-${t.id}`;
-            let html = `<button class="btn-delete" onclick="confirmRemove(${t.id})">X</button><h3>CLIENTE: ${t.name}</h3><div class="quick-add">`;
+            let itemsHtml = '';
             
-            productos.forEach(p => {
-                const stockDisponible = p.stock;
-                const sinStock = stockDisponible <= 0;
-                html += `<button onclick="updateItem(${t.id}, ${p.id}, (${t.items[p.id] || 0} + 1))" ${sinStock ? 'disabled title="Sin Stock"' : ''}>+ ${p.name} (${stockDisponible})</button>`;
-            });
-            html += `</div>`;
-            
-            productos.forEach(p => {
-                const qty = t.items[p.id] || 0;
+            Object.keys(t.items).forEach(pId => {
+                const qty = t.items[pId] || 0;
                 if(qty > 0) {
-                    tTotal += (qty * p.price);
-                    html += `<div class="items-grid"><span class="prod-name">${p.name}</span><div class="prod-qty-price"><input type="number" value="${qty}" oninput="updateItem(${t.id}, ${p.id}, this.value)"><span class="price-text">$${qty * p.price}</span></div></div>`;
+                    const p = productos.find(prod => prod.id == pId);
+                    if(p) {
+                        const sub = qty * p.price;
+                        tTotal += sub;
+                        itemsHtml += `
+                            <div class="items-grid">
+                                <span class="prod-name">${p.name}</span>
+                                <div class="prod-qty-price">
+                                    <input type="number" min="0" value="${qty}" onchange="updateItem(${t.id}, ${p.id}, this.value)">
+                                    <span class="price-text">$${sub}</span>
+                                </div>
+                            </div>`;
+                    }
                 }
             });
-            
-            html += `
-                <div class="total-display">TOTAL: $${tTotal}</div>
-                <input type="text" placeholder="Nota..." value="${t.note}" class="edit-input" oninput="updateNote(${t.id}, this.value)" style="width:90%; margin-top:10px; padding:8px;">
-                
-                <div class="ticket-actions">
-                    <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">📲 Enviar a WhatsApp</button>
-                    <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">🖨️ Imprimir Ticket</button>
-                </div>
 
-                <div class="payment-section">
-                    <select class="payment-select" onchange="updatePayment(${t.id}, this.value)">
-                        <option value="Efectivo" ${t.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
-                        <option value="Transferencia" ${t.payment === 'Transferencia' ? 'selected' : ''}>Transferencia</option>
-                        <option value="Tarjeta" ${t.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
-                    </select>
-                    <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">✅ Cobrar y Cerrar</button>
-                </div>
-            `;
-            
-            div.innerHTML = html;
-            tCont.appendChild(div);
-        });
-
-        tickets.forEach(t => {
-            let tTotal = 0;
-            productos.forEach(p => {
-                const qty = t.items[p.id] || 0;
-                tTotal += (qty * p.price);
-            });
             grandTotal += tTotal;
+
+            const pagoEfectivo = parseFloat(t.efectivoRecibido) || 0;
+            const vueltoCalc = pagoEfectivo >= tTotal ? pagoEfectivo - tTotal : 0;
+            const mostrarVueltoClass = t.payment === 'Efectivo' ? 'vuelto-container active' : 'vuelto-container';
+
+            tCont.innerHTML += `
+                <div class="ticket" id="ticket-${t.id}">
+                    <button class="btn-delete" onclick="confirmRemove(${t.id})" title="Eliminar Ticket">×</button>
+                    <div class="client-title">CLIENTE: ${t.name}</div>
+                    
+                    <div class="ticket-prod-search-container">
+                        <input type="number" id="ticket-qty-${t.id}" class="edit-input ticket-qty-input" value="1" min="1" title="Cantidad a agregar">
+                        <div class="ticket-search-wrapper">
+                            <input type="text" id="ticket-search-${t.id}" class="edit-input ticket-search-input" placeholder="🔍 Buscar producto..." oninput="filtrarProductosTicket(${t.id}, this.value)">
+                            <div id="search-results-${t.id}" class="ticket-search-results"></div>
+                        </div>
+                    </div>
+                    
+                    ${itemsHtml}
+
+                    <div class="total-display">TOTAL: $${tTotal}</div>
+
+                    <div style="margin-bottom: 12px;">
+                        <input type="text" class="edit-input" style="width:100%; box-sizing:border-box;" placeholder="Nota opcional..." value="${t.note || ''}" onblur="updateNote(${t.id}, this.value)">
+                    </div>
+
+                    <div class="ticket-actions">
+                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">📱 Enviar a WhatsApp</button>
+                        <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">🖨️ Imprimir Ticket</button>
+                    </div>
+
+                    <div class="payment-section">
+                        <select class="payment-select" onchange="updatePayment(${t.id}, this.value)">
+                            <option value="Efectivo" ${t.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
+                            <option value="Transferencia" ${t.payment === 'Transferencia' ? 'selected' : ''}>Transferencia</option>
+                            <option value="Tarjeta" ${t.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
+                            <option value="Fiado" ${t.payment === 'Fiado' ? 'selected' : ''}>Fiado</option>
+                        </select>
+                        <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">✅ Cobrar y Cerrar</button>
+
+                        <div id="vuelto-box-${t.id}" class="${mostrarVueltoClass}">
+                            <span style="font-size: 0.85rem; font-weight: bold;">Paga con: $</span>
+                            <input type="number" class="edit-input vuelto-input" placeholder="Monto" value="${t.efectivoRecibido || ''}" oninput="updateEfectivoRecibido(${t.id}, this.value)">
+                            <span style="font-size: 0.85rem; font-weight: bold;">Vuelto: <span id="vuelto-calc-${t.id}" class="vuelto-resultado">$${vueltoCalc}</span></span>
+                        </div>
+                    </div>
+                </div>`;
         });
 
         document.getElementById('grand-total').innerText = '$' + grandTotal;
@@ -668,43 +811,50 @@
         hCont.innerHTML = '';
 
         if(historial.length === 0) {
-            hCont.innerHTML = '<p style="text-align:center; opacity: 0.7; margin-top: 15px;">No hay ventas registradas en el historial todavía.</p>';
+            hCont.innerHTML = '<p style="text-align:center; opacity: 0.7;">No hay ventas registradas en el historial.</p>';
         }
 
         historial.forEach(h => {
-            const hDiv = document.createElement('div');
-            hDiv.className = 'ticket history-ticket';
-            let hHtml = `
-                <div class="date-badge">📅 ${h.fecha}</div>
-                <h3>CLIENTE: ${h.name}</h3>
-            `;
-
-            productos.forEach(p => {
-                const qty = h.items[p.id] || 0;
-                if(qty > 0) {
-                    hHtml += `<div class="items-grid"><span class="prod-name">${p.name} (x${qty})</span><span class="price-text">$${qty * p.price}</span></div>`;
-                }
-            });
-
-            if(h.note) {
-                hHtml += `<p style="margin-top:10px; font-style:italic;">📝 Nota: ${h.note}</p>`;
+            let hItemsHtml = '';
+            if(h.items) {
+                Object.keys(h.items).forEach(pId => {
+                    const qty = h.items[pId];
+                    if(qty > 0) {
+                        const prod = productos.find(p => p.id == pId);
+                        const pName = prod ? prod.name : 'Producto Eliminado';
+                        const pPrice = prod ? prod.price : 0;
+                        hItemsHtml += `
+                            <div class="items-grid">
+                                <span class="prod-name">${pName} (x${qty})</span>
+                                <span class="price-text">$${qty * pPrice}</span>
+                            </div>`;
+                    }
+                });
             }
 
-            hHtml += `
-                <div class="total-display history-total">TOTAL COBRADO: $${h.total}</div>
-                <div><span class="payment-badge">💳 ${h.payment}</span></div>
-            `;
-            hDiv.innerHTML = hHtml;
-            hCont.appendChild(hDiv);
-        });
+            let vueltoHistorialHtml = '';
+            if(h.payment === 'Efectivo' && h.efectivoRecibido) {
+                const paga = parseFloat(h.efectivoRecibido) || 0;
+                const v = paga - h.total;
+                if(v >= 0) {
+                    vueltoHistorialHtml = `<div style="font-size:0.9rem; margin-top:4px;">💵 Paga con: $${paga} | 🪙 Vuelto: <strong style="color:#00ffcc;">$${v}</strong></div>`;
+                }
+            }
 
-        if(document.getElementById('tab-reportes').classList.contains('active')) {
-            renderReportes();
-        }
+            hCont.innerHTML += `
+                <div class="ticket history-ticket">
+                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-bottom: 3px; font-weight: bold;">📅 ${h.fecha}</div>
+                    <div class="client-title" style="color: #2ecc71;">${h.name}</div>
+                    ${hItemsHtml}
+                    ${h.note ? `<p style="font-size:0.9rem; margin:5px 0;"><strong>Nota:</strong> ${h.note}</p>` : ''}
+                    <div><span class="payment-badge">💳 ${h.payment}</span></div>
+                    ${vueltoHistorialHtml}
+                    <div class="total-display history-total">Total Cobrado: $${h.total}</div>
+                </div>`;
+        });
     }
 
     render();
 </script>
-
 </body>
 </html>
