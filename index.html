@@ -6,13 +6,12 @@
     <title>Sistema de Ventas con WhatsApp e Impresión</title>
     <style>
         :root {
-            --bg-glass: rgba(15, 23, 42, 0.85);
+            --bg-glass: rgba(15, 23, 42, 0.75);
             --text-color: #fff;
             --accent-title: #6bb6ff;
             --input-bg: rgba(0, 0, 0, 0.4);
-            --input-border: rgba(255,255,255,0.3);
-            --history-bg: rgba(10, 30, 20, 0.85);
-            --global-bg: rgba(15, 23, 42, 0.92);
+            --input-border: rgba(255,255,255,0.25);
+            --history-bg: rgba(10, 30, 20, 0.75);
             --text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
             --search-result-bg: rgba(15, 23, 42, 0.95);
             --search-result-text: #ffffff;
@@ -20,13 +19,12 @@
         }
 
         [data-theme="light"] {
-            --bg-glass: rgba(255, 255, 255, 0.88);
+            --bg-glass: rgba(255, 255, 255, 0.78);
             --text-color: #333;
             --accent-title: #2980b9;
             --input-bg: #fff;
             --input-border: #ccc;
-            --history-bg: rgba(240, 255, 240, 0.88);
-            --global-bg: rgba(44, 62, 80, 0.9);
+            --history-bg: rgba(240, 255, 240, 0.78);
             --text-shadow: none;
             --search-result-bg: #ffffff;
             --search-result-text: #2c3e50;
@@ -66,7 +64,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .glass-block { background: var(--bg-glass); padding: 20px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--input-border); color: var(--text-color); }
+        .glass-block { background: var(--bg-glass); padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--input-border); color: var(--text-color); }
         .glass-block h3 { color: var(--accent-title); text-shadow: var(--text-shadow); margin-top: 0; }
         
         .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--input-border); padding-bottom: 8px; gap: 6px; }
@@ -76,7 +74,7 @@
         .edit-stock { width: 18%; text-align: center; color: #3498db; font-weight: bold; }
         .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 5px; padding: 6px 8px; cursor: pointer; font-weight: bold; }
         
-        .ticket { border: 1px solid var(--input-border); padding: 18px; margin-top: 25px; margin-bottom: 25px; border-radius: 15px; background: var(--bg-glass); position: relative; box-shadow: 0 6px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); color: var(--text-color); }
+        .ticket { border: 1px solid var(--input-border); padding: 18px; margin-bottom: 20px; border-radius: 15px; background: var(--bg-glass); position: relative; box-shadow: 0 6px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); color: var(--text-color); }
         .history-ticket { border: 1px solid rgba(46, 204, 113, 0.5); background: var(--history-bg); }
         .btn-delete { position: absolute; top: 12px; right: 12px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         
@@ -106,14 +104,8 @@
         .history-total { color: #27ae60; }
         
         .payment-section { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 9px; border-radius: 8px; border: 1px solid var(--input-border); font-weight: bold; width: 130px; }
+        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 9px; border-radius: 8px; border: 1px solid var(--input-border); font-weight: bold; width: 100%; }
         .payment-select option { background: #2c3e50; color: #fff; }
-        
-        /* Sección de Vuelto con color mejorado */
-        .vuelto-container { width: 100%; display: none; background: rgba(0,0,0,0.25); padding: 10px; border-radius: 8px; border: 1px dashed var(--input-border); margin-top: 5px; }
-        .vuelto-container.active { display: flex; justify-content: space-between; align-items: center; }
-        .vuelto-input { width: 110px; text-align: center; font-weight: bold; color: #2ecc71; }
-        .vuelto-resultado { font-weight: 900; font-size: 1.15rem; color: #00ffcc; text-shadow: 0 0 8px rgba(0,255,204,0.6), var(--text-shadow); }
 
         .btn-cobrar { background: #27ae60; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
         .btn-cobrar:hover { background: #219653; }
@@ -123,8 +115,6 @@
 
         .btn-clear-history { background: #c0392b; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 15px; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
-        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--global-bg); color: #2ecc71; padding: 15px; text-align: center; font-size: 1.5rem; font-weight: bold; backdrop-filter: blur(10px); z-index: 1000; border-top: 1px solid var(--input-border); box-shadow: -4px 15px rgba(0,0,0,0.5); box-sizing: border-box; }
-
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
         .stat-card { background: var(--input-bg); border: 1px solid var(--input-border); padding: 12px; border-radius: 10px; text-align: center; }
         .stat-card h4 { margin: 0 0 5px 0; font-size: 0.85rem; opacity: 0.8; color: var(--accent-title); }
@@ -133,14 +123,12 @@
 
         @media print {
             body { background: white !important; color: black !important; font-family: monospace; }
-            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .global-totals, .btn-delete, .ticket-prod-search-container, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, #search-client, .glass-block > h3 { display: none !important; }
+            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .btn-delete, .ticket-prod-search-container, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, #search-client, .glass-block > h3 { display: none !important; }
             #tab-clientes { display: block !important; background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
             .ticket { display: none !important; }
             .ticket.printing-ticket { display: block !important; background: white !important; border: none !important; box-shadow: none !important; color: black !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
             .price-text { color: black !important; }
             .total-display { color: black !important; font-size: 1.2rem !important; }
-            .vuelto-container { border: none !important; background: none !important; padding: 0 !important; margin-top: 5px !important; display: flex !important; color: black !important; }
-            .vuelto-resultado { color: black !important; text-shadow: none !important; }
         }
     </style>
 </head>
@@ -217,11 +205,8 @@
             </div>
         </div>
 
-        <div class="glass-block">
-            <h3 style="margin-top:0;">Listado de Clientes Activos</h3>
-            <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." class="edit-input" style="width: 100%; box-sizing: border-box; border-radius: 8px; margin-bottom: 10px; font-size: 1rem;">
-            <div id="tickets-container"></div>
-        </div>
+        <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." class="edit-input" style="width: 100%; box-sizing: border-box; border-radius: 12px; margin-bottom: 20px; font-size: 1rem; background: var(--bg-glass); backdrop-filter: blur(8px);">
+        <div id="tickets-container"></div>
     </div>
 
     <div id="tab-historial" class="tab-content">
@@ -261,11 +246,7 @@
             </div>
         </div>
     </div>
-
-    <div style="height: 100px;"></div>
 </div>
-
-<div class="global-totals">TOTAL ACTIVO: <span id="grand-total">$0</span></div>
 
 <script>
     let productos = JSON.parse(localStorage.getItem('productos')) || [];
@@ -400,7 +381,7 @@
         const nameInput = document.getElementById('client-name');
         const name = nameInput.value.trim();
         if(!name) return;
-        tickets.push({id: Date.now(), name: name.toUpperCase(), items: {}, note: '', payment: 'Efectivo', efectivoRecibido: ''});
+        tickets.push({id: Date.now(), name: name.toUpperCase(), items: {}, note: '', payment: 'Efectivo'});
         save();
         nameInput.value = '';
         cambiarTab('clientes');
@@ -433,17 +414,7 @@
             mensaje += `📝 Nota: ${ticket.note}\n`;
         }
 
-        mensaje += `--------------------------\n💰 *TOTAL A PAGAR: $${tTotal}*\n💳 Método: ${ticket.payment}`;
-        
-        if(ticket.payment === 'Efectivo' && ticket.efectivoRecibido) {
-            const pagaCon = parseFloat(ticket.efectivoRecibido) || 0;
-            const vuelto = pagaCon - tTotal;
-            if(vuelto >= 0) {
-                mensaje += `\n💵 Paga con: $${pagaCon}\n🪙 Vuelto: $${vuelto}`;
-            }
-        }
-
-        mensaje += `\n\n_¡Gracias por tu preferencia!_`;
+        mensaje += `--------------------------\n💰 *TOTAL A PAGAR: $${tTotal}*\n💳 Método: ${ticket.payment}\n\n_¡Gracias por tu preferencia!_`;
 
         const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
         window.open(url, '_blank');
@@ -562,97 +533,165 @@
     window.updatePayment = function(tId, payment) { 
         const ticket = tickets.find(t => t.id === tId);
         ticket.payment = payment;
-        if(payment !== 'Efectivo') {
-            ticket.efectivoRecibido = '';
-        }
         localStorage.setItem('tickets', JSON.stringify(tickets));
         render();
     }
 
-    window.updateEfectivoRecibido = function(tId, val) {
-        const ticket = tickets.find(t => t.id === tId);
-        if(ticket) {
-            ticket.efectivoRecibido = val;
-            localStorage.setItem('tickets', JSON.stringify(tickets));
+    function render() {
+        const priceListDiv = document.getElementById('price-list');
+        priceListDiv.innerHTML = '<h3 style="margin-top:0;">Lista de Productos y Stock</h3>';
+        
+        productos.forEach(p => {
+            priceListDiv.innerHTML += `
+                <div class="price-edit-row">
+                    <input type="text" class="edit-input edit-name" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)">
+                    <input type="number" class="edit-input edit-price" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)">
+                    <input type="number" class="edit-input edit-stock" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)">
+                    <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
+                </div>
+            `;
+        });
+
+        const ticketsContainer = document.getElementById('tickets-container');
+        ticketsContainer.innerHTML = '';
+        
+        const filterText = document.getElementById('search-client').value.toLowerCase();
+        const filteredTickets = tickets.filter(t => t.name.toLowerCase().includes(filterText));
+
+        if (filteredTickets.length === 0) {
+            ticketsContainer.innerHTML = '<p style="text-align:center; opacity:0.7; font-size: 0.95rem; background: var(--bg-glass); padding: 15px; border-radius: 10px; backdrop-filter: blur(8px);">No hay clientes activos.</p>';
+        }
+
+        filteredTickets.forEach(ticket => {
+            let tTotal = 0;
+            let itemsHtml = '';
             
-            const vueltoSpan = document.getElementById(`vuelto-calc-${tId}`);
-            if(vueltoSpan) {
-                let tTotal = 0;
-                Object.keys(ticket.items).forEach(pId => {
-                    const qty = ticket.items[pId] || 0;
-                    const p = productos.find(prod => prod.id == pId);
-                    if(p) tTotal += (qty * p.price);
-                });
-                const pago = parseFloat(val) || 0;
-                if(pago >= tTotal && tTotal > 0) {
-                    vueltoSpan.innerText = `$${pago - tTotal}`;
-                } else {
-                    vueltoSpan.innerText = `$0`;
+            productos.forEach(p => {
+                const qty = ticket.items[p.id] || 0;
+                if(qty > 0) {
+                    const subtotal = qty * p.price;
+                    tTotal += subtotal;
                 }
-            }
+            });
+
+            productos.forEach(p => {
+                const qty = ticket.items[p.id] || 0;
+                if(qty > 0) {
+                    const subtotal = qty * p.price;
+                    itemsHtml += `
+                        <div class="items-grid">
+                            <span class="prod-name">${p.name}</span>
+                            <div class="prod-qty-price">
+                                <input type="number" value="${qty}" min="0" onchange="updateItem(${ticket.id}, ${p.id}, this.value)">
+                                <span class="price-text">$${subtotal}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            let productOptionsHtml = productos.map(p => `<div class="ticket-search-item" onclick="addItemToTicket(${ticket.id}, ${p.id})"><span>${p.name}</span><strong>$${p.price}</strong></div>`).join('');
+
+            ticketsContainer.innerHTML += `
+                <div class="ticket" id="ticket-${ticket.id}">
+                    <button class="btn-delete" onclick="confirmRemove(${ticket.id})">X</button>
+                    <div class="client-title">${ticket.name}</div>
+                    
+                    <div class="ticket-prod-search-container">
+                        <div class="ticket-search-wrapper">
+                            <input type="text" placeholder="🔍 Buscar producto..." class="edit-input ticket-search-input" oninput="filterTicketSearch(this, ${ticket.id})" onfocus="showTicketSearch(this)">
+                            <div class="ticket-search-results" id="search-results-${ticket.id}">
+                                ${productOptionsHtml}
+                            </div>
+                        </div>
+                        <input type="number" value="1" min="1" class="edit-input ticket-qty-input" id="ticket-qty-${ticket.id}" title="Cantidad">
+                    </div>
+
+                    ${itemsHtml}
+
+                    <input type="text" placeholder="Agregar nota opcional..." class="edit-input" style="width:100%; box-sizing:border-box; margin-top:8px;" value="${ticket.note || ''}" oninput="updateNote(${ticket.id}, this.value)">
+
+                    <div class="total-display">TOTAL: $<span id="ticket-total-${ticket.id}">${tTotal}</span></div>
+
+                    <div class="payment-section">
+                        <select class="payment-select" onchange="updatePayment(${ticket.id}, this.value)">
+                            <option value="Efectivo" ${ticket.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
+                            <option value="Transferencia" ${ticket.payment === 'Transferencia' ? 'selected' : ''}>Transferencia</option>
+                            <option value="Tarjeta" ${ticket.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
+                        </select>
+                        <button class="btn-cobrar" onclick="cobrarTicket(${ticket.id})">Cobrar</button>
+                    </div>
+
+                    <div class="ticket-actions">
+                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${ticket.id})">WhatsApp</button>
+                        <button class="btn-action btn-print" onclick="imprimirTicket(${ticket.id})">Imprimir</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        const historyContainer = document.getElementById('history-container');
+        historyContainer.innerHTML = '';
+        if(historial.length === 0) {
+            historyContainer.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay ventas cobradas aún.</p>';
+        } else {
+            historial.forEach(h => {
+                let hItems = '';
+                productos.forEach(p => {
+                    const q = h.items[p.id] || 0;
+                    if(q > 0) {
+                        hItems += `• ${p.name} (x${q}) - $${q * p.price}<br>`;
+                    }
+                });
+
+                historyContainer.innerHTML += `
+                    <div class="ticket history-ticket">
+                        <div class="client-title">${h.name} <span style="font-size:0.8rem; font-weight:normal; opacity:0.8;">(${h.fecha})</span></div>
+                        <div style="font-size:0.9rem; margin-bottom:8px;">${hItems}</div>
+                        ${h.note ? `<div style="font-size:0.85rem; font-style:italic; margin-bottom:5px;">Nota: ${h.note}</div>` : ''}
+                        <div class="total-display history-total">TOTAL COBRADO: $${h.total}</div>
+                        <div><span class="payment-badge">${h.payment}</span></div>
+                    </div>
+                `;
+            });
         }
     }
 
-    window.agregarProductoATicket = function(tId, pId) {
+    window.filterTicketSearch = function(input, tId) {
+        const term = input.value.toLowerCase();
+        const resultsDiv = document.getElementById(`search-results-${tId}`);
+        resultsDiv.classList.add('active');
+
+        const filtered = productos.filter(p => p.name.toLowerCase().includes(term));
+        resultsDiv.innerHTML = filtered.map(p => `
+            <div class="ticket-search-item" onclick="addItemToTicket(${tId}, ${p.id})">
+                <span>${p.name}</span><strong>$${p.price}</strong>
+            </div>
+        `).join('') || '<div style="padding:8px; opacity:0.7; text-align:center;">Sin resultados</div>';
+    }
+
+    window.showTicketSearch = function(input) {
+        const resultsDiv = input.nextElementSibling;
+        resultsDiv.classList.add('active');
+    }
+
+    window.addItemToTicket = function(tId, pId) {
         const ticket = tickets.find(t => t.id === tId);
-        const prod = productos.find(p => p.id === pId);
-        
         const qtyInput = document.getElementById(`ticket-qty-${tId}`);
-        const cantidadAgregar = parseInt(qtyInput ? qtyInput.value : 1) || 1;
+        const addQty = parseInt(qtyInput.value) || 1;
+        const prod = productos.find(p => p.id === pId);
 
         const currentQty = ticket.items[pId] || 0;
+        const nuevaCantidadTotal = currentQty + addQty;
 
-        if(prod && currentQty + cantidadAgregar > prod.stock) {
-            alert(`¡Atención! No hay suficiente stock disponible de "${prod.name}" (Stock disponible: ${prod.stock}).`);
+        if(prod && nuevaCantidadTotal > prod.stock) {
+            alert(`¡Atención! Solo hay ${prod.stock} unidades disponibles de "${prod.name}".`);
             return;
         }
 
-        ticket.items[pId] = currentQty + cantidadAgregar;
-        
-        if(qtyInput) qtyInput.value = '1';
-        const searchInput = document.getElementById(`ticket-search-${tId}`);
-        if(searchInput) searchInput.value = '';
-        const resultsContainer = document.getElementById(`search-results-${tId}`);
-        if(resultsContainer) {
-            resultsContainer.classList.remove('active');
-            resultsContainer.innerHTML = '';
-        }
-
+        ticket.items[pId] = nuevaCantidadTotal;
+        qtyInput.value = 1;
         save();
-    }
-
-    window.filtrarProductosTicket = function(tId, query) {
-        const resultsContainer = document.getElementById(`search-results-${tId}`);
-        query = query.toLowerCase().trim();
-
-        if (!query) {
-            resultsContainer.classList.remove('active');
-            resultsContainer.innerHTML = '';
-            return;
-        }
-
-        const filtrados = productos.filter(p => p.name.toLowerCase().includes(query));
-        if (filtrados.length === 0) {
-            resultsContainer.innerHTML = '<div class="ticket-search-item" style="opacity:0.7; cursor:default;">Sin resultados</div>';
-            resultsContainer.classList.add('active');
-            return;
-        }
-
-        let html = '';
-        filtrados.forEach(p => {
-            const stockBadge = p.stock <= 0 ? ' (Sin stock)' : ` (Stock: ${p.stock})`;
-            html += `
-                <div class="ticket-search-item" onclick="seleccionarProductoDesdeBuscador(${tId}, ${p.id})">
-                    <span><strong>${p.name}</strong> <span style="opacity:0.7; font-size:0.8rem;">$${p.price}${stockBadge}</span></span>
-                    <span style="color:#27ae60; font-weight:bold;">+ Agregar</span>
-                </div>`;
-        });
-        resultsContainer.innerHTML = html;
-        resultsContainer.classList.add('active');
-    }
-
-    window.seleccionarProductoDesdeBuscador = function(tId, pId) {
-        agregarProductoATicket(tId, pId);
     }
 
     function renderReportes() {
@@ -664,8 +703,7 @@
             totalIngresos += h.total || 0;
             if(h.items) {
                 Object.keys(h.items).forEach(pId => {
-                    const qty = h.items[pId] || 0;
-                    conteoProductos[pId] = (conteoProductos[pId] || 0) + qty;
+                    conteoProductos[pId] = (conteoProductos[pId] || 0) + h.items[pId];
                 });
             }
         });
@@ -678,180 +716,25 @@
         document.getElementById('stat-ticket-promedio').innerText = '$' + ticketPromedio;
         document.getElementById('stat-stock-total').innerText = stockTotal + ' un.';
 
-        const rankingContainer = document.getElementById('ranking-productos');
-        rankingContainer.innerHTML = '';
+        const rankingDiv = document.getElementById('ranking-productos');
+        const sortedProds = Object.keys(conteoProductos).sort((a,b) => conteoProductos[b] - conteoProductos[a]);
 
-        let productosOrdenados = Object.keys(conteoProductos).map(pId => {
-            const prod = productos.find(p => p.id == pId);
-            return {
-                name: prod ? prod.name : 'Producto Eliminado',
-                qty: conteoProductos[pId]
-            };
-        }).sort((a, b) => b.qty - a.qty);
-
-        if(productosOrdenados.length === 0) {
-            rankingContainer.innerHTML = '<p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>';
+        if(sortedProds.length === 0) {
+            rankingDiv.innerHTML = '<p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>';
         } else {
-            productosOrdenados.forEach((item, index) => {
-                rankingContainer.innerHTML += `
+            rankingDiv.innerHTML = '';
+            sortedProds.slice(0, 5).forEach(pId => {
+                const prod = productos.find(p => p.id == pId);
+                const nombre = prod ? prod.name : 'Producto eliminado';
+                const cantidad = conteoProductos[pId];
+                rankingDiv.innerHTML += `
                     <div class="ranking-item">
-                        <span><strong>#${index + 1}</strong> ${item.name}</span>
-                        <span style="color: #2ecc71; font-weight: bold;">${item.qty} unidades</span>
+                        <span>${nombre}</span>
+                        <strong style="color:#2ecc71;">${cantidad} unidades</strong>
                     </div>
                 `;
             });
         }
-    }
-
-    function render() {
-        const pList = document.getElementById('price-list');
-        pList.innerHTML = '<h3>PRODUCTOS Y STOCK</h3>';
-        
-        if(productos.length === 0) {
-            pList.innerHTML += '<p style="text-align:center; opacity: 0.7;">No hay productos cargados todavía.</p>';
-        }
-
-        productos.forEach(p => {
-            pList.innerHTML += `
-                <div class="price-edit-row">
-                    <input class="edit-input edit-name" value="${p.name}" onblur="updateProduct(${p.id}, 'name', this.value)" title="Nombre">
-                    <input class="edit-input edit-price" value="${p.price}" onblur="updateProduct(${p.id}, 'price', this.value)" title="Precio">
-                    <input class="edit-input edit-stock" value="${p.stock}" onblur="updateProduct(${p.id}, 'stock', this.value)" title="Stock disponible">
-                    <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">🗑️</button>
-                </div>`;
-        });
-
-        const tCont = document.getElementById('tickets-container');
-        tCont.innerHTML = '';
-        let grandTotal = 0;
-
-        const searchText = document.getElementById('search-client').value.toLowerCase();
-        const ticketsFiltrados = tickets.filter(t => t.name.toLowerCase().includes(searchText));
-
-        if(ticketsFiltrados.length === 0) {
-            tCont.innerHTML = '<p style="text-align:center; opacity: 0.7;">No hay tickets activos.</p>';
-        }
-
-        ticketsFiltrados.forEach(t => {
-            let tTotal = 0;
-            let itemsHtml = '';
-            
-            Object.keys(t.items).forEach(pId => {
-                const qty = t.items[pId] || 0;
-                if(qty > 0) {
-                    const p = productos.find(prod => prod.id == pId);
-                    if(p) {
-                        const sub = qty * p.price;
-                        tTotal += sub;
-                        itemsHtml += `
-                            <div class="items-grid">
-                                <span class="prod-name">${p.name}</span>
-                                <div class="prod-qty-price">
-                                    <input type="number" min="0" value="${qty}" onchange="updateItem(${t.id}, ${p.id}, this.value)">
-                                    <span class="price-text">$${sub}</span>
-                                </div>
-                            </div>`;
-                    }
-                }
-            });
-
-            grandTotal += tTotal;
-
-            const pagoEfectivo = parseFloat(t.efectivoRecibido) || 0;
-            const vueltoCalc = pagoEfectivo >= tTotal ? pagoEfectivo - tTotal : 0;
-            const mostrarVueltoClass = t.payment === 'Efectivo' ? 'vuelto-container active' : 'vuelto-container';
-
-            tCont.innerHTML += `
-                <div class="ticket" id="ticket-${t.id}">
-                    <button class="btn-delete" onclick="confirmRemove(${t.id})" title="Eliminar Ticket">×</button>
-                    <div class="client-title">CLIENTE: ${t.name}</div>
-                    
-                    <div class="ticket-prod-search-container">
-                        <input type="number" id="ticket-qty-${t.id}" class="edit-input ticket-qty-input" value="1" min="1" title="Cantidad a agregar">
-                        <div class="ticket-search-wrapper">
-                            <input type="text" id="ticket-search-${t.id}" class="edit-input ticket-search-input" placeholder="🔍 Buscar producto..." oninput="filtrarProductosTicket(${t.id}, this.value)">
-                            <div id="search-results-${t.id}" class="ticket-search-results"></div>
-                        </div>
-                    </div>
-                    
-                    ${itemsHtml}
-
-                    <div class="total-display">TOTAL: $${tTotal}</div>
-
-                    <div style="margin-bottom: 12px;">
-                        <input type="text" class="edit-input" style="width:100%; box-sizing:border-box;" placeholder="Nota opcional..." value="${t.note || ''}" onblur="updateNote(${t.id}, this.value)">
-                    </div>
-
-                    <div class="ticket-actions">
-                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">📱 Enviar a WhatsApp</button>
-                        <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">🖨️ Imprimir Ticket</button>
-                    </div>
-
-                    <div class="payment-section">
-                        <select class="payment-select" onchange="updatePayment(${t.id}, this.value)">
-                            <option value="Efectivo" ${t.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
-                            <option value="Transferencia" ${t.payment === 'Transferencia' ? 'selected' : ''}>Transferencia</option>
-                            <option value="Tarjeta" ${t.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
-                            <option value="Fiado" ${t.payment === 'Fiado' ? 'selected' : ''}>Fiado</option>
-                        </select>
-                        <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">✅ Cobrar y Cerrar</button>
-
-                        <div id="vuelto-box-${t.id}" class="${mostrarVueltoClass}">
-                            <span style="font-size: 0.85rem; font-weight: bold;">Paga con: $</span>
-                            <input type="number" class="edit-input vuelto-input" placeholder="Monto" value="${t.efectivoRecibido || ''}" oninput="updateEfectivoRecibido(${t.id}, this.value)">
-                            <span style="font-size: 0.85rem; font-weight: bold;">Vuelto: <span id="vuelto-calc-${t.id}" class="vuelto-resultado">$${vueltoCalc}</span></span>
-                        </div>
-                    </div>
-                </div>`;
-        });
-
-        document.getElementById('grand-total').innerText = '$' + grandTotal;
-
-        const hCont = document.getElementById('history-container');
-        hCont.innerHTML = '';
-
-        if(historial.length === 0) {
-            hCont.innerHTML = '<p style="text-align:center; opacity: 0.7;">No hay ventas registradas en el historial.</p>';
-        }
-
-        historial.forEach(h => {
-            let hItemsHtml = '';
-            if(h.items) {
-                Object.keys(h.items).forEach(pId => {
-                    const qty = h.items[pId];
-                    if(qty > 0) {
-                        const prod = productos.find(p => p.id == pId);
-                        const pName = prod ? prod.name : 'Producto Eliminado';
-                        const pPrice = prod ? prod.price : 0;
-                        hItemsHtml += `
-                            <div class="items-grid">
-                                <span class="prod-name">${pName} (x${qty})</span>
-                                <span class="price-text">$${qty * pPrice}</span>
-                            </div>`;
-                    }
-                });
-            }
-
-            let vueltoHistorialHtml = '';
-            if(h.payment === 'Efectivo' && h.efectivoRecibido) {
-                const paga = parseFloat(h.efectivoRecibido) || 0;
-                const v = paga - h.total;
-                if(v >= 0) {
-                    vueltoHistorialHtml = `<div style="font-size:0.9rem; margin-top:4px;">💵 Paga con: $${paga} | 🪙 Vuelto: <strong style="color:#00ffcc;">$${v}</strong></div>`;
-                }
-            }
-
-            hCont.innerHTML += `
-                <div class="ticket history-ticket">
-                    <div style="font-size: 0.85rem; color: #7f8c8d; margin-bottom: 3px; font-weight: bold;">📅 ${h.fecha}</div>
-                    <div class="client-title" style="color: #2ecc71;">${h.name}</div>
-                    ${hItemsHtml}
-                    ${h.note ? `<p style="font-size:0.9rem; margin:5px 0;"><strong>Nota:</strong> ${h.note}</p>` : ''}
-                    <div><span class="payment-badge">💳 ${h.payment}</span></div>
-                    ${vueltoHistorialHtml}
-                    <div class="total-display history-total">Total Cobrado: $${h.total}</div>
-                </div>`;
-        });
     }
 
     render();
