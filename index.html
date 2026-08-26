@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Ventas con Acceso Protegido</title>
+    <title>Sistema de Ventas con WhatsApp e Impresión</title>
     <style>
         :root {
             --bg-glass: rgba(15, 23, 42, 0.85);
@@ -30,24 +30,8 @@
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 10px; background-image: url('1044855.jpg'); background-size: cover; background-attachment: fixed; color: var(--text-color); transition: 0.3s; }
         .app-container { max-width: 500px; margin: 0 auto; padding: 10px; position: relative; }
         
-        /* PANTALLA DE LOGIN */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px);
-            z-index: 5000; display: flex; justify-content: center; align-items: center;
-        }
-        .login-card {
-            background: var(--bg-glass); border: 1px solid var(--input-border);
-            padding: 30px; border-radius: 20px; width: 85%; max-width: 320px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-        }
-        .login-card h2 { color: var(--accent-title); margin-top: 0; text-shadow: var(--text-shadow); }
-        .login-card input { width: 100%; box-sizing: border-box; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); font-size: 1rem; text-align: center; outline: none; }
-        .login-card button { background: #27ae60; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.2s; }
-        .login-card button:hover { background: #219653; }
-        .login-error { color: #e74c3c; font-size: 0.85rem; margin-top: 10px; font-weight: bold; display: none; }
-
         .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; position: relative; }
+        
         h1 { text-align: center; color: #fff !important; text-shadow: 2px 2px 6px rgba(0,0,0,0.9); text-transform: uppercase; margin: 0; flex: 1; font-size: 1.5rem; }
         
         .btn-menu { background: transparent; border: none; color: var(--text-color); font-size: 1.6rem; padding: 4px; cursor: pointer; transition: 0.2s; text-shadow: var(--text-shadow); }
@@ -119,17 +103,20 @@
         .payment-badge { display: inline-block; background: #2980b9; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.85rem; margin-top: 8px; font-weight: bold; }
 
         .btn-clear-history { background: #c0392b; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 15px; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--global-bg); color: #2ecc71; padding: 15px; text-align: center; font-size: 1.5rem; font-weight: bold; backdrop-filter: blur(10px); z-index: 1000; border-top: 1px solid var(--input-border); box-sizing: border-box; }
 
+        .global-totals { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--global-bg); color: #2ecc71; padding: 15px; text-align: center; font-size: 1.5rem; font-weight: bold; backdrop-filter: blur(10px); z-index: 1000; border-top: 1px solid var(--input-border); box-shadow: -4px 15px rgba(0,0,0,0.5); box-sizing: border-box; }
+
+        /* ESTILOS PARA REPORTES Y ESTADÍSTICAS */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
         .stat-card { background: var(--input-bg); border: 1px solid var(--input-border); padding: 12px; border-radius: 10px; text-align: center; }
         .stat-card h4 { margin: 0 0 5px 0; font-size: 0.85rem; opacity: 0.8; color: var(--accent-title); }
         .stat-card .stat-value { font-size: 1.2rem; font-weight: bold; color: #2ecc71; }
         .ranking-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--input-border); font-size: 0.9rem; }
 
+        /* ESTILO EXCLUSIVO PARA IMPRESIÓN */
         @media print {
             body { background: white !important; color: black !important; font-family: monospace; }
-            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .global-totals, .btn-delete, .quick-add, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, #search-client, .glass-block > h3, #login-screen { display: none !important; }
+            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .global-totals, .btn-delete, .quick-add, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, #search-client, .glass-block > h3 { display: none !important; }
             #tab-clientes { display: block !important; background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
             .ticket { display: none !important; }
             .ticket.printing-ticket { display: block !important; background: white !important; border: none !important; box-shadow: none !important; color: black !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
@@ -139,17 +126,6 @@
     </style>
 </head>
 <body data-theme="dark">
-
-    <!-- PANTALLA DE ACCESO / CONTRASEÑA -->
-    <div id="login-screen">
-        <div class="login-card">
-            <h2>🔐 Acceso Restringido</h2>
-            <p style="font-size: 0.9rem; opacity: 0.8;">Ingrese la contraseña del sistema</p>
-            <input type="password" id="login-pass" placeholder="Contraseña...">
-            <button id="btn-login">Ingresar</button>
-            <div id="login-error" class="login-error">Contraseña incorrecta</div>
-        </div>
-    </div>
 
 <div class="app-container">
     <div class="header-container">
@@ -161,10 +137,6 @@
             <button class="menu-item" id="menu-theme-btn">
                 <span>Tema</span>
                 <span id="theme-label-icon">🌙 Oscuro</span>
-            </button>
-            <button class="menu-item" id="menu-pass-btn">
-                <span>Cambiar Contraseña</span>
-                <span>🔑</span>
             </button>
             <button class="menu-item" id="menu-creator-btn">
                 <span>Creador / Contacto</span>
@@ -195,7 +167,7 @@
             <button class="btn-close-modal" id="btn-close-creator">Cerrar</button>
         </div>
     </div>
-
+    
     <div class="nav-tabs">
         <button id="btn-tab-productos" class="active">Productos</button>
         <button id="btn-tab-clientes">Clientes</button>
@@ -241,6 +213,7 @@
         </div>
     </div>
 
+    <!-- NUEVA PESTAÑA DE REPORTES Y ESTADÍSTICAS -->
     <div id="tab-reportes" class="tab-content">
         <div class="glass-block">
             <h3 style="margin-top:0; color:#6bb6ff;">📊 Estadísticas y Reportes</h3>
@@ -281,47 +254,9 @@
     let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
     let historial = JSON.parse(localStorage.getItem('historial')) || [];
     let currentTheme = localStorage.getItem('theme') || 'dark';
-    let systemPassword = localStorage.getItem('sys_pass') || '1234'; // Contraseña por defecto
 
     document.body.setAttribute('data-theme', currentTheme);
     actualizarTextoMenuTema();
-
-    // --- LÓGICA DE LOGIN ---
-    const loginScreen = document.getElementById('login-screen');
-    const loginInput = document.getElementById('login-pass');
-    const btnLogin = document.getElementById('btn-login');
-    const loginError = document.getElementById('login-error');
-
-    function intentarLogin() {
-        if (loginInput.value === systemPassword) {
-            loginScreen.style.display = 'none';
-        } else {
-            loginError.style.display = 'block';
-            loginInput.value = '';
-        }
-    }
-
-    btnLogin.addEventListener('click', intentarLogin);
-    loginInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') intentarLogin();
-    });
-
-    document.getElementById('menu-pass-btn').addEventListener('click', () => {
-        const passActual = prompt("Ingrese la contraseña actual:");
-        if (passActual === systemPassword) {
-            const nuevaPass = prompt("Ingrese la nueva contraseña:");
-            if (nuevaPass && nuevaPass.trim() !== '') {
-                systemPassword = nuevaPass.trim();
-                localStorage.setItem('sys_pass', systemPassword);
-                alert("¡Contraseña actualizada con éxito!");
-            } else {
-                alert("La contraseña no puede estar vacía.");
-            }
-        } else if (passActual !== null) {
-            alert("Contraseña incorrecta.");
-        }
-        document.getElementById('settings-menu').classList.remove('active');
-    });
 
     document.getElementById('btn-settings').addEventListener('click', (e) => {
         e.stopPropagation();
