@@ -49,7 +49,7 @@
         .settings-menu { display: none; position: absolute; top: 50px; right: 0; background: var(--bg-glass); border: 1px solid var(--input-border); border-radius: 15px; padding: 15px; width: 230px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); backdrop-filter: blur(12px); z-index: 2000; }
         .settings-menu.active { display: block; }
         .settings-menu h4 { margin: 0 0 10px 0; color: var(--accent-title); text-align: center; border-bottom: 1px solid var(--input-border); padding-bottom: 6px; }
-        .menu-item { display: flex; align-items: center; justify-content: space-between; width: 100%; background: transparent; border: none; color: var(--text-color); padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; text-align: left; margin-bottom: 5px; }
+        .menu-item { display: flex; align-items: center; justify-content: space-between; width: 100%; background: transparent; border: none; color: var(--text-color); padding: 8px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: 0.2s; text-align: left; margin-bottom: 5px; }
         .menu-item:hover { background: rgba(255,255,255,0.1); }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 3000; justify-content: center; align-items: center; }
@@ -60,10 +60,10 @@
         .creator-info p { margin: 8px 0; }
         .creator-info a { color: var(--accent-title); text-decoration: none; font-weight: bold; }
         .creator-info a:hover { text-decoration: underline; }
-        .btn-close-modal { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-size: 1rem; }
+        .btn-close-modal { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         .nav-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
-        .nav-tabs button { flex: 1; min-width: 75px; padding: 10px 6px; border: none; border-radius: 10px; background: var(--bg-glass); color: var(--text-color); font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.9rem; backdrop-filter: blur(5px); border: 1px solid var(--input-border); text-shadow: var(--text-shadow); }
+        .nav-tabs button { flex: 1; min-width: 75px; padding: 8px 4px; border: none; border-radius: 10px; background: var(--bg-glass); color: var(--text-color); font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.8rem; backdrop-filter: blur(5px); border: 1px solid var(--input-border); text-shadow: var(--text-shadow); }
         .nav-tabs button.active { background: #2980b9; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-shadow: none; }
 
         .tab-content { display: none; }
@@ -72,39 +72,37 @@
         .glass-block { background: var(--bg-glass); padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--input-border); color: var(--text-color); }
         .glass-block h3 { color: var(--accent-title); text-shadow: var(--text-shadow); margin-top: 0; }
         
-        /* FUENTE DE 16px EN INPUTS PARA EVITAR ZOOM EN iPHONE */
-        .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 10px; border-radius: 8px; outline: none; font-size: 16px; box-sizing: border-box; }
-        .edit-input option { background: #2c3e50; color: #fff; }
-
         .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--input-border); padding-bottom: 8px; gap: 6px; flex-wrap: wrap; }
+        .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px; border-radius: 5px; outline: none; }
+        .edit-input option { background: #2c3e50; color: #fff; }
         .edit-name { width: 32%; font-weight: bold; min-width: 120px; }
-        .edit-cat { width: 22%; }
+        .edit-cat { width: 22%; font-size: 0.85rem; }
         .edit-price { width: 18%; text-align: right; color: #e74c3c; font-weight: bold; }
         .edit-stock { width: 12%; text-align: center; color: #3498db; font-weight: bold; }
-        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 5px; padding: 8px 10px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 5px; padding: 6px 8px; cursor: pointer; font-weight: bold; }
         
         .ticket { border: 1px solid var(--input-border); padding: 18px; margin-bottom: 20px; border-radius: 15px; background: var(--bg-glass); position: relative; box-shadow: 0 6px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); color: var(--text-color); }
         .history-ticket { border: 1px solid rgba(46, 204, 113, 0.5); background: var(--history-bg); }
         .fiado-ticket { border: 1px solid rgba(231, 76, 60, 0.6); background: var(--fiado-bg); }
-        .btn-delete { position: absolute; top: 12px; right: 12px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+        .btn-delete { position: absolute; top: 12px; right: 12px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         
         .ticket-prod-search-container { position: relative; margin-bottom: 15px; display: flex; gap: 6px; }
         .ticket-search-wrapper { flex: 1; position: relative; }
-        .ticket-search-input { width: 100%; }
-        .ticket-qty-input { width: 55px; text-align: center; font-weight: bold; }
+        .ticket-search-input { width: 100%; box-sizing: border-box; border-radius: 8px; font-size: 0.95rem; }
+        .ticket-qty-input { width: 55px; text-align: center; border-radius: 8px; font-weight: bold; font-size: 0.95rem; }
         .ticket-search-results { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--search-result-bg); color: var(--search-result-text); border: 1px solid var(--input-border); border-radius: 8px; max-height: 160px; overflow-y: auto; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-top: 3px; }
         .ticket-search-results.active { display: block; }
-        .ticket-search-item { padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid var(--input-border); font-size: 0.95rem; }
+        .ticket-search-item { padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid var(--input-border); font-size: 0.9rem; }
         .ticket-search-item:hover { background: var(--search-result-hover); }
 
         .items-grid { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin: 10px 0; border-top: 1px solid var(--input-border); padding-top: 8px; }
         .prod-name { font-weight: bold; color: var(--text-color); text-shadow: var(--text-shadow); }
         .prod-qty-price { display: flex; align-items: center; gap: 10px; }
-        .prod-qty-price input { background: var(--input-bg); color: var(--text-color); width: 55px; text-align: center; border: 1px solid var(--input-border); border-radius: 8px; font-weight: bold; padding: 8px; font-size: 16px; }
+        .prod-qty-price input { background: var(--input-bg); color: var(--text-color); width: 50px; text-align: center; border: 1px solid var(--input-border); border-radius: 5px; font-weight: bold; padding: 5px; }
         .price-text { color: #27ae60; font-weight: bold; min-width: 60px; text-align: right; text-shadow: var(--text-shadow); }
         
         .ticket-actions { display: flex; gap: 8px; margin-top: 12px; }
-        .btn-action { background: #34495e; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
+        .btn-action { background: #34495e; color: white; border: none; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
         .btn-whatsapp { background: #27ae60; }
         .btn-whatsapp:hover { background: #219653; }
         .btn-print { background: #2980b9; }
@@ -115,25 +113,25 @@
         .fiado-total { color: #e74c3c; }
         
         .payment-section { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 10px; border-radius: 8px; border: 1px solid var(--input-border); font-weight: bold; flex: 1; font-size: 16px; }
+        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 9px; border-radius: 8px; border: 1px solid var(--input-border); font-weight: bold; flex: 1; }
         .payment-select option { background: #2c3e50; color: #fff; }
-        .surcharge-input { width: 85px; text-align: center; font-weight: bold; }
+        .surcharge-input { width: 75px; text-align: center; font-weight: bold; }
 
-        .btn-cobrar { background: #27ae60; color: white; border: none; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; font-size: 0.95rem; }
+        .btn-cobrar { background: #27ae60; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
         .btn-cobrar:hover { background: #219653; }
-        .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-size: 1rem; }
+        .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .btn-pagar-fiado:hover { background: #d35400; }
 
         .client-title { font-size: 1.15rem; color: #2980b9; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: var(--text-shadow); }
-        .payment-badge { display: inline-block; background: #2980b9; color: white; padding: 4px 10px; border-radius: 5px; font-size: 0.9rem; margin-top: 8px; font-weight: bold; }
+        .payment-badge { display: inline-block; background: #2980b9; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.85rem; margin-top: 8px; font-weight: bold; }
 
-        .btn-clear-history { background: #c0392b; color: white; border: none; padding: 12px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 15px; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-size: 1rem; }
+        .btn-clear-history { background: #c0392b; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 15px; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
         .stat-card { background: var(--input-bg); border: 1px solid var(--input-border); padding: 12px; border-radius: 10px; text-align: center; }
         .stat-card h4 { margin: 0 0 5px 0; font-size: 0.85rem; opacity: 0.8; color: var(--accent-title); }
         .stat-card .stat-value { font-size: 1.2rem; font-weight: bold; color: #2ecc71; }
-        .ranking-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--input-border); font-size: 0.95rem; }
+        .ranking-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--input-border); font-size: 0.9rem; }
 
         @media print {
             body { background: white !important; color: black !important; font-family: monospace; }
@@ -213,12 +211,12 @@
                 <input type="text" id="p-cat-nueva" placeholder="Escribe nueva categoría" class="edit-input" style="flex: 1.5; display: none; min-width: 110px;">
                 <input type="number" id="p-price" placeholder="Precio" class="edit-input" style="width: 20%;">
                 <input type="number" id="p-stock" placeholder="Stock" class="edit-input" style="width: 15%;">
-                <button id="btn-add-prod" style="background:#27ae60; color:white; border:none; padding:10px 14px; border-radius:8px; font-weight:bold; cursor:pointer; font-size: 1.1rem;">+</button>
+                <button id="btn-add-prod" style="background:#27ae60; color:white; border:none; padding:8px 14px; border-radius:5px; font-weight:bold; cursor:pointer;">+</button>
             </div>
         </div>
 
         <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
-            <input type="text" id="search-producto" placeholder="🔍 Buscar producto en inventario..." class="edit-input" style="flex: 2; box-sizing: border-box; border-radius: 12px; font-size: 16px; background: var(--bg-glass); backdrop-filter: blur(8px); min-width: 180px;">
+            <input type="text" id="search-producto" placeholder="🔍 Buscar producto en inventario..." class="edit-input" style="flex: 2; box-sizing: border-box; border-radius: 12px; font-size: 1rem; background: var(--bg-glass); backdrop-filter: blur(8px); min-width: 180px;">
             <select id="filter-categoria" class="edit-input payment-select" style="flex: 1; border-radius: 12px; min-width: 140px;">
                 <option value="">Todas las categorías</option>
             </select>
@@ -232,11 +230,11 @@
             <h3>Nuevo Cliente / Ticket</h3>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="client-name" placeholder="Nombre cliente..." class="edit-input" style="flex: 1;">
-                <button id="btn-add-ticket" style="background:#2980b9; color:white; border:none; padding:10px 15px; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1rem;">Crear</button>
+                <button id="btn-add-ticket" style="background:#2980b9; color:white; border:none; padding:8px 15px; border-radius:5px; font-weight:bold; cursor:pointer;">Crear</button>
             </div>
         </div>
 
-        <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." class="edit-input" style="width: 100%; box-sizing: border-box; border-radius: 12px; margin-bottom: 20px; font-size: 16px; background: var(--bg-glass); backdrop-filter: blur(8px);">
+        <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." class="edit-input" style="width: 100%; box-sizing: border-box; border-radius: 12px; margin-bottom: 20px; font-size: 1rem; background: var(--bg-glass); backdrop-filter: blur(8px);">
         <div id="tickets-container"></div>
     </div>
 
@@ -280,7 +278,7 @@
 
             <h3 style="font-size: 1.1rem; margin-top: 20px; border-bottom: 1px solid var(--input-border); padding-bottom: 5px;">🏆 Productos Más Vendidos</h3>
             <div id="ranking-productos" style="margin-top: 10px;">
-                <p style="text-align:center; opacity: 0.7; font-size: 0.95rem;">Sin datos suficientes todavía.</p>
+                <p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>
             </div>
         </div>
     </div>
@@ -771,7 +769,7 @@
             html += `
                 <div class="price-edit-row">
                     <input type="text" class="edit-input edit-name" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)" title="Nombre">
-                    <select class="edit-input edit-cat payment-select" onchange="updateProduct(${p.id}, 'category', this.value)" title="Categoría" style="padding: 6px;">
+                    <select class="edit-input edit-cat" onchange="updateProduct(${p.id}, 'category', this.value)" title="Categoría">
                         ${catOptions}
                     </select>
                     <input type="number" class="edit-input edit-price" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)" title="Precio">
@@ -844,7 +842,7 @@
                     </div>
 
                     <div style="margin-top:10px;">
-                        <input type="text" class="edit-input" placeholder="Nota opcional (ej: Entregar a las 15hs)" value="${t.note || ''}" oninput="cambiarNota(${t.id}, this.value)" style="width:100%;">
+                        <input type="text" class="edit-input" placeholder="Nota opcional (ej: Entregar a las 15hs)" value="${t.note || ''}" oninput="cambiarNota(${t.id}, this.value)" style="width:100%; box-sizing:border-box;">
                     </div>
 
                     <div class="ticket-actions">
@@ -1128,7 +1126,7 @@
 
         const rankingContainer = document.getElementById('ranking-productos');
         if(rankingArray.length === 0) {
-            rankingContainer.innerHTML = '<p style="text-align:center; opacity: 0.7; font-size: 0.95rem;">Sin datos suficientes todavía.</p>';
+            rankingContainer.innerHTML = '<p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>';
             return;
         }
 
