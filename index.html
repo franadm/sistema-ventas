@@ -12,6 +12,7 @@
             --input-bg: rgba(0, 0, 0, 0.4);
             --input-border: rgba(255,255,255,0.25);
             --history-bg: rgba(10, 30, 20, 0.75);
+            --fiado-bg: rgba(40, 20, 20, 0.75);
             --text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
             --search-result-bg: rgba(15, 23, 42, 0.95);
             --search-result-text: #ffffff;
@@ -25,6 +26,7 @@
             --input-bg: #fff;
             --input-border: #ccc;
             --history-bg: rgba(240, 255, 240, 0.78);
+            --fiado-bg: rgba(255, 240, 240, 0.78);
             --text-shadow: none;
             --search-result-bg: #ffffff;
             --search-result-text: #2c3e50;
@@ -34,8 +36,11 @@
         body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 10px; background-image: url('1044855.jpg'); background-size: cover; background-attachment: fixed; color: var(--text-color); transition: 0.3s; }
         .app-container { max-width: 500px; margin: 0 auto; padding: 10px; position: relative; }
         
-        .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; position: relative; }
+        @media (min-width: 768px) {
+            .app-container { max-width: 850px; }
+        }
         
+        .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; position: relative; }
         h1 { text-align: center; color: #fff !important; text-shadow: 2px 2px 6px rgba(0,0,0,0.9); text-transform: uppercase; margin: 0; flex: 1; font-size: 1.5rem; }
         
         .btn-menu { background: transparent; border: none; color: var(--text-color); font-size: 1.6rem; padding: 4px; cursor: pointer; transition: 0.2s; text-shadow: var(--text-shadow); }
@@ -58,7 +63,7 @@
         .btn-close-modal { background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         .nav-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
-        .nav-tabs button { flex: 1; min-width: 85px; padding: 8px 5px; border: none; border-radius: 10px; background: var(--bg-glass); color: var(--text-color); font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.85rem; backdrop-filter: blur(5px); border: 1px solid var(--input-border); text-shadow: var(--text-shadow); }
+        .nav-tabs button { flex: 1; min-width: 75px; padding: 8px 4px; border: none; border-radius: 10px; background: var(--bg-glass); color: var(--text-color); font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.8rem; backdrop-filter: blur(5px); border: 1px solid var(--input-border); text-shadow: var(--text-shadow); }
         .nav-tabs button.active { background: #2980b9; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-shadow: none; }
 
         .tab-content { display: none; }
@@ -67,15 +72,18 @@
         .glass-block { background: var(--bg-glass); padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--input-border); color: var(--text-color); }
         .glass-block h3 { color: var(--accent-title); text-shadow: var(--text-shadow); margin-top: 0; }
         
-        .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--input-border); padding-bottom: 8px; gap: 6px; }
+        .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--input-border); padding-bottom: 8px; gap: 6px; flex-wrap: wrap; }
         .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px; border-radius: 5px; outline: none; }
-        .edit-name { width: 38%; font-weight: bold; }
-        .edit-price { width: 22%; text-align: right; color: #e74c3c; font-weight: bold; }
-        .edit-stock { width: 18%; text-align: center; color: #3498db; font-weight: bold; }
+        .edit-input option { background: #2c3e50; color: #fff; }
+        .edit-name { width: 32%; font-weight: bold; min-width: 120px; }
+        .edit-cat { width: 22%; font-size: 0.85rem; }
+        .edit-price { width: 18%; text-align: right; color: #e74c3c; font-weight: bold; }
+        .edit-stock { width: 12%; text-align: center; color: #3498db; font-weight: bold; }
         .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 5px; padding: 6px 8px; cursor: pointer; font-weight: bold; }
         
         .ticket { border: 1px solid var(--input-border); padding: 18px; margin-bottom: 20px; border-radius: 15px; background: var(--bg-glass); position: relative; box-shadow: 0 6px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); color: var(--text-color); }
         .history-ticket { border: 1px solid rgba(46, 204, 113, 0.5); background: var(--history-bg); }
+        .fiado-ticket { border: 1px solid rgba(231, 76, 60, 0.6); background: var(--fiado-bg); }
         .btn-delete { position: absolute; top: 12px; right: 12px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         
         .ticket-prod-search-container { position: relative; margin-bottom: 15px; display: flex; gap: 6px; }
@@ -102,13 +110,17 @@
 
         .total-display { font-size: 1.4rem; color: #c0392b; font-weight: bold; margin-top: 12px; margin-bottom: 12px; text-shadow: var(--text-shadow); }
         .history-total { color: #27ae60; }
+        .fiado-total { color: #e74c3c; }
         
         .payment-section { margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 9px; border-radius: 8px; border: 1px solid var(--input-border); font-weight: bold; width: 100%; }
+        .payment-select { background: var(--input-bg); color: var(--text-color); padding: 9px; border-radius: 8px; border: 1px solid var(--input-border); font-weight: bold; flex: 1; }
         .payment-select option { background: #2c3e50; color: #fff; }
+        .surcharge-input { width: 75px; text-align: center; font-weight: bold; }
 
         .btn-cobrar { background: #27ae60; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
         .btn-cobrar:hover { background: #219653; }
+        .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .btn-pagar-fiado:hover { background: #d35400; }
 
         .client-title { font-size: 1.15rem; color: #2980b9; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: var(--text-shadow); }
         .payment-badge { display: inline-block; background: #2980b9; color: white; padding: 3px 8px; border-radius: 5px; font-size: 0.85rem; margin-top: 8px; font-weight: bold; }
@@ -123,7 +135,7 @@
 
         @media print {
             body { background: white !important; color: black !important; font-family: monospace; }
-            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .btn-delete, .ticket-prod-search-container, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, #search-client, .glass-block > h3 { display: none !important; }
+            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .btn-delete, .ticket-prod-search-container, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, .btn-pagar-fiado, #search-client, #search-producto, #filter-categoria, .glass-block > h3 { display: none !important; }
             #tab-clientes { display: block !important; background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
             .ticket { display: none !important; }
             .ticket.printing-ticket { display: block !important; background: white !important; border: none !important; box-shadow: none !important; color: black !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
@@ -178,6 +190,7 @@
     <div class="nav-tabs">
         <button id="btn-tab-productos" class="active">Productos</button>
         <button id="btn-tab-clientes">Clientes</button>
+        <button id="btn-tab-fiados">Fiados</button>
         <button id="btn-tab-historial">Historial</button>
         <button id="btn-tab-reportes">Reportes</button>
     </div>
@@ -185,12 +198,28 @@
     <div id="tab-productos" class="tab-content active">
         <div class="glass-block">
             <h3>Agregar nuevo producto</h3>
-            <div style="display: flex; gap: 6px;">
-                <input type="text" id="p-name" placeholder="Nombre" class="edit-input" style="flex: 1;">
-                <input type="number" id="p-price" placeholder="Precio" class="edit-input" style="width: 25%;">
-                <input type="number" id="p-stock" placeholder="Stock" class="edit-input" style="width: 20%;">
-                <button id="btn-add-prod" style="background:#27ae60; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold; cursor:pointer;">+</button>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <input type="text" id="p-name" placeholder="Nombre del producto" class="edit-input" style="flex: 2; min-width: 120px;">
+                <select id="p-cat" class="edit-input payment-select" style="flex: 1.5; min-width: 110px;">
+                    <option value="BEBIDAS">Bebidas</option>
+                    <option value="FIAMBRES">Fiambres</option>
+                    <option value="VERDULERÍA">Verdulería</option>
+                    <option value="ALMACÉN">Almacén</option>
+                    <option value="LIMPIEZA">Limpieza</option>
+                    <option value="OTRA">➕ Otra categoría...</option>
+                </select>
+                <input type="text" id="p-cat-nueva" placeholder="Escribe nueva categoría" class="edit-input" style="flex: 1.5; display: none; min-width: 110px;">
+                <input type="number" id="p-price" placeholder="Precio" class="edit-input" style="width: 20%;">
+                <input type="number" id="p-stock" placeholder="Stock" class="edit-input" style="width: 15%;">
+                <button id="btn-add-prod" style="background:#27ae60; color:white; border:none; padding:8px 14px; border-radius:5px; font-weight:bold; cursor:pointer;">+</button>
             </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+            <input type="text" id="search-producto" placeholder="🔍 Buscar producto en inventario..." class="edit-input" style="flex: 2; box-sizing: border-box; border-radius: 12px; font-size: 1rem; background: var(--bg-glass); backdrop-filter: blur(8px); min-width: 180px;">
+            <select id="filter-categoria" class="edit-input payment-select" style="flex: 1; border-radius: 12px; min-width: 140px;">
+                <option value="">Todas las categorías</option>
+            </select>
         </div>
 
         <div class="glass-block" id="price-list"></div>
@@ -207,6 +236,13 @@
 
         <input type="text" id="search-client" placeholder="🔍 Buscar cliente..." class="edit-input" style="width: 100%; box-sizing: border-box; border-radius: 12px; margin-bottom: 20px; font-size: 1rem; background: var(--bg-glass); backdrop-filter: blur(8px);">
         <div id="tickets-container"></div>
+    </div>
+
+    <div id="tab-fiados" class="tab-content">
+        <div class="glass-block">
+            <h3 style="margin-top:0; color:#e74c3c;">📝 Cuentas Corrientes / Fiados Pendientes</h3>
+            <div id="fiados-container"></div>
+        </div>
     </div>
 
     <div id="tab-historial" class="tab-content">
@@ -251,6 +287,7 @@
 <script>
     let productos = JSON.parse(localStorage.getItem('productos')) || [];
     let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+    let fiados = JSON.parse(localStorage.getItem('fiados')) || [];
     let historial = JSON.parse(localStorage.getItem('historial')) || [];
     let currentTheme = localStorage.getItem('theme') || 'dark';
 
@@ -289,6 +326,7 @@
 
     document.getElementById('btn-tab-productos').addEventListener('click', () => cambiarTab('productos'));
     document.getElementById('btn-tab-clientes').addEventListener('click', () => cambiarTab('clientes'));
+    document.getElementById('btn-tab-fiados').addEventListener('click', () => cambiarTab('fiados'));
     document.getElementById('btn-tab-historial').addEventListener('click', () => cambiarTab('historial'));
     document.getElementById('btn-tab-reportes').addEventListener('click', () => cambiarTab('reportes'));
 
@@ -296,6 +334,19 @@
     document.getElementById('btn-add-ticket').addEventListener('click', addTicket);
     document.getElementById('btn-clear-history').addEventListener('click', limpiarHistorial);
     document.getElementById('search-client').addEventListener('input', render);
+    document.getElementById('search-producto').addEventListener('input', render);
+    document.getElementById('filter-categoria').addEventListener('change', render);
+
+    document.getElementById('p-cat').addEventListener('change', function() {
+        const inputNueva = document.getElementById('p-cat-nueva');
+        if(this.value === 'OTRA') {
+            inputNueva.style.display = 'block';
+            inputNueva.focus();
+        } else {
+            inputNueva.style.display = 'none';
+            inputNueva.value = '';
+        }
+    });
 
     function toggleTheme() {
         currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -312,6 +363,7 @@
     function save() {
         localStorage.setItem('productos', JSON.stringify(productos));
         localStorage.setItem('tickets', JSON.stringify(tickets));
+        localStorage.setItem('fiados', JSON.stringify(fiados));
         localStorage.setItem('historial', JSON.stringify(historial));
         render();
     }
@@ -326,9 +378,14 @@
         } else if(tab === 'clientes') {
             document.getElementById('tab-clientes').classList.add('active');
             document.getElementById('btn-tab-clientes').classList.add('active');
+        } else if(tab === 'fiados') {
+            document.getElementById('tab-fiados').classList.add('active');
+            document.getElementById('btn-tab-fiados').classList.add('active');
+            renderFiados();
         } else if(tab === 'historial') {
             document.getElementById('tab-historial').classList.add('active');
             document.getElementById('btn-tab-historial').classList.add('active');
+            renderHistorial();
         } else if(tab === 'reportes') {
             document.getElementById('tab-reportes').classList.add('active');
             document.getElementById('btn-tab-reportes').classList.add('active');
@@ -338,21 +395,33 @@
 
     function addProd() {
         const nameInput = document.getElementById('p-name');
+        const catSelect = document.getElementById('p-cat');
+        const catNuevaInput = document.getElementById('p-cat-nueva');
         const priceInput = document.getElementById('p-price');
         const stockInput = document.getElementById('p-stock');
+        
         const name = nameInput.value.trim();
+        let category = catSelect.value;
+        if(category === 'OTRA') {
+            category = catNuevaInput.value.trim() ? catNuevaInput.value.trim().toUpperCase() : 'GENERAL';
+        }
+
         const price = priceInput.value.trim();
         const stock = stockInput.value.trim();
         
         if(!name || !price) return;
         productos.push({
             id: Date.now(), 
-            name: name.toUpperCase(), 
+            name: name.toUpperCase(),
+            category: category,
             price: parseInt(price), 
             stock: stock ? parseInt(stock) : 0
         });
         save();
         nameInput.value = '';
+        catSelect.value = 'BEBIDAS';
+        catNuevaInput.style.display = 'none';
+        catNuevaInput.value = '';
         priceInput.value = '';
         stockInput.value = '';
     }
@@ -361,6 +430,7 @@
         const p = productos.find(prod => prod.id === id);
         if(p) { 
             if(field === 'name') p.name = value.toUpperCase();
+            if(field === 'category') p.category = value.toUpperCase();
             if(field === 'price') p.price = parseInt(value) || 0;
             if(field === 'stock') p.stock = parseInt(value) || 0;
             save(); 
@@ -379,9 +449,18 @@
 
     function addTicket() {
         const nameInput = document.getElementById('client-name');
-        const name = nameInput.value.trim();
+        const name = nameInput.value.trim().toUpperCase();
         if(!name) return;
-        tickets.push({id: Date.now(), name: name.toUpperCase(), items: {}, note: '', payment: 'Efectivo'});
+
+        const existente = tickets.find(t => t.name === name);
+        if(existente) {
+            alert(`El cliente ${name} ya tiene un ticket abierto. Puedes agregarle productos directamente desde ahí.`);
+            nameInput.value = '';
+            cambiarTab('clientes');
+            return;
+        }
+
+        tickets.push({id: Date.now(), name: name, items: {}, note: '', payment: 'Efectivo', surcharge: 0});
         save();
         nameInput.value = '';
         cambiarTab('clientes');
@@ -394,6 +473,19 @@
         }
     }
 
+    function calcularTotalTicket(ticket) {
+        let subtotal = 0;
+        productos.forEach(p => {
+            const qty = ticket.items[p.id] || 0;
+            subtotal += (qty * p.price);
+        });
+
+        if(ticket.payment === 'Tarjeta' && ticket.surcharge > 0) {
+            subtotal += Math.round(subtotal * (ticket.surcharge / 100));
+        }
+        return subtotal;
+    }
+
     window.enviarWhatsApp = function(id) {
         const ticket = tickets.find(t => t.id === id);
         if(!ticket) return;
@@ -404,11 +496,17 @@
         productos.forEach(p => {
             const qty = ticket.items[p.id] || 0;
             if(qty > 0) {
-                const subtotal = qty * p.price;
-                tTotal += subtotal;
-                mensaje += `• ${p.name} (x${qty}) - $${subtotal}\n`;
+                const sub = qty * p.price;
+                tTotal += sub;
+                mensaje += `• ${p.name} (x${qty}) - $${sub}\n`;
             }
         });
+
+        if(ticket.payment === 'Tarjeta' && ticket.surcharge > 0) {
+            const extra = Math.round(tTotal * (ticket.surcharge / 100));
+            tTotal += extra;
+            mensaje += `Recargo Tarjeta (${ticket.surcharge}%): +$${extra}\n`;
+        }
 
         if(ticket.note) {
             mensaje += `📝 Nota: ${ticket.note}\n`;
@@ -433,24 +531,130 @@
         const ticket = tickets.find(t => t.id === id);
         if(!ticket) return;
 
-        let tTotal = 0;
-        productos.forEach(p => {
-            const qty = ticket.items[p.id] || 0;
-            tTotal += (qty * p.price);
-        });
+        const tTotal = calcularTotalTicket(ticket);
 
-        if(confirm(`¿Confirmar cobro a ${ticket.name} por un total de $${tTotal} (${ticket.payment})? Se descontará el stock automáticamente.`)) {
+        if(ticket.payment === 'Fiado') {
+            if(confirm(`¿Enviar a Fiado / Cuenta Corriente el ticket de ${ticket.name} por $${tTotal}?`)) {
+                Object.keys(ticket.items).forEach(pId => {
+                    const prod = productos.find(p => p.id == pId);
+                    if(prod) prod.stock = Math.max(0, prod.stock - ticket.items[pId]);
+                });
+
+                const fechaActual = new Date().toLocaleString();
+                
+                const nuevoMovimiento = {
+                    fecha: fechaActual,
+                    items: { ...ticket.items },
+                    subtotal: tTotal,
+                    note: ticket.note || ''
+                };
+
+                const fiadoExistente = fiados.find(f => f.name.toUpperCase() === ticket.name.toUpperCase());
+                
+                if(fiadoExistente) {
+                    if(!fiadoExistente.historialCargas) {
+                        fiadoExistente.historialCargas = [{
+                            fecha: "Carga anterior",
+                            items: { ...fiadoExistente.items },
+                            subtotal: fiadoExistente.total,
+                            note: fiadoExistente.note || ''
+                        }];
+                    }
+                    fiadoExistente.historialCargas.push(nuevoMovimiento);
+                    fiadoExistente.total += tTotal;
+                } else {
+                    const ticketFiado = {
+                        id: Date.now(),
+                        name: ticket.name,
+                        historialCargas: [nuevoMovimiento],
+                        total: tTotal
+                    };
+                    fiados.unshift(ticketFiado);
+                }
+
+                tickets = tickets.filter(t => t.id !== id);
+                save();
+                alert("¡Cuenta corriente actualizada con la nueva carga!");
+            }
+            return;
+        }
+
+        if(confirm(`¿Confirmar cobro a ${ticket.name} por un total de $${tTotal} (${ticket.payment})? Se descontará el stock.`)) {
             Object.keys(ticket.items).forEach(pId => {
                 const prod = productos.find(p => p.id == pId);
-                if(prod) {
-                    prod.stock = Math.max(0, prod.stock - ticket.items[pId]);
-                }
+                if(prod) prod.stock = Math.max(0, prod.stock - ticket.items[pId]);
             });
 
             const fechaActual = new Date().toLocaleString();
             const ticketCerrado = { ...ticket, total: tTotal, fecha: fechaActual };
             historial.unshift(ticketCerrado);
             tickets = tickets.filter(t => t.id !== id);
+            save();
+        }
+    }
+
+    window.abonarFiado = function(id) {
+        const inputAbono = document.getElementById(`input-abono-${id}`);
+        const montoAbonado = parseFloat(inputAbono.value);
+
+        if(!montoAbonado || montoAbonado <= 0) {
+            alert("Ingresa un monto válido para abonar.");
+            return;
+        }
+
+        const f = fiados.find(item => item.id === id);
+        if(!f) return;
+
+        if(montoAbonado > f.total) {
+            alert("El monto a abonar no puede ser mayor al total adeudado. Usa el botón de liquidar.");
+            return;
+        }
+
+        if(confirm(`¿Registrar entrega a cuenta de $${montoAbonado} para ${f.name}?`)) {
+            f.total -= montoAbonado;
+            const fechaPago = new Date().toLocaleString();
+            
+            const registroAbono = {
+                name: f.name,
+                fechaPago: fechaPago,
+                payment: "Abono / Pago Parcial de Fiado",
+                total: montoAbonado,
+                historialCargas: [{
+                    fecha: fechaPago,
+                    items: {},
+                    note: `Entrega parcial de dinero en cuenta corriente. Saldo restante: $${f.total}`
+                }]
+            };
+            historial.unshift(registroAbono);
+
+            inputAbono.value = '';
+
+            if(f.total <= 0) {
+                fiados = fiados.filter(item => item.id !== id);
+                alert("¡Cuenta saldada por completo! Movida al historial.");
+            } else {
+                alert(`Abono registrado con éxito. Saldo pendiente restante: $${f.total}`);
+            }
+            save();
+        }
+    }
+
+    window.pagarFiadoCompleto = function(id) {
+        const f = fiados.find(item => item.id === id);
+        if(!f) return;
+
+        if(confirm(`¿Registrar como PAGADO el total del fiado de ${f.name} por $${f.total}? Pasará al historial de ventas.`)) {
+            const fechaPago = new Date().toLocaleString();
+            const ticketCobrado = { ...f, fechaPago: fechaPago, payment: "Liquidación Total de Fiado" };
+            historial.unshift(ticketCobrado);
+            fiados = fiados.filter(item => item.id !== id);
+            save();
+        }
+    }
+
+    window.eliminarFiado = function(id) {
+        if(confirm("¿Eliminar este registro de fiado sin cobrar?")) {
+            fiados = fiados.filter(item => item.id !== id);
             save();
         }
     }
@@ -466,6 +670,7 @@
         const datos = {
             productos: productos,
             tickets: tickets,
+            fiados: fiados,
             historial: historial,
             fechaBackup: new Date().toLocaleString()
         };
@@ -491,6 +696,7 @@
                     if (confirm("¿Estás seguro de restaurar este respaldo? Se sobrescribirán los datos actuales.")) {
                         productos = contenido.productos;
                         tickets = contenido.tickets;
+                        fiados = contenido.fiados || [];
                         historial = contenido.historial;
                         save();
                         alert("¡Respaldo importado y restaurado con éxito!");
@@ -507,234 +713,433 @@
         reader.readAsText(file);
     }
 
-    window.updateItem = function(tId, pId, val) { 
-        const ticket = tickets.find(t => t.id === tId);
-        const prod = productos.find(p => p.id === pId);
-        let nuevaCantidad = parseInt(val) || 0;
-
-        if(prod && nuevaCantidad > prod.stock) {
-            alert(`¡Atención! Solo hay ${prod.stock} unidades disponibles de "${prod.name}".`);
-            nuevaCantidad = prod.stock;
-        }
-
-        if (nuevaCantidad <= 0) {
-            delete ticket.items[pId];
-        } else {
-            ticket.items[pId] = nuevaCantidad;
-        }
-        save(); 
+    function obtenerTodasLasCategorias() {
+        const base = ['BEBIDAS', 'FIAMBRES', 'VERDULERÍA', 'ALMACÉN', 'LIMPIEZA'];
+        const dinamicas = productos.map(p => p.category || 'GENERAL');
+        return [...new Set([...base, ...dinamicas])].sort();
     }
 
-    window.updateNote = function(tId, note) { 
-        tickets.find(t => t.id === tId).note = note; 
-        localStorage.setItem('tickets', JSON.stringify(tickets)); 
-    }
-    
-    window.updatePayment = function(tId, payment) { 
-        const ticket = tickets.find(t => t.id === tId);
-        ticket.payment = payment;
-        localStorage.setItem('tickets', JSON.stringify(tickets));
-        render();
+    function actualizarSelectCategorias() {
+        const selectFiltro = document.getElementById('filter-categoria');
+        const valorActual = selectFiltro.value;
+        const categoriasUnicas = obtenerTodasLasCategorias();
+        
+        let htmlOptions = '<option value="">Todas las categorías</option>';
+        categoriasUnicas.forEach(cat => {
+            htmlOptions += `<option value="${cat}" ${valorActual === cat ? 'selected' : ''}>${cat}</option>`;
+        });
+        selectFiltro.innerHTML = htmlOptions;
     }
 
     function render() {
-        const priceListDiv = document.getElementById('price-list');
-        priceListDiv.innerHTML = '<h3 style="margin-top:0;">Lista de Productos y Stock</h3>';
+        actualizarSelectCategorias();
+        renderProductos();
+        renderTickets();
+        renderFiados();
+        renderHistorial();
+        renderReportes();
+    }
+
+    function renderProductos() {
+        const container = document.getElementById('price-list');
+        const filtroTexto = document.getElementById('search-producto').value.toLowerCase();
+        const filtroCat = document.getElementById('filter-categoria').value;
         
-        productos.forEach(p => {
-            priceListDiv.innerHTML += `
+        let html = '<h3 style="margin-top:0;">Lista de Productos e Inventario</h3>';
+        
+        const productosFiltrados = productos.filter(p => {
+            const coincideTexto = p.name.toLowerCase().includes(filtroTexto);
+            const coincideCat = filtroCat === '' || (p.category || 'GENERAL') === filtroCat;
+            return coincideTexto && coincideCat;
+        });
+
+        if(productosFiltrados.length === 0) {
+            container.innerHTML = html + '<p style="text-align:center; opacity:0.7;">No hay productos coincidentes.</p>';
+            return;
+        }
+
+        const categoriasDisponibles = obtenerTodasLasCategorias();
+
+        productosFiltrados.forEach(p => {
+            let catOptions = '';
+            categoriasDisponibles.forEach(c => {
+                catOptions += `<option value="${c}" ${ (p.category || 'GENERAL') === c ? 'selected' : ''}>${c}</option>`;
+            });
+
+            html += `
                 <div class="price-edit-row">
-                    <input type="text" class="edit-input edit-name" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)">
-                    <input type="number" class="edit-input edit-price" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)">
-                    <input type="number" class="edit-input edit-stock" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)">
+                    <input type="text" class="edit-input edit-name" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)" title="Nombre">
+                    <select class="edit-input edit-cat" onchange="updateProduct(${p.id}, 'category', this.value)" title="Categoría">
+                        ${catOptions}
+                    </select>
+                    <input type="number" class="edit-input edit-price" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)" title="Precio">
+                    <input type="number" class="edit-input edit-stock" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)" title="Stock">
                     <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
                 </div>
             `;
         });
+        container.innerHTML = html;
+    }
 
-        const ticketsContainer = document.getElementById('tickets-container');
-        ticketsContainer.innerHTML = '';
-        
-        const filterText = document.getElementById('search-client').value.toLowerCase();
-        const filteredTickets = tickets.filter(t => t.name.toLowerCase().includes(filterText));
+    function renderTickets() {
+        const container = document.getElementById('tickets-container');
+        const filtro = document.getElementById('search-client').value.toLowerCase();
+        let html = '';
 
-        if (filteredTickets.length === 0) {
-            ticketsContainer.innerHTML = '<p style="text-align:center; opacity:0.7; font-size: 0.95rem; background: var(--bg-glass); padding: 15px; border-radius: 10px; backdrop-filter: blur(8px);">No hay clientes activos.</p>';
+        const ticketsFiltrados = tickets.filter(t => t.name.toLowerCase().includes(filtro));
+
+        if(ticketsFiltrados.length === 0) {
+            container.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay tickets activos o coincidentes.</p>';
+            return;
         }
 
-        filteredTickets.forEach(ticket => {
-            let tTotal = 0;
-            let itemsHtml = '';
-            
-            productos.forEach(p => {
-                const qty = ticket.items[p.id] || 0;
-                if(qty > 0) {
-                    const subtotal = qty * p.price;
-                    tTotal += subtotal;
-                }
-            });
+        ticketsFiltrados.forEach(t => {
+            const total = calcularTotalTicket(t);
+            html += `
+                <div class="ticket" id="ticket-${t.id}">
+                    <button class="btn-delete" onclick="confirmRemove(${t.id})" title="Eliminar Ticket">×</button>
+                    <div class="client-title">👤 ${t.name}</div>
+                    
+                    <div class="ticket-prod-search-container">
+                        <div class="ticket-search-wrapper">
+                            <input type="text" placeholder="🔍 Buscar producto para agregar..." class="edit-input ticket-search-input" oninput="filtrarProductosTicket(this, ${t.id})">
+                            <div class="ticket-search-results"></div>
+                        </div>
+                        <input type="number" value="1" min="1" class="edit-input ticket-qty-input" id="qty-${t.id}">
+                    </div>
+
+                    <div id="items-list-${t.id}">
+            `;
 
             productos.forEach(p => {
-                const qty = ticket.items[p.id] || 0;
+                const qty = t.items[p.id] || 0;
                 if(qty > 0) {
-                    const subtotal = qty * p.price;
-                    itemsHtml += `
+                    html += `
                         <div class="items-grid">
-                            <span class="prod-name">${p.name}</span>
+                            <div>
+                                <span class="prod-name">${p.name}</span>
+                            </div>
                             <div class="prod-qty-price">
-                                <input type="number" value="${qty}" min="0" onchange="updateItem(${ticket.id}, ${p.id}, this.value)">
-                                <span class="price-text">$${subtotal}</span>
+                                <input type="number" value="${qty}" min="0" onchange="cambiarCantidadTicket(${t.id}, ${p.id}, this.value)">
+                                <span class="price-text">$${qty * p.price}</span>
                             </div>
                         </div>
                     `;
                 }
             });
 
-            let productOptionsHtml = productos.map(p => `<div class="ticket-search-item" onclick="addItemToTicket(${ticket.id}, ${p.id})"><span>${p.name}</span><strong>$${p.price}</strong></div>`).join('');
-
-            ticketsContainer.innerHTML += `
-                <div class="ticket" id="ticket-${ticket.id}">
-                    <button class="btn-delete" onclick="confirmRemove(${ticket.id})">X</button>
-                    <div class="client-title">${ticket.name}</div>
+            html += `
+                    </div>
+                    <div class="total-display">Total: $<span id="total-val-${t.id}">${total}</span></div>
                     
-                    <div class="ticket-prod-search-container">
-                        <div class="ticket-search-wrapper">
-                            <input type="text" placeholder="🔍 Buscar producto..." class="edit-input ticket-search-input" oninput="filterTicketSearch(this, ${ticket.id})" onfocus="showTicketSearch(this)">
-                            <div class="ticket-search-results" id="search-results-${ticket.id}">
-                                ${productOptionsHtml}
-                            </div>
-                        </div>
-                        <input type="number" value="1" min="1" class="edit-input ticket-qty-input" id="ticket-qty-${ticket.id}" title="Cantidad">
+                    <div class="payment-section">
+                        <select class="payment-select" onchange="cambiarMetodoPago(${t.id}, this.value)">
+                            <option value="Efectivo" ${t.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
+                            <option value="Tarjeta" ${t.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
+                            <option value="Fiado" ${t.payment === 'Fiado' ? 'selected' : ''}>Fiado (Cuenta Corriente)</option>
+                        </select>
+                        ${t.payment === 'Tarjeta' ? `<input type="number" class="edit-input surcharge-input" placeholder="% Recargo" value="${t.surcharge || 0}" onchange="cambiarRecargo(${t.id}, this.value)">` : ''}
                     </div>
 
-                    ${itemsHtml}
-
-                    <input type="text" placeholder="Agregar nota opcional..." class="edit-input" style="width:100%; box-sizing:border-box; margin-top:8px;" value="${ticket.note || ''}" oninput="updateNote(${ticket.id}, this.value)">
-
-                    <div class="total-display">TOTAL: $<span id="ticket-total-${ticket.id}">${tTotal}</span></div>
-
-                    <div class="payment-section">
-                        <select class="payment-select" onchange="updatePayment(${ticket.id}, this.value)">
-                            <option value="Efectivo" ${ticket.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
-                            <option value="Transferencia" ${ticket.payment === 'Transferencia' ? 'selected' : ''}>Transferencia</option>
-                            <option value="Tarjeta" ${ticket.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
-                        </select>
-                        <button class="btn-cobrar" onclick="cobrarTicket(${ticket.id})">Cobrar</button>
+                    <div style="margin-top:10px;">
+                        <input type="text" class="edit-input" placeholder="Nota opcional (ej: Entregar a las 15hs)" value="${t.note || ''}" oninput="cambiarNota(${t.id}, this.value)" style="width:100%; box-sizing:border-box;">
                     </div>
 
                     <div class="ticket-actions">
-                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${ticket.id})">WhatsApp</button>
-                        <button class="btn-action btn-print" onclick="imprimirTicket(${ticket.id})">Imprimir</button>
+                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">📱 WhatsApp</button>
+                        <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">🖨️ Imprimir</button>
+                        <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">✅ Cobrar / Registrar</button>
                     </div>
                 </div>
             `;
         });
-
-        const historyContainer = document.getElementById('history-container');
-        historyContainer.innerHTML = '';
-        if(historial.length === 0) {
-            historyContainer.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay ventas cobradas aún.</p>';
-        } else {
-            historial.forEach(h => {
-                let hItems = '';
-                productos.forEach(p => {
-                    const q = h.items[p.id] || 0;
-                    if(q > 0) {
-                        hItems += `• ${p.name} (x${q}) - $${q * p.price}<br>`;
-                    }
-                });
-
-                historyContainer.innerHTML += `
-                    <div class="ticket history-ticket">
-                        <div class="client-title">${h.name} <span style="font-size:0.8rem; font-weight:normal; opacity:0.8;">(${h.fecha})</span></div>
-                        <div style="font-size:0.9rem; margin-bottom:8px;">${hItems}</div>
-                        ${h.note ? `<div style="font-size:0.85rem; font-style:italic; margin-bottom:5px;">Nota: ${h.note}</div>` : ''}
-                        <div class="total-display history-total">TOTAL COBRADO: $${h.total}</div>
-                        <div><span class="payment-badge">${h.payment}</span></div>
-                    </div>
-                `;
-            });
-        }
+        container.innerHTML = html;
     }
 
-    window.filterTicketSearch = function(input, tId) {
-        const term = input.value.toLowerCase();
-        const resultsDiv = document.getElementById(`search-results-${tId}`);
-        resultsDiv.classList.add('active');
-
-        const filtered = productos.filter(p => p.name.toLowerCase().includes(term));
-        resultsDiv.innerHTML = filtered.map(p => `
-            <div class="ticket-search-item" onclick="addItemToTicket(${tId}, ${p.id})">
-                <span>${p.name}</span><strong>$${p.price}</strong>
-            </div>
-        `).join('') || '<div style="padding:8px; opacity:0.7; text-align:center;">Sin resultados</div>';
-    }
-
-    window.showTicketSearch = function(input) {
-        const resultsDiv = input.nextElementSibling;
-        resultsDiv.classList.add('active');
-    }
-
-    window.addItemToTicket = function(tId, pId) {
-        const ticket = tickets.find(t => t.id === tId);
-        const qtyInput = document.getElementById(`ticket-qty-${tId}`);
-        const addQty = parseInt(qtyInput.value) || 1;
-        const prod = productos.find(p => p.id === pId);
-
-        const currentQty = ticket.items[pId] || 0;
-        const nuevaCantidadTotal = currentQty + addQty;
-
-        if(prod && nuevaCantidadTotal > prod.stock) {
-            alert(`¡Atención! Solo hay ${prod.stock} unidades disponibles de "${prod.name}".`);
+    window.filtrarProductosTicket = function(input, ticketId) {
+        const query = input.value.toLowerCase();
+        const resultsContainer = input.nextElementSibling;
+        
+        if(!query) {
+            resultsContainer.classList.remove('active');
             return;
         }
 
-        ticket.items[pId] = nuevaCantidadTotal;
+        const matches = productos.filter(p => p.name.toLowerCase().includes(query) || (p.category && p.category.toLowerCase().includes(query)));
+        let html = '';
+
+        if(matches.length === 0) {
+            html = '<div class="ticket-search-item">No se encontraron productos</div>';
+        } else {
+            matches.forEach(p => {
+                html += `<div class="ticket-search-item" onclick="agregarProductoTicket(${ticketId}, ${p.id})">
+                    <div>
+                        <strong>${p.name}</strong> 
+                    </div>
+                    <span style="color:#27ae60; font-weight:bold;">$${p.price} <span style="color:#3498db; font-size:0.8rem;">(Stock: ${p.stock})</span></span>
+                </div>`;
+            });
+        }
+
+        resultsContainer.innerHTML = html;
+        resultsContainer.classList.add('active');
+    }
+
+    window.agregarProductoTicket = function(ticketId, prodId) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        const prod = productos.find(p => p.id === prodId);
+        const qtyInput = document.getElementById(`qty-${ticketId}`);
+        const qty = parseInt(qtyInput.value) || 1;
+
+        if (!prod) return;
+
+        const cantidadActualEnTicket = ticket.items[prodId] || 0;
+        const totalRequerido = cantidadActualEnTicket + qty;
+
+        if (prod.stock < totalRequerido) {
+            alert(`⚠️ Stock insuficiente. Solo quedan ${prod.stock} unidades disponibles de "${prod.name}" (ya tienes ${cantidadActualEnTicket} en este ticket).`);
+            return;
+        }
+
+        ticket.items[prodId] = totalRequerido;
         qtyInput.value = 1;
+        
+        const activeResults = document.querySelector(`#ticket-${ticketId} .ticket-search-results`);
+        if (activeResults) activeResults.classList.remove('active');
+
         save();
+    }
+
+    window.cambiarCantidadTicket = function(ticketId, prodId, val) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        const prod = productos.find(p => p.id == prodId);
+        const nuevaCant = parseInt(val) || 0;
+
+        if(!ticket || !prod) return;
+
+        if(nuevaCant <= 0) {
+            delete ticket.items[prodId];
+        } else {
+            if (prod.stock < nuevaCant) {
+                alert(`⚠️ Stock insuficiente. El stock máximo disponible para "${prod.name}" es ${prod.stock}.`);
+                save();
+                return;
+            }
+            ticket.items[prodId] = nuevaCant;
+        }
+        save();
+    }
+
+    window.cambiarMetodoPago = function(ticketId, metodo) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        if(ticket) {
+            ticket.payment = metodo;
+            if(metodo !== 'Tarjeta') ticket.surcharge = 0;
+            save();
+        }
+    }
+
+    window.cambiarRecargo = function(ticketId, val) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        if(ticket) {
+            ticket.surcharge = parseFloat(val) || 0;
+            save();
+        }
+    }
+
+    window.cambiarNota = function(ticketId, val) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        if(ticket) {
+            ticket.note = val;
+            localStorage.setItem('tickets', JSON.stringify(tickets));
+        }
+    }
+
+    function renderFiados() {
+        const container = document.getElementById('fiados-container');
+        let html = '';
+
+        if(fiados.length === 0) {
+            container.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay cuentas corrientes pendientes.</p>';
+            return;
+        }
+
+        fiados.forEach(f => {
+            html += `
+                <div class="ticket fiado-ticket">
+                    <button class="btn-delete" onclick="eliminarFiado(${f.id})" title="Eliminar registro">×</button>
+                    <div class="client-title" style="color:#e74c3c;">📝 ${f.name}</div>
+            `;
+
+            let cargasAMostrar = f.historialCargas;
+            if (!cargasAMostrar && f.items) {
+                cargasAMostrar = [{
+                    fecha: f.fecha || 'Sin fecha',
+                    items: f.items,
+                    note: f.note || ''
+                }];
+            }
+
+            if (cargasAMostrar && cargasAMostrar.length > 0) {
+                cargasAMostrar.forEach((carga, cIndex) => {
+                    html += `
+                        <div style="margin-top:10px; border-top:1px dashed var(--input-border); padding-top:6px;">
+                            <p style="font-size:0.8rem; color:#6bb6ff; font-weight:bold; margin:0 0 4px 0;">🕒 Carga #${cIndex + 1} - ${carga.fecha}</p>
+                            ${carga.note ? `<p style="font-size:0.85rem; margin:2px 0; opacity:0.8;">Nota: ${carga.note}</p>` : ''}
+                    `;
+
+                    productos.forEach(p => {
+                        const qty = carga.items[p.id] || 0;
+                        if(qty > 0) {
+                            html += `
+                                <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:3px; padding-left:10px;">
+                                    <span>• ${p.name} (x${qty})</span>
+                                    <span style="font-weight:bold;">$${qty * p.price}</span>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    html += `</div>`;
+                });
+            }
+
+            html += `
+                    <div class="total-display fiado-total" style="margin-top:15px;">Saldo Pendiente: $${f.total}</div>
+                    
+                    <div style="display:flex; gap:8px; align-items:center; margin-top:10px;">
+                        <input type="number" id="input-abono-${f.id}" placeholder="Monto a abonar" class="edit-input" style="flex:1;">
+                        <button class="btn-action" style="background:#27ae60; flex:1;" onclick="abonarFiado(${f.id})">💵 Abonar / Parcial</button>
+                    </div>
+
+                    <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">✔️ Liquidar / Pagar Totalidad ($${f.total})</button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function renderHistorial() {
+        const container = document.getElementById('history-container');
+        let html = '';
+
+        if(historial.length === 0) {
+            container.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay ventas registradas en el historial.</p>';
+            return;
+        }
+
+        historial.forEach(h => {
+            html += `
+                <div class="ticket history-ticket">
+                    <div class="client-title" style="color:#2ecc71;">✅ ${h.name}</div>
+                    <p style="font-size:0.85rem; opacity:0.8; margin:2px 0;">Fecha: ${h.fechaPago || h.fecha || 'N/A'}</p>
+                    <span class="payment-badge">${h.payment || 'Cobrado'}</span>
+            `;
+
+            if (h.historialCargas && h.historialCargas.length > 0) {
+                h.historialCargas.forEach((carga, cIndex) => {
+                    html += `
+                        <div style="margin-top:8px; border-top:1px dashed var(--input-border); padding-top:6px;">
+                            <p style="font-size:0.8rem; color:#2ecc71; font-weight:bold; margin:0 0 3px 0;">${carga.note ? '' : '🕒 Carga #' + (cIndex + 1) + ' - '} ${carga.fecha}</p>
+                            ${carga.note ? `<p style="font-size:0.85rem; margin:2px 0; opacity:0.9;">${carga.note}</p>` : ''}
+                    `;
+                    productos.forEach(p => {
+                        const qty = carga.items[p.id] || 0;
+                        if(qty > 0) {
+                            html += `
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:2px; padding-left:10px;">
+                                    <span>• ${p.name} (x${qty})</span>
+                                    <span>$${qty * p.price}</span>
+                                </div>
+                            `;
+                        }
+                    });
+                    html += `</div>`;
+                });
+            } else if(h.items) {
+                html += `<div style="margin-top:10px; border-top:1px solid var(--input-border); padding-top:8px;">`;
+                productos.forEach(p => {
+                    const qty = h.items[p.id] || 0;
+                    if(qty > 0) {
+                        html += `
+                            <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:4px;">
+                                <span>${p.name} (x${qty})</span>
+                                <span style="font-weight:bold;">$${qty * p.price}</span>
+                            </div>
+                        `;
+                    }
+                });
+                html += `</div>`;
+            }
+
+            html += `
+                    <div class="total-display history-total">Monto: $${h.total}</div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
     }
 
     function renderReportes() {
         let totalIngresos = 0;
-        let totalTransacciones = historial.length;
-        let conteoProductos = {};
-
         historial.forEach(h => {
-            totalIngresos += h.total || 0;
-            if(h.items) {
+            totalIngresos += (h.total || 0);
+        });
+
+        const totalTransacciones = historial.length;
+        const ticketPromedio = totalTransacciones > 0 ? Math.round(totalIngresos / totalTransacciones) : 0;
+
+        let stockTotal = 0;
+        productos.forEach(p => {
+            stockTotal += (p.stock || 0);
+        });
+
+        document.getElementById('stat-total-ingresos').innerText = `$${totalIngresos}`;
+        document.getElementById('stat-total-transacciones').innerText = totalTransacciones;
+        document.getElementById('stat-ticket-promedio').innerText = `$${ticketPromedio}`;
+        document.getElementById('stat-stock-total').innerText = `${stockTotal} un.`;
+
+        const ventasPorProducto = {};
+        historial.forEach(h => {
+            if(h.historialCargas) {
+                h.historialCargas.forEach(c => {
+                    if(c.items) {
+                        Object.keys(c.items).forEach(pId => {
+                            ventasPorProducto[pId] = (ventasPorProducto[pId] || 0) + c.items[pId];
+                        });
+                    }
+                });
+            } else if(h.items) {
                 Object.keys(h.items).forEach(pId => {
-                    conteoProductos[pId] = (conteoProductos[pId] || 0) + h.items[pId];
+                    ventasPorProducto[pId] = (ventasPorProducto[pId] || 0) + h.items[pId];
                 });
             }
         });
 
-        let ticketPromedio = totalTransacciones > 0 ? Math.round(totalIngresos / totalTransacciones) : 0;
-        let stockTotal = productos.reduce((acc, p) => acc + (p.stock || 0), 0);
+        const rankingArray = Object.keys(ventasPorProducto).map(pId => {
+            const prod = productos.find(p => p.id == pId);
+            return {
+                name: prod ? prod.name : 'Producto Eliminado',
+                qty: ventasPorProducto[pId]
+            };
+        }).sort((a, b) => b.qty - a.qty);
 
-        document.getElementById('stat-total-ingresos').innerText = '$' + totalIngresos;
-        document.getElementById('stat-total-transacciones').innerText = totalTransacciones;
-        document.getElementById('stat-ticket-promedio').innerText = '$' + ticketPromedio;
-        document.getElementById('stat-stock-total').innerText = stockTotal + ' un.';
-
-        const rankingDiv = document.getElementById('ranking-productos');
-        const sortedProds = Object.keys(conteoProductos).sort((a,b) => conteoProductos[b] - conteoProductos[a]);
-
-        if(sortedProds.length === 0) {
-            rankingDiv.innerHTML = '<p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>';
-        } else {
-            rankingDiv.innerHTML = '';
-            sortedProds.slice(0, 5).forEach(pId => {
-                const prod = productos.find(p => p.id == pId);
-                const nombre = prod ? prod.name : 'Producto eliminado';
-                const cantidad = conteoProductos[pId];
-                rankingDiv.innerHTML += `
-                    <div class="ranking-item">
-                        <span>${nombre}</span>
-                        <strong style="color:#2ecc71;">${cantidad} unidades</strong>
-                    </div>
-                `;
-            });
+        const rankingContainer = document.getElementById('ranking-productos');
+        if(rankingArray.length === 0) {
+            rankingContainer.innerHTML = '<p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>';
+            return;
         }
+
+        let rankingHtml = '';
+        rankingArray.slice(0, 5).forEach((item, index) => {
+            rankingHtml += `
+                <div class="ranking-item">
+                    <span><strong>#${index + 1}</strong> ${item.name}</span>
+                    <span style="color:#2ecc71; font-weight:bold;">${item.qty} unidades</span>
+                </div>
+            `;
+        });
+        rankingContainer.innerHTML = rankingHtml;
     }
 
     render();
