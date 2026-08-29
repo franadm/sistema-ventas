@@ -75,6 +75,7 @@
         .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px; border-radius: 8px; outline: none; }
         .edit-input option { background: #2c3e50; color: #fff; }
         
+        /* DISEÑO RESPONSIVE PARA PRODUCTOS */
         .product-card-mobile { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
         .product-card-top { display: flex; gap: 8px; align-items: center; }
         .product-card-bottom { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
@@ -109,6 +110,7 @@
         .prod-qty-price input { background: var(--input-bg); color: var(--text-color); width: 50px; text-align: center; border: 1px solid var(--input-border); border-radius: 5px; font-weight: bold; padding: 5px; }
         .price-text { color: #27ae60; font-weight: bold; min-width: 60px; text-align: right; text-shadow: var(--text-shadow); }
         
+        /* BOTONES DE ACCIÓN LIMPIOS (SIN DIBUJOS / EMOJIS) */
         .ticket-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: nowrap; }
         .btn-action { background: #34495e; color: white; border: none; padding: 10px 8px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); white-space: nowrap; transition: 0.2s; }
         .btn-whatsapp { background: #27ae60; }
@@ -127,14 +129,7 @@
         .payment-select option { background: #2c3e50; color: #fff; }
         .surcharge-input { width: 75px; text-align: center; font-weight: bold; }
 
-        /* SECCIÓN DE FIADOS REORGANIZADA Y ACOMODADA */
-        .fiado-actions-container { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-        .fiado-parcial-row { display: flex; gap: 8px; align-items: center; }
-        .fiado-parcial-row input { flex: 1; box-sizing: border-box; }
-        .fiado-parcial-row button { background: #27ae60; color: white; border: none; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.85rem; box-shadow: 0 2px 5px rgba(0,0,0,0.3); white-space: nowrap; transition: 0.2s; }
-        .fiado-parcial-row button:hover { background: #219653; }
-
-        .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-size: 0.9rem; transition: 0.2s; box-sizing: border-box; }
+        .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .btn-pagar-fiado:hover { background: #d35400; }
 
         .client-title { font-size: 1.15rem; color: #2980b9; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: var(--text-shadow); }
@@ -150,7 +145,7 @@
 
         @media print {
             body { background: white !important; color: black !important; font-family: monospace; }
-            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .btn-delete, .ticket-prod-search-container, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, .fiado-actions-container, #search-client, #search-producto, #filter-categoria, .glass-block > h3 { display: none !important; }
+            .app-container > *:not(#tab-clientes), .nav-tabs, .header-container, .btn-delete, .ticket-prod-search-container, .ticket-actions, .payment-section, .edit-input, .btn-cobrar, .btn-pagar-fiado, #search-client, #search-producto, #filter-categoria, .glass-block > h3 { display: none !important; }
             #tab-clientes { display: block !important; background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
             .ticket { display: none !important; }
             .ticket.printing-ticket { display: block !important; background: white !important; border: none !important; box-shadow: none !important; color: black !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
@@ -258,7 +253,7 @@
 
     <div id="tab-fiados" class="tab-content">
         <div class="glass-block">
-            <h3 style="margin-top:0; color:#e74c3c;">Cuentas Corrientes / Fiados Pendientes</h3>
+            <h3 style="margin-top:0; color:#e74c3c;">📝 Cuentas Corrientes / Fiados Pendientes</h3>
             <div id="fiados-container"></div>
         </div>
     </div>
@@ -812,7 +807,7 @@
                         </div>
                         <div style="display: flex; align-items: flex-end;">
                             <label style="opacity: 0; font-size: 0.7rem; display: block; margin-bottom: 2px;">Del</label>
-                            <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">×</button>
+                            <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
                         </div>
                     </div>
                 </div>
@@ -1008,7 +1003,7 @@
             html += `
                 <div class="ticket fiado-ticket">
                     <button class="btn-delete" onclick="eliminarFiado(${f.id})" title="Eliminar registro">×</button>
-                    <div class="client-title" style="color:#e74c3c;">${f.name}</div>
+                    <div class="client-title" style="color:#e74c3c;">📝 ${f.name}</div>
             `;
 
             let cargasAMostrar = f.historialCargas;
@@ -1024,7 +1019,7 @@
                 cargasAMostrar.forEach((carga, cIndex) => {
                     html += `
                         <div style="margin-top:10px; border-top:1px dashed var(--input-border); padding-top:6px;">
-                            <p style="font-size:0.8rem; color:#6bb6ff; font-weight:bold; margin:0 0 4px 0;">Carga #${cIndex + 1} - ${carga.fecha}</p>
+                            <p style="font-size:0.8rem; color:#6bb6ff; font-weight:bold; margin:0 0 4px 0;">🕒 Carga #${cIndex + 1} - ${carga.fecha}</p>
                             ${carga.note ? `<p style="font-size:0.85rem; margin:2px 0; opacity:0.8;">Nota: ${carga.note}</p>` : ''}
                     `;
 
@@ -1044,17 +1039,15 @@
                 });
             }
 
-            /* SECCIÓN DE BOTONES DE FIADO CORRECTAMENTE ACOMODADA */
             html += `
                     <div class="total-display fiado-total" style="margin-top:15px;">Saldo Pendiente: $${f.total}</div>
                     
-                    <div class="fiado-actions-container">
-                        <div class="fiado-parcial-row">
-                            <input type="number" id="input-abono-${f.id}" placeholder="Monto a abonar" class="edit-input">
-                            <button onclick="abonarFiado(${f.id})">Abonar / Parcial</button>
-                        </div>
-                        <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">Liquidar / Pagar Totalidad ($${f.total})</button>
+                    <div style="display:flex; gap:8px; align-items:center; margin-top:10px;">
+                        <input type="number" id="input-abono-${f.id}" placeholder="Monto a abonar" class="edit-input" style="flex:1;">
+                        <button class="btn-action" style="background:#27ae60; flex:1;" onclick="abonarFiado(${f.id})">Abonar / Parcial</button>
                     </div>
+
+                    <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">Liquidar / Pagar Totalidad ($${f.total})</button>
                 </div>
             `;
         });
@@ -1073,7 +1066,7 @@
         historial.forEach(h => {
             html += `
                 <div class="ticket history-ticket">
-                    <div class="client-title" style="color:#2ecc71;">${h.name}</div>
+                    <div class="client-title" style="color:#2ecc71;">✅ ${h.name}</div>
                     <p style="font-size:0.85rem; opacity:0.8; margin:2px 0;">Fecha: ${h.fechaPago || h.fecha || 'N/A'}</p>
                     <span class="payment-badge">${h.payment || 'Cobrado'}</span>
             `;
@@ -1082,7 +1075,7 @@
                 h.historialCargas.forEach((carga, cIndex) => {
                     html += `
                         <div style="margin-top:8px; border-top:1px dashed var(--input-border); padding-top:6px;">
-                            <p style="font-size:0.8rem; color:#2ecc71; font-weight:bold; margin:0 0 3px 0;">${carga.note ? '' : 'Carga #' + (cIndex + 1) + ' - '} ${carga.fecha}</p>
+                            <p style="font-size:0.8rem; color:#2ecc71; font-weight:bold; margin:0 0 3px 0;">${carga.note ? '' : '🕒 Carga #' + (cIndex + 1) + ' - '} ${carga.fecha}</p>
                             ${carga.note ? `<p style="font-size:0.85rem; margin:2px 0; opacity:0.9;">${carga.note}</p>` : ''}
                     `;
                     productos.forEach(p => {
