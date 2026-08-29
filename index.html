@@ -72,14 +72,23 @@
         .glass-block { background: var(--bg-glass); padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--input-border); color: var(--text-color); }
         .glass-block h3 { color: var(--accent-title); text-shadow: var(--text-shadow); margin-top: 0; }
         
-        .price-edit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--input-border); padding-bottom: 8px; gap: 6px; flex-wrap: wrap; }
-        .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px; border-radius: 5px; outline: none; }
+        .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px; border-radius: 8px; outline: none; }
         .edit-input option { background: #2c3e50; color: #fff; }
-        .edit-name { width: 32%; font-weight: bold; min-width: 120px; }
-        .edit-cat { width: 22%; font-size: 0.85rem; }
-        .edit-price { width: 18%; text-align: right; color: #e74c3c; font-weight: bold; }
-        .edit-stock { width: 12%; text-align: center; color: #3498db; font-weight: bold; }
-        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 5px; padding: 6px 8px; cursor: pointer; font-weight: bold; }
+        
+        /* NUEVO DISEÑO RESPONSIVE PARA PRODUCTOS */
+        .product-card-mobile { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .product-card-top { display: flex; gap: 8px; align-items: center; }
+        .product-card-bottom { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+        .field-group { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+        .field-group label { font-size: 0.7rem; opacity: 0.7; font-weight: bold; text-transform: uppercase; }
+        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-weight: bold; height: 38px; display: flex; align-items: center; justify-content: center; }
+
+        @media (min-width: 768px) {
+            .product-card-mobile { flex-direction: row; align-items: center; padding: 10px 12px; }
+            .product-card-top { flex: 2; }
+            .product-card-bottom { flex: 2; }
+            .field-group label { display: none; } /* Ocultar etiquetas en PC porque ya es tipo tabla horizontal */
+        }
         
         .ticket { border: 1px solid var(--input-border); padding: 18px; margin-bottom: 20px; border-radius: 15px; background: var(--bg-glass); position: relative; box-shadow: 0 6px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); color: var(--text-color); }
         .history-ticket { border: 1px solid rgba(46, 204, 113, 0.5); background: var(--history-bg); }
@@ -773,14 +782,33 @@
             });
 
             html += `
-                <div class="price-edit-row">
-                    <input type="text" class="edit-input edit-name" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)" title="Nombre">
-                    <select class="edit-input edit-cat" onchange="updateProduct(${p.id}, 'category', this.value)" title="Categoría">
-                        ${catOptions}
-                    </select>
-                    <input type="number" class="edit-input edit-price" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)" title="Precio">
-                    <input type="number" class="edit-input edit-stock" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)" title="Stock">
-                    <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
+                <div class="product-card-mobile">
+                    <div class="product-card-top">
+                        <div class="field-group" style="flex: 2;">
+                            <label>Producto</label>
+                            <input type="text" class="edit-input" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)" style="width: 100%; box-sizing: border-box; font-weight: bold;">
+                        </div>
+                        <div class="field-group" style="flex: 1.5;">
+                            <label>Categoría</label>
+                            <select class="edit-input" onchange="updateProduct(${p.id}, 'category', this.value)" style="width: 100%; box-sizing: border-box;">
+                                ${catOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="product-card-bottom">
+                        <div class="field-group" style="flex: 1;">
+                            <label>Precio ($)</label>
+                            <input type="number" class="edit-input" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)" style="width: 100%; box-sizing: border-box; color: #e74c3c; font-weight: bold;">
+                        </div>
+                        <div class="field-group" style="flex: 1;">
+                            <label>Stock</label>
+                            <input type="number" class="edit-input" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)" style="width: 100%; box-sizing: border-box; color: #3498db; font-weight: bold; text-align: center;">
+                        </div>
+                        <div style="display: flex; align-items: flex-end;">
+                            <label style="opacity: 0; font-size: 0.7rem; display: block; margin-bottom: 2px;">Del</label>
+                            <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
+                        </div>
+                    </div>
                 </div>
             `;
         });
