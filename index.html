@@ -153,6 +153,10 @@
 
         <div id="settings-menu" class="settings-menu">
             <h4>Configuración</h4>
+            <button class="menu-item" id="menu-reportes-btn">
+                <span>Reportes y Estadísticas</span>
+                <span>📊</span>
+            </button>
             <button class="menu-item" id="menu-theme-btn">
                 <span>Tema</span>
                 <span id="theme-label-icon">🌙 Oscuro</span>
@@ -192,7 +196,6 @@
         <button id="btn-tab-clientes">Clientes</button>
         <button id="btn-tab-fiados">Fiados</button>
         <button id="btn-tab-historial">Historial</button>
-        <button id="btn-tab-reportes">Reportes</button>
     </div>
 
     <div id="tab-productos" class="tab-content active">
@@ -319,6 +322,11 @@
         document.getElementById('creator-modal').classList.remove('active');
     });
 
+    document.getElementById('menu-reportes-btn').addEventListener('click', () => {
+        cambiarTab('reportes');
+        document.getElementById('settings-menu').classList.remove('active');
+    });
+
     document.getElementById('menu-theme-btn').addEventListener('click', toggleTheme);
     document.getElementById('menu-export-btn').addEventListener('click', exportarBackup);
     document.getElementById('menu-import-btn').addEventListener('click', () => document.getElementById('import-file').click());
@@ -328,7 +336,6 @@
     document.getElementById('btn-tab-clientes').addEventListener('click', () => cambiarTab('clientes'));
     document.getElementById('btn-tab-fiados').addEventListener('click', () => cambiarTab('fiados'));
     document.getElementById('btn-tab-historial').addEventListener('click', () => cambiarTab('historial'));
-    document.getElementById('btn-tab-reportes').addEventListener('click', () => cambiarTab('reportes'));
 
     document.getElementById('btn-add-prod').addEventListener('click', addProd);
     document.getElementById('btn-add-ticket').addEventListener('click', addTicket);
@@ -388,7 +395,6 @@
             renderHistorial();
         } else if(tab === 'reportes') {
             document.getElementById('tab-reportes').classList.add('active');
-            document.getElementById('btn-tab-reportes').classList.add('active');
             renderReportes();
         }
     }
