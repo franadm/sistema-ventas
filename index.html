@@ -75,7 +75,7 @@
         .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px; border-radius: 8px; outline: none; }
         .edit-input option { background: #2c3e50; color: #fff; }
         
-        /* NUEVO DISEÑO RESPONSIVE PARA PRODUCTOS */
+        /* DISEÑO RESPONSIVE PARA PRODUCTOS EN INVENTARIO */
         .product-card-mobile { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
         .product-card-top { display: flex; gap: 8px; align-items: center; }
         .product-card-bottom { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
@@ -87,7 +87,7 @@
             .product-card-mobile { flex-direction: row; align-items: center; padding: 10px 12px; }
             .product-card-top { flex: 2; }
             .product-card-bottom { flex: 2; }
-            .field-group label { display: none; } /* Ocultar etiquetas en PC porque ya es tipo tabla horizontal */
+            .field-group label { display: none; }
         }
         
         .ticket { border: 1px solid var(--input-border); padding: 18px; margin-bottom: 20px; border-radius: 15px; background: var(--bg-glass); position: relative; box-shadow: 0 6px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); color: var(--text-color); }
@@ -104,12 +104,21 @@
         .ticket-search-item { padding: 9px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid var(--input-border); font-size: 0.9rem; }
         .ticket-search-item:hover { background: var(--search-result-hover); }
 
-        .items-grid { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin: 10px 0; border-top: 1px solid var(--input-border); padding-top: 8px; }
-        .prod-name { font-weight: bold; color: var(--text-color); text-shadow: var(--text-shadow); }
-        .prod-qty-price { display: flex; align-items: center; gap: 10px; }
-        .prod-qty-price input { background: var(--input-bg); color: var(--text-color); width: 50px; text-align: center; border: 1px solid var(--input-border); border-radius: 5px; font-weight: bold; padding: 5px; }
-        .price-text { color: #27ae60; font-weight: bold; min-width: 60px; text-align: right; text-shadow: var(--text-shadow); }
+        /* NUEVO DISEÑO RESPONSIVE PARA ITEMS DE CLIENTES / TICKETS */
+        .ticket-item-card { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 10px; padding: 10px; margin-bottom: 8px; display: flex; flex-direction: column; gap: 6px; }
+        .ticket-item-top { display: flex; justify-content: space-between; align-items: center; }
+        .ticket-item-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; }
+        .prod-name { font-weight: bold; color: var(--text-color); text-shadow: var(--text-shadow); font-size: 0.95rem; }
+        .prod-qty-price { display: flex; align-items: center; gap: 8px; }
+        .prod-qty-price input { background: var(--input-bg); color: var(--text-color); width: 55px; text-align: center; border: 1px solid var(--input-border); border-radius: 6px; font-weight: bold; padding: 4px; }
+        .price-text { color: #27ae60; font-weight: bold; text-align: right; text-shadow: var(--text-shadow); font-size: 1rem; }
         
+        @media (min-width: 768px) {
+            .ticket-item-card { flex-direction: row; align-items: center; justify-content: space-between; padding: 8px 12px; }
+            .ticket-item-top { flex: 2; border: none; padding: 0; }
+            .ticket-item-bottom { flex: 1; border: none; padding: 0; justify-content: flex-end; gap: 20px; }
+        }
+
         .ticket-actions { display: flex; gap: 8px; margin-top: 12px; }
         .btn-action { background: #34495e; color: white; border: none; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
         .btn-whatsapp { background: #27ae60; }
@@ -201,13 +210,13 @@
     </div>
     
     <div class="nav-tabs">
-        <button id="btn-tab-productos" class="active">Productos</button>
-        <button id="btn-tab-clientes">Clientes</button>
+        <button id="btn-tab-productos">Productos</button>
+        <button id="btn-tab-clientes" class="active">Clientes</button>
         <button id="btn-tab-fiados">Fiados</button>
         <button id="btn-tab-historial">Historial</button>
     </div>
 
-    <div id="tab-productos" class="tab-content active">
+    <div id="tab-productos" class="tab-content">
         <div class="glass-block">
             <h3>Agregar nuevo producto</h3>
             <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -237,7 +246,7 @@
         <div class="glass-block" id="price-list"></div>
     </div>
 
-    <div id="tab-clientes" class="tab-content">
+    <div id="tab-clientes" class="tab-content active">
         <div class="glass-block">
             <h3>Nuevo Cliente / Ticket</h3>
             <div style="display: flex; gap: 8px;">
@@ -849,12 +858,15 @@
                 const qty = t.items[p.id] || 0;
                 if(qty > 0) {
                     html += `
-                        <div class="items-grid">
-                            <div>
+                        <div class="ticket-item-card">
+                            <div class="ticket-item-top">
                                 <span class="prod-name">${p.name}</span>
                             </div>
-                            <div class="prod-qty-price">
-                                <input type="number" value="${qty}" min="0" onchange="cambiarCantidadTicket(${t.id}, ${p.id}, this.value)">
+                            <div class="ticket-item-bottom">
+                                <div class="prod-qty-price">
+                                    <span style="font-size:0.75rem; opacity:0.7; font-weight:bold;">CANT:</span>
+                                    <input type="number" value="${qty}" min="0" onchange="cambiarCantidadTicket(${t.id}, ${p.id}, this.value)">
+                                </div>
                                 <span class="price-text">$${qty * p.price}</span>
                             </div>
                         </div>
