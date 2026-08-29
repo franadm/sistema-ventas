@@ -75,7 +75,7 @@
         .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px; border-radius: 8px; outline: none; }
         .edit-input option { background: #2c3e50; color: #fff; }
         
-        /* NUEVO DISEÑO RESPONSIVE PARA PRODUCTOS */
+        /* DISEÑO RESPONSIVE PARA PRODUCTOS */
         .product-card-mobile { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
         .product-card-top { display: flex; gap: 8px; align-items: center; }
         .product-card-bottom { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
@@ -87,7 +87,7 @@
             .product-card-mobile { flex-direction: row; align-items: center; padding: 10px 12px; }
             .product-card-top { flex: 2; }
             .product-card-bottom { flex: 2; }
-            .field-group label { display: none; } /* Ocultar etiquetas en PC porque ya es tipo tabla horizontal */
+            .field-group label { display: none; }
         }
         
         .ticket { border: 1px solid var(--input-border); padding: 18px; margin-bottom: 20px; border-radius: 15px; background: var(--bg-glass); position: relative; box-shadow: 0 6px 20px rgba(0,0,0,0.4); backdrop-filter: blur(8px); color: var(--text-color); }
@@ -110,12 +110,15 @@
         .prod-qty-price input { background: var(--input-bg); color: var(--text-color); width: 50px; text-align: center; border: 1px solid var(--input-border); border-radius: 5px; font-weight: bold; padding: 5px; }
         .price-text { color: #27ae60; font-weight: bold; min-width: 60px; text-align: right; text-shadow: var(--text-shadow); }
         
-        .ticket-actions { display: flex; gap: 8px; margin-top: 12px; }
-        .btn-action { background: #34495e; color: white; border: none; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; flex: 1; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
+        /* BOTONES DE ACCIÓN LIMPIOS (SIN DIBUJOS / EMOJIS) */
+        .ticket-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: nowrap; }
+        .btn-action { background: #34495e; color: white; border: none; padding: 10px 8px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); white-space: nowrap; transition: 0.2s; }
         .btn-whatsapp { background: #27ae60; }
         .btn-whatsapp:hover { background: #219653; }
         .btn-print { background: #2980b9; }
         .btn-print:hover { background: #2471a3; }
+        .btn-cobrar { background: #27ae60; color: white; border: none; padding: 10px 8px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); white-space: nowrap; transition: 0.2s; }
+        .btn-cobrar:hover { background: #219653; }
 
         .total-display { font-size: 1.4rem; color: #c0392b; font-weight: bold; margin-top: 12px; margin-bottom: 12px; text-shadow: var(--text-shadow); }
         .history-total { color: #27ae60; }
@@ -126,8 +129,6 @@
         .payment-select option { background: #2c3e50; color: #fff; }
         .surcharge-input { width: 75px; text-align: center; font-weight: bold; }
 
-        .btn-cobrar { background: #27ae60; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
-        .btn-cobrar:hover { background: #219653; }
         .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .btn-pagar-fiado:hover { background: #d35400; }
 
@@ -880,9 +881,9 @@
                     </div>
 
                     <div class="ticket-actions">
-                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">📱 WhatsApp</button>
-                        <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">🖨️ Imprimir</button>
-                        <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">✅ Cobrar / Registrar</button>
+                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">WhatsApp</button>
+                        <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">Imprimir</button>
+                        <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">Cobrar / Registrar</button>
                     </div>
                 </div>
             `;
@@ -1043,10 +1044,10 @@
                     
                     <div style="display:flex; gap:8px; align-items:center; margin-top:10px;">
                         <input type="number" id="input-abono-${f.id}" placeholder="Monto a abonar" class="edit-input" style="flex:1;">
-                        <button class="btn-action" style="background:#27ae60; flex:1;" onclick="abonarFiado(${f.id})">💵 Abonar / Parcial</button>
+                        <button class="btn-action" style="background:#27ae60; flex:1;" onclick="abonarFiado(${f.id})">Abonar / Parcial</button>
                     </div>
 
-                    <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">✔️ Liquidar / Pagar Totalidad ($${f.total})</button>
+                    <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">Liquidar / Pagar Totalidad ($${f.total})</button>
                 </div>
             `;
         });
