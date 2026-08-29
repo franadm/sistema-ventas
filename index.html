@@ -56,10 +56,9 @@
         .creator-info a { color: var(--accent-title); text-decoration: none; font-weight: bold; }
         .btn-close-modal { background: #e74c3c; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; font-size: 0.9rem; }
 
-        /* Pestañas superiores estilo barra compacta horizontal con scroll suave si es necesario */
         .nav-tabs { display: flex; gap: 4px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
         .nav-tabs::-webkit-scrollbar { display: none; }
-        .nav-tabs button { padding: 8px 10px; border: none; border-radius: 8px; background: var(--bg-glass); color: var(--text-color); font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.8rem; backdrop-filter: blur(5px); border: 1px solid var(--input-border); text-shadow: var(--text-shadow); white-space: nowrap; flex-shrink: 0; }
+        .nav-tabs button { padding: 8px 10px; border: none; border-radius: 8px; background: var(--bg-glass); color: var(--text-color); font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.8rem; backdrop-filter: blur(5px); border: 1px solid var(--input-border); text-shadow: var(--text-shadow); white-space: nowrap; flex-shrink: 0; flex: 1; text-align: center; }
         .nav-tabs button.active { background: #2980b9; color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.4); text-shadow: none; }
 
         .tab-content { display: none; }
@@ -68,7 +67,6 @@
         .glass-block { background: var(--bg-glass); padding: 14px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); backdrop-filter: blur(8px); border: 1px solid var(--input-border); color: var(--text-color); }
         .glass-block h3 { color: var(--accent-title); text-shadow: var(--text-shadow); margin-top: 0; font-size: 1rem; margin-bottom: 10px; }
         
-        /* Inputs a 16px exactos para evitar zoom en iOS y diseño compacto */
         .edit-input { background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 10px; border-radius: 8px; outline: none; font-size: 16px; box-sizing: border-box; }
         .edit-input option { background: #2c3e50; color: #fff; }
         
@@ -119,12 +117,6 @@
         .payment-badge { display: inline-block; background: #2980b9; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; margin-top: 6px; font-weight: bold; }
 
         .btn-clear-history { background: #c0392b; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 12px; width: 100%; font-size: 0.9rem; }
-
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .stat-card { background: var(--input-bg); border: 1px solid var(--input-border); padding: 10px; border-radius: 8px; text-align: center; }
-        .stat-card h4 { margin: 0 0 3px 0; font-size: 0.75rem; opacity: 0.8; color: var(--accent-title); }
-        .stat-card .stat-value { font-size: 1.05rem; font-weight: bold; color: #2ecc71; }
-        .ranking-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--input-border); font-size: 0.85rem; }
 
         @media print {
             body { background: white !important; color: black !important; font-family: monospace; }
@@ -184,7 +176,6 @@
         <button id="btn-tab-clientes">Clientes</button>
         <button id="btn-tab-fiados">Fiados</button>
         <button id="btn-tab-historial">Historial</button>
-        <button id="btn-tab-reportes">Reportes</button>
     </div>
 
     <div id="tab-productos" class="tab-content active">
@@ -246,36 +237,6 @@
             <div id="history-container"></div>
         </div>
     </div>
-
-    <div id="tab-reportes" class="tab-content">
-        <div class="glass-block">
-            <h3 style="margin-top:0; color:#6bb6ff;">📊 Estadísticas</h3>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h4>Ventas Totales</h4>
-                    <div class="stat-value" id="stat-total-ingresos">$0</div>
-                </div>
-                <div class="stat-card">
-                    <h4>Transacciones</h4>
-                    <div class="stat-value" id="stat-total-transacciones" style="color:#3498db;">0</div>
-                </div>
-                <div class="stat-card">
-                    <h4>Ticket Promedio</h4>
-                    <div class="stat-value" id="stat-ticket-promedio" style="color:#e67e22;">$0</div>
-                </div>
-                <div class="stat-card">
-                    <h4>Stock Depósito</h4>
-                    <div class="stat-value" id="stat-stock-total" style="color:#9b59b6;">0 un.</div>
-                </div>
-            </div>
-
-            <h3 style="font-size: 0.95rem; margin-top: 15px; border-bottom: 1px solid var(--input-border); padding-bottom: 4px;">🏆 Más Vendidos</h3>
-            <div id="ranking-productos" style="margin-top: 8px;">
-                <p style="text-align:center; opacity: 0.7; font-size: 0.85rem;">Sin datos todavía.</p>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -322,7 +283,6 @@
     document.getElementById('btn-tab-clientes').addEventListener('click', () => cambiarTab('clientes'));
     document.getElementById('btn-tab-fiados').addEventListener('click', () => cambiarTab('fiados'));
     document.getElementById('btn-tab-historial').addEventListener('click', () => cambiarTab('historial'));
-    document.getElementById('btn-tab-reportes').addEventListener('click', () => cambiarTab('reportes'));
 
     document.getElementById('btn-add-prod').addEventListener('click', addProd);
     document.getElementById('btn-add-ticket').addEventListener('click', addTicket);
@@ -380,10 +340,6 @@
             document.getElementById('tab-historial').classList.add('active');
             document.getElementById('btn-tab-historial').classList.add('active');
             renderHistorial();
-        } else if(tab === 'reportes') {
-            document.getElementById('tab-reportes').classList.add('active');
-            document.getElementById('btn-tab-reportes').classList.add('active');
-            renderReportes();
         }
     }
 
@@ -539,418 +495,4 @@
                 
                 if(fiadoExistente) {
                     if(!fiadoExistente.historialCargas) {
-                        fiadoExistente.historialCargas = [{ fecha: "Anterior", items: { ...fiadoExistente.items }, subtotal: fiadoExistente.total, note: fiadoExistente.note || '' }];
-                    }
-                    fiadoExistente.historialCargas.push(nuevoMovimiento);
-                    fiadoExistente.total += tTotal;
-                } else {
-                    fiados.unshift({ id: Date.now(), name: ticket.name, historialCargas: [nuevoMovimiento], total: tTotal });
-                }
-
-                tickets = tickets.filter(t => t.id !== id);
-                save();
-                alert("¡Cuenta corriente actualizada!");
-            }
-            return;
-        }
-
-        if(confirm(`¿Cobrar a ${ticket.name} $${tTotal}? Se descontará el stock.`)) {
-            Object.keys(ticket.items).forEach(pId => {
-                const prod = productos.find(p => p.id == pId);
-                if(prod) prod.stock = Math.max(0, prod.stock - ticket.items[pId]);
-            });
-
-            historial.unshift({ ...ticket, total: tTotal, fecha: new Date().toLocaleString() });
-            tickets = tickets.filter(t => t.id !== id);
-            save();
-        }
-    }
-
-    window.abonarFiado = function(id) {
-        const inputAbono = document.getElementById(`input-abono-${id}`);
-        const monto = parseFloat(inputAbono.value);
-
-        if(!monto || monto <= 0) { alert("Ingresa un monto válido."); return; }
-        const f = fiados.find(item => item.id === id);
-        if(!f) return;
-
-        if(monto > f.total) { alert("El monto no puede superar el total."); return; }
-
-        if(confirm(`¿Registrar entrega de $${monto} para ${f.name}?`)) {
-            f.total -= monto;
-            const fecha = new Date().toLocaleString();
-            historial.unshift({ name: f.name, fechaPago: fecha, payment: "Abono Parcial Fiado", total: monto, historialCargas: [{ fecha, items: {}, note: `Entrega parcial. Saldo restante: $${f.total}` }] });
-            inputAbono.value = '';
-            if(f.total <= 0) {
-                fiados = fiados.filter(item => item.id !== id);
-                alert("¡Cuenta saldada!");
-            } else {
-                alert(`Abono registrado. Resta: $${f.total}`);
-            }
-            save();
-        }
-    }
-
-    window.pagarFiadoCompleto = function(id) {
-        const f = fiados.find(item => item.id === id);
-        if(!f) return;
-
-        if(confirm(`¿Liquidar fiado de ${f.name} por $${f.total}?`)) {
-            historial.unshift({ ...f, fechaPago: new Date().toLocaleString(), payment: "Liquidación Fiado" });
-            fiados = fiados.filter(item => item.id !== id);
-            save();
-        }
-    }
-
-    window.eliminarFiado = function(id) {
-        if(confirm("¿Eliminar registro de fiado?")) {
-            fiados = fiados.filter(item => item.id !== id);
-            save();
-        }
-    }
-
-    function limpiarHistorial() {
-        if(confirm("¿Borrar todo el historial?")) {
-            historial = [];
-            save();
-        }
-    }
-
-    function exportarBackup() {
-        const datos = { productos, tickets, fiados, historial };
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(datos, null, 2));
-        const a = document.createElement('a');
-        a.href = dataStr;
-        a.download = `backup_${new Date().toISOString().slice(0,10)}.json`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        document.getElementById('settings-menu').classList.remove('active');
-    }
-
-    function importarBackup(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const c = JSON.parse(e.target.result);
-                if (c.productos && c.tickets && c.historial) {
-                    if (confirm("¿Restaurar respaldo? Se sobrescribirán los datos.")) {
-                        productos = c.productos;
-                        tickets = c.tickets;
-                        fiados = c.fiados || [];
-                        historial = c.historial;
-                        save();
-                        alert("¡Restaurado con éxito!");
-                    }
-                } else { alert("Formato inválido."); }
-            } catch (err) { alert("Error al leer archivo."); }
-            event.target.value = '';
-            document.getElementById('settings-menu').classList.remove('active');
-        };
-        reader.readAsText(file);
-    }
-
-    function obtenerTodasLasCategorias() {
-        const base = ['BEBIDAS', 'FIAMBRES', 'VERDULERÍA', 'ALMACÉN', 'LIMPIEZA'];
-        const dinamicas = productos.map(p => p.category || 'GENERAL');
-        return [...new Set([...base, ...dinamicas])].sort();
-    }
-
-    function actualizarSelectCategorias() {
-        const selectFiltro = document.getElementById('filter-categoria');
-        const valorActual = selectFiltro.value;
-        let html = '<option value="">Todas</option>';
-        obtenerTodasLasCategorias().forEach(cat => {
-            html += `<option value="${cat}" ${valorActual === cat ? 'selected' : ''}>${cat}</option>`;
-        });
-        selectFiltro.innerHTML = html;
-    }
-
-    function render() {
-        actualizarSelectCategorias();
-        renderProductos();
-        renderTickets();
-        renderFiados();
-        renderHistorial();
-        renderReportes();
-    }
-
-    function renderProductos() {
-        const container = document.getElementById('price-list');
-        const filtroTexto = document.getElementById('search-producto').value.toLowerCase();
-        const filtroCat = document.getElementById('filter-categoria').value;
-        
-        let html = '<h3 style="margin-top:0;">Inventario</h3>';
-        const filtrados = productos.filter(p => p.name.toLowerCase().includes(filtroTexto) && (filtroCat === '' || (p.category || 'GENERAL') === filtroCat));
-
-        if(filtrados.length === 0) {
-            container.innerHTML = html + '<p style="text-align:center; opacity:0.7; font-size:0.85rem;">Sin productos.</p>';
-            return;
-        }
-
-        const cats = obtenerTodasLasCategorias();
-        filtrados.forEach(p => {
-            let catOpts = '';
-            cats.forEach(c => { catOpts += `<option value="${c}" ${(p.category || 'GENERAL') === c ? 'selected' : ''}>${c}</option>`; });
-
-            html += `
-                <div class="price-edit-row">
-                    <input type="text" class="edit-input edit-name" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)">
-                    <select class="edit-input edit-cat" onchange="updateProduct(${p.id}, 'category', this.value)">${catOpts}</select>
-                    <input type="number" class="edit-input edit-price" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)">
-                    <input type="number" class="edit-input edit-stock" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)">
-                    <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function renderTickets() {
-        const container = document.getElementById('tickets-container');
-        const filtro = document.getElementById('search-client').value.toLowerCase();
-        let html = '';
-
-        const filtrados = tickets.filter(t => t.name.toLowerCase().includes(filtro));
-        if(filtrados.length === 0) {
-            container.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:0.85rem;">No hay tickets activos.</p>';
-            return;
-        }
-
-        filtrados.forEach(t => {
-            const total = calcularTotalTicket(t);
-            html += `
-                <div class="ticket" id="ticket-${t.id}">
-                    <button class="btn-delete" onclick="confirmRemove(${t.id})">×</button>
-                    <div class="client-title">👤 ${t.name}</div>
-                    
-                    <div class="ticket-prod-search-container">
-                        <div class="ticket-search-wrapper">
-                            <input type="text" placeholder="🔍 Buscar producto..." class="edit-input ticket-search-input" oninput="filtrarProductosTicket(this, ${t.id})">
-                            <div class="ticket-search-results"></div>
-                        </div>
-                        <input type="number" value="1" min="1" class="edit-input ticket-qty-input" id="qty-${t.id}">
-                    </div>
-
-                    <div>
-            `;
-
-            productos.forEach(p => {
-                const qty = t.items[p.id] || 0;
-                if(qty > 0) {
-                    html += `
-                        <div class="items-grid">
-                            <span class="prod-name">${p.name}</span>
-                            <div class="prod-qty-price">
-                                <input type="number" value="${qty}" min="0" onchange="cambiarCantidadTicket(${t.id}, ${p.id}, this.value)">
-                                <span class="price-text">$${qty * p.price}</span>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-
-            html += `
-                    </div>
-                    <div class="total-display">Total: $<span id="total-val-${t.id}">${total}</span></div>
-                    
-                    <div class="payment-section">
-                        <select class="payment-select" onchange="cambiarMetodoPago(${t.id}, this.value)">
-                            <option value="Efectivo" ${t.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
-                            <option value="Tarjeta" ${t.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
-                            <option value="Fiado" ${t.payment === 'Fiado' ? 'selected' : ''}>Fiado</option>
-                        </select>
-                        ${t.payment === 'Tarjeta' ? `<input type="number" class="edit-input surcharge-input" placeholder="% Rec." value="${t.surcharge || 0}" onchange="cambiarRecargo(${t.id}, this.value)">` : ''}
-                    </div>
-
-                    <div style="margin-top:8px;">
-                        <input type="text" class="edit-input" placeholder="Nota opcional..." value="${t.note || ''}" oninput="cambiarNota(${t.id}, this.value)" style="width:100%; box-sizing:border-box;">
-                    </div>
-
-                    <div class="ticket-actions">
-                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">📱 WhatsApp</button>
-                        <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">🖨️ Imprimir</button>
-                        <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">✅ Cobrar</button>
-                    </div>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    window.filtrarProductosTicket = function(input, ticketId) {
-        const query = input.value.toLowerCase();
-        const resultsContainer = input.nextElementSibling;
-        if(!query) { resultsContainer.classList.remove('active'); return; }
-
-        const matches = productos.filter(p => p.name.toLowerCase().includes(query));
-        let html = '';
-        if(matches.length === 0) {
-            html = '<div class="ticket-search-item">Sin resultados</div>';
-        } else {
-            matches.forEach(p => {
-                html += `<div class="ticket-search-item" onclick="agregarProductoTicket(${ticketId}, ${p.id})">
-                    <strong>${p.name}</strong> 
-                    <span style="color:#27ae60; font-weight:bold;">$${p.price} <span style="color:#3498db; font-size:0.75rem;">(${p.stock})</span></span>
-                </div>`;
-            });
-        }
-        resultsContainer.innerHTML = html;
-        resultsContainer.classList.add('active');
-    }
-
-    window.agregarProductoTicket = function(ticketId, prodId) {
-        const ticket = tickets.find(t => t.id === ticketId);
-        const prod = productos.find(p => p.id === prodId);
-        const qty = parseInt(document.getElementById(`qty-${ticketId}`).value) || 1;
-        if (!prod) return;
-
-        const actual = ticket.items[prodId] || 0;
-        if (prod.stock < actual + qty) {
-            alert(`Stock insuficiente (Quedan ${prod.stock}).`);
-            return;
-        }
-
-        ticket.items[prodId] = actual + qty;
-        document.getElementById(`qty-${ticketId}`).value = 1;
-        document.querySelector(`#ticket-${ticketId} .ticket-search-results`).classList.remove('active');
-        save();
-    }
-
-    window.cambiarCantidadTicket = function(ticketId, prodId, val) {
-        const ticket = tickets.find(t => t.id === ticketId);
-        const prod = productos.find(p => p.id == prodId);
-        const nueva = parseInt(val) || 0;
-        if(!ticket || !prod) return;
-
-        if(nueva <= 0) {
-            delete ticket.items[prodId];
-        } else {
-            if (prod.stock < nueva) { alert(`Stock máximo: ${prod.stock}`); save(); return; }
-            ticket.items[prodId] = nueva;
-        }
-        save();
-    }
-
-    window.cambiarMetodoPago = function(id, m) {
-        const t = tickets.find(item => item.id === id);
-        if(t) { t.payment = m; if(m !== 'Tarjeta') t.surcharge = 0; save(); }
-    }
-
-    window.cambiarRecargo = function(id, val) {
-        const t = tickets.find(item => item.id === id);
-        if(t) { t.surcharge = parseFloat(val) || 0; save(); }
-    }
-
-    window.cambiarNota = function(id, val) {
-        const t = tickets.find(item => item.id === id);
-        if(t) { t.note = val; localStorage.setItem('tickets', JSON.stringify(tickets)); }
-    }
-
-    function renderFiados() {
-        const container = document.getElementById('fiados-container');
-        let html = '';
-        if(fiados.length === 0) { container.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:0.85rem;">Sin cuentas corrientes.</p>'; return; }
-
-        fiados.forEach(f => {
-            html += `
-                <div class="ticket fiado-ticket">
-                    <button class="btn-delete" onclick="eliminarFiado(${f.id})">×</button>
-                    <div class="client-title" style="color:#e74c3c;">📝 ${f.name}</div>
-            `;
-            let cargas = f.historialCargas || [{ fecha: 'Actual', items: f.items, note: f.note || '' }];
-            cargas.forEach((carga, i) => {
-                html += `<div style="margin-top:6px; border-top:1px dashed var(--input-border); padding-top:4px;">
-                    <p style="font-size:0.75rem; color:#6bb6ff; font-weight:bold; margin:0 0 2px 0;">🕒 ${carga.fecha}</p>
-                    ${carga.note ? `<p style="font-size:0.8rem; margin:2px 0; opacity:0.8;">${carga.note}</p>` : ''}`;
-                productos.forEach(p => {
-                    const q = carga.items[p.id] || 0;
-                    if(q > 0) html += `<div style="display:flex; justify-content:space-between; font-size:0.85rem; padding-left:8px;"><span>• ${p.name} (x${q})</span><strong>$${q * p.price}</strong></div>`;
-                });
-                html += `</div>`;
-            });
-
-            html += `
-                    <div class="total-display fiado-total">Saldo: $${f.total}</div>
-                    <div style="display:flex; gap:6px; margin-top:8px;">
-                        <input type="number" id="input-abono-${f.id}" placeholder="Monto" class="edit-input" style="flex:1;">
-                        <button class="btn-action" style="background:#27ae60; flex:1;" onclick="abonarFiado(${f.id})">💵 Abonar</button>
-                    </div>
-                    <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">✔️ Liquidar Total ($${f.total})</button>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    }
-
-    function renderHistorial() {
-        const container = document.getElementById('history-container');
-        let html = '';
-        if(historial.length === 0) { container.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:0.85rem;">Sin historial.</p>'; return; }
-
-        historial.forEach(h => {
-            html += `
-                <div class="ticket history-ticket">
-                    <div class="client-title" style="color:#2ecc71;">✅ ${h.name}</div>
-                    <p style="font-size:0.75rem; opacity:0.8; margin:2px 0;">${h.fechaPago || h.fecha || ''}</p>
-                    <span class="payment-badge">${h.payment || 'Cobrado'}</span>
-            `;
-            let cargas = h.historialCargas || [{ fecha: h.fecha, items: h.items, note: h.note || '' }];
-            cargas.forEach(carga => {
-                html += `<div style="margin-top:6px; border-top:1px dashed var(--input-border); padding-top:4px;">`;
-                if(carga.note) html += `<p style="font-size:0.8rem; opacity:0.9;">${carga.note}</p>`;
-                productos.forEach(p => {
-                    const q = carga.items[p.id] || 0;
-                    if(q > 0) html += `<div style="display:flex; justify-content:space-between; font-size:0.85rem; padding-left:8px;"><span>• ${p.name} (x${q})</span><span>$${q * p.price}</span></div>`;
-                });
-                html += `</div>`;
-            });
-            html += `<div class="total-display history-total">Monto: $${h.total}</div></div>`;
-        });
-        container.innerHTML = html;
-    }
-
-    function renderReportes() {
-        let ingresos = 0;
-        historial.forEach(h => { ingresos += (h.total || 0); });
-        const trans = historial.length;
-        const promedio = trans > 0 ? Math.round(ingresos / trans) : 0;
-        let stock = 0;
-        productos.forEach(p => { stock += (p.stock || 0); });
-
-        document.getElementById('stat-total-ingresos').innerText = `$${ingresos}`;
-        document.getElementById('stat-total-transacciones').innerText = trans;
-        document.getElementById('stat-ticket-promedio').innerText = `$${promedio}`;
-        document.getElementById('stat-stock-total').innerText = `${stock} un.`;
-
-        const prodVentas = {};
-        historial.forEach(h => {
-            let cargas = h.historialCargas || [{ items: h.items }];
-            cargas.forEach(c => {
-                if(c.items) {
-                    Object.keys(c.items).forEach(pId => { prodVentas[pId] = (prodVentas[pId] || 0) + c.items[pId]; });
-                }
-            });
-        });
-
-        const ranking = Object.keys(prodVentas).map(pId => {
-            const p = productos.find(x => x.id == pId);
-            return { name: p ? p.name : 'Eliminado', qty: prodVentas[pId] };
-        }).sort((a,b) => b.qty - a.qty);
-
-        const rCont = document.getElementById('ranking-productos');
-        if(ranking.length === 0) { rCont.innerHTML = '<p style="text-align:center; opacity:0.7; font-size:0.85rem;">Sin datos.</p>'; return; }
-
-        let rHtml = '';
-        ranking.slice(0, 5).forEach((item, idx) => {
-            rHtml += `<div class="ranking-item"><span><strong>#${idx+1}</strong> ${item.name}</span><span style="color:#2ecc71; font-weight:bold;">${item.qty} un.</span></div>`;
-        });
-        rCont.innerHTML = rHtml;
-    }
-
-    render();
-</script>
-</body>
-</html>
+                        fiadoExistente.historialCargas = [{ fecha: "Anterior", items: { ...fiadoExistente
