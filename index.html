@@ -110,7 +110,7 @@
         .prod-qty-price input { background: var(--input-bg); color: var(--text-color); width: 50px; text-align: center; border: 1px solid var(--input-border); border-radius: 5px; font-weight: bold; padding: 5px; }
         .price-text { color: #27ae60; font-weight: bold; min-width: 60px; text-align: right; text-shadow: var(--text-shadow); }
         
-        /* BOTONES DE ACCIÓN LIMPIOS */
+        /* BOTONES DE ACCIÓN LIMPIOS (SIN DIBUJOS / EMOJIS) */
         .ticket-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: nowrap; }
         .btn-action { background: #34495e; color: white; border: none; padding: 10px 8px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.3); white-space: nowrap; transition: 0.2s; }
         .btn-whatsapp { background: #27ae60; }
@@ -129,10 +129,7 @@
         .payment-select option { background: #2c3e50; color: #fff; }
         .surcharge-input { width: 75px; text-align: center; font-weight: bold; }
 
-        /* CONTENEDOR ALINEADO PARA ABONO PARCIAL */
-        .partial-payment-container { display: flex; gap: 8px; align-items: stretch; margin-top: 10px; width: 100%; }
-        .partial-input { flex: 1; box-sizing: border-box; }
-        .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3); white-space: nowrap; }
+        .btn-pagar-fiado { background: #e67e22; color: white; border: none; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .btn-pagar-fiado:hover { background: #d35400; }
 
         .client-title { font-size: 1.15rem; color: #2980b9; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; text-shadow: var(--text-shadow); }
@@ -546,129 +543,511 @@
         }
     }
 
-    // Funciones complementarias generales que cierran el flujo del sistema
-    function render() {
-        // Renderizado general de productos y tickets
-        const priceList = document.getElementById('price-list');
-        const searchProd = document.getElementById('search-producto').value.toLowerCase();
-        const filterCat = document.getElementById('filter-categoria').value;
+    window.cobrarTicket = function(id) {
+        const ticket = tickets.find(t => t.id === id);
+        if(!ticket) return;
+
+        const tTotal = calcularTotalTicket(ticket);
+
+        if(ticket.payment === 'Fiado') {
+            if(confirm(`¿Enviar a Fiado / Cuenta Corriente el ticket de ${ticket.name} por $${tTotal}?`)) {
+                Object.keys(ticket.items).forEach(pId => {
+                    const prod = productos.find(p => p.id == pId);
+                    if(prod) prod.stock = Math.max(0, prod.stock - ticket.items[pId]);
+                });
+
+                const fechaActual = new Date().toLocaleString();
+                
+                const nuevoMovimiento = {
+                    fecha: fechaActual,
+                    items: { ...ticket.items },
+                    subtotal: tTotal,
+                    note: ticket.note || ''
+                };
+
+                const fiadoExistente = fiados.find(f => f.name.toUpperCase() === ticket.name.toUpperCase());
+                
+                if(fiadoExistente) {
+                    if(!fiadoExistente.historialCargas) {
+                        fiadoExistente.historialCargas = [{
+                            fecha: "Carga anterior",
+                            items: { ...fiadoExistente.items },
+                            subtotal: fiadoExistente.total,
+                            note: fiadoExistente.note || ''
+                        }];
+                    }
+                    fiadoExistente.historialCargas.push(nuevoMovimiento);
+                    fiadoExistente.total += tTotal;
+                } else {
+                    const ticketFiado = {
+                        id: Date.now(),
+                        name: ticket.name,
+                        historialCargas: [nuevoMovimiento],
+                        total: tTotal
+                    };
+                    fiados.unshift(ticketFiado);
+                }
+
+                tickets = tickets.filter(t => t.id !== id);
+                save();
+                alert("¡Cuenta corriente actualizada con la nueva carga!");
+            }
+            return;
+        }
+
+        if(confirm(`¿Confirmar cobro a ${ticket.name} por un total de $${tTotal} (${ticket.payment})? Se descontará el stock.`)) {
+            Object.keys(ticket.items).forEach(pId => {
+                const prod = productos.find(p => p.id == pId);
+                if(prod) prod.stock = Math.max(0, prod.stock - ticket.items[pId]);
+            });
+
+            const fechaActual = new Date().toLocaleString();
+            const ticketCerrado = { ...ticket, total: tTotal, fecha: fechaActual };
+            historial.unshift(ticketCerrado);
+            tickets = tickets.filter(t => t.id !== id);
+            save();
+        }
+    }
+
+    window.abonarFiado = function(id) {
+        const inputAbono = document.getElementById(`input-abono-${id}`);
+        const montoAbonado = parseFloat(inputAbono.value);
+
+        if(!montoAbonado || montoAbonado <= 0) {
+            alert("Ingresa un monto válido para abonar.");
+            return;
+        }
+
+        const f = fiados.find(item => item.id === id);
+        if(!f) return;
+
+        if(montoAbonado > f.total) {
+            alert("El monto a abonar no puede ser mayor al total adeudado. Usa el botón de liquidar.");
+            return;
+        }
+
+        if(confirm(`¿Registrar entrega a cuenta de $${montoAbonado} para ${f.name}?`)) {
+            f.total -= montoAbonado;
+            const fechaPago = new Date().toLocaleString();
+            
+            const registroAbono = {
+                name: f.name,
+                fechaPago: fechaPago,
+                payment: "Abono / Pago Parcial de Fiado",
+                total: montoAbonado,
+                historialCargas: [{
+                    fecha: fechaPago,
+                    items: {},
+                    note: `Entrega parcial de dinero en cuenta corriente. Saldo restante: $${f.total}`
+                }]
+            };
+            historial.unshift(registroAbono);
+
+            inputAbono.value = '';
+
+            if(f.total <= 0) {
+                fiados = fiados.filter(item => item.id !== id);
+                alert("¡Cuenta saldada por completo! Movida al historial.");
+            } else {
+                alert(`Abono registrado con éxito. Saldo pendiente restante: $${f.total}`);
+            }
+            save();
+        }
+    }
+
+    window.pagarFiadoCompleto = function(id) {
+        const f = fiados.find(item => item.id === id);
+        if(!f) return;
+
+        if(confirm(`¿Registrar como PAGADO el total del fiado de ${f.name} por $${f.total}? Pasará al historial de ventas.`)) {
+            const fechaPago = new Date().toLocaleString();
+            const ticketCobrado = { ...f, fechaPago: fechaPago, payment: "Liquidación Total de Fiado" };
+            historial.unshift(ticketCobrado);
+            fiados = fiados.filter(item => item.id !== id);
+            save();
+        }
+    }
+
+    window.eliminarFiado = function(id) {
+        if(confirm("¿Eliminar este registro de fiado sin cobrar?")) {
+            fiados = fiados.filter(item => item.id !== id);
+            save();
+        }
+    }
+
+    function limpiarHistorial() {
+        if(confirm("¿Estás seguro de borrar todo el historial de ventas? Esta acción no se puede deshacer.")) {
+            historial = [];
+            save();
+        }
+    }
+
+    function exportarBackup() {
+        const datos = {
+            productos: productos,
+            tickets: tickets,
+            fiados: fiados,
+            historial: historial,
+            fechaBackup: new Date().toLocaleString()
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(datos, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `backup_sistema_ventas_${new Date().toISOString().slice(0,10)}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        document.getElementById('settings-menu').classList.remove('active');
+    }
+
+    function importarBackup(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const contenido = JSON.parse(e.target.result);
+                if (contenido.productos && contenido.tickets && contenido.historial) {
+                    if (confirm("¿Estás seguro de restaurar este respaldo? Se sobrescribirán los datos actuales.")) {
+                        productos = contenido.productos;
+                        tickets = contenido.tickets;
+                        fiados = contenido.fiados || [];
+                        historial = contenido.historial;
+                        save();
+                        alert("¡Respaldo importado y restaurado con éxito!");
+                    }
+                } else {
+                    alert("El archivo seleccionado no tiene el formato correcto.");
+                }
+            } catch (error) {
+                alert("Hubo un error al leer el archivo JSON.");
+            }
+            event.target.value = '';
+            document.getElementById('settings-menu').classList.remove('active');
+        };
+        reader.readAsText(file);
+    }
+
+    function obtenerTodasLasCategorias() {
+        const base = ['BEBIDAS', 'FIAMBRES', 'VERDULERÍA', 'ALMACÉN', 'LIMPIEZA'];
+        const dinamicas = productos.map(p => p.category || 'GENERAL');
+        return [...new Set([...base, ...dinamicas])].sort();
+    }
+
+    function actualizarSelectCategorias() {
+        const selectFiltro = document.getElementById('filter-categoria');
+        const valorActual = selectFiltro.value;
+        const categoriasUnicas = obtenerTodasLasCategorias();
         
-        let cats = [...new Set(productos.map(p => p.category))];
-        let catSelectHtml = '<option value="">Todas las categorías</option>';
-        cats.forEach(c => {
-            catSelectHtml += `<option value="${c}" ${filterCat === c ? 'selected' : ''}>${c}</option>`;
+        let htmlOptions = '<option value="">Todas las categorías</option>';
+        categoriasUnicas.forEach(cat => {
+            htmlOptions += `<option value="${cat}" ${valorActual === cat ? 'selected' : ''}>${cat}</option>`;
         });
-        document.getElementById('filter-categoria').innerHTML = catSelectHtml;
+        selectFiltro.innerHTML = htmlOptions;
+    }
 
-        let prodHtml = '<h3>Inventario de Productos</h3>';
-        const prodsFiltrados = productos.filter(p => {
-            const matchName = p.name.toLowerCase().includes(searchProd);
-            const matchCat = filterCat ? p.category === filterCat : true;
-            return matchName && matchCat;
+    function render() {
+        actualizarSelectCategorias();
+        renderProductos();
+        renderTickets();
+        renderFiados();
+        renderHistorial();
+        renderReportes();
+    }
+
+    function renderProductos() {
+        const container = document.getElementById('price-list');
+        const filtroTexto = document.getElementById('search-producto').value.toLowerCase();
+        const filtroCat = document.getElementById('filter-categoria').value;
+        
+        let html = '<h3 style="margin-top:0;">Lista de Productos e Inventario</h3>';
+        
+        const productosFiltrados = productos.filter(p => {
+            const coincideTexto = p.name.toLowerCase().includes(filtroTexto);
+            const coincideCat = filtroCat === '' || (p.category || 'GENERAL') === filtroCat;
+            return coincideTexto && coincideCat;
         });
 
-        prodsFiltrados.forEach(p => {
-            prodHtml += `
+        if(productosFiltrados.length === 0) {
+            container.innerHTML = html + '<p style="text-align:center; opacity:0.7;">No hay productos coincidentes.</p>';
+            return;
+        }
+
+        const categoriasDisponibles = obtenerTodasLasCategorias();
+
+        productosFiltrados.forEach(p => {
+            let catOptions = '';
+            categoriasDisponibles.forEach(c => {
+                catOptions += `<option value="${c}" ${ (p.category || 'GENERAL') === c ? 'selected' : ''}>${c}</option>`;
+            });
+
+            html += `
                 <div class="product-card-mobile">
                     <div class="product-card-top">
-                        <div class="field-group">
-                            <label>Nombre</label>
-                            <input type="text" value="${p.name}" class="edit-input" style="width:100%;" onchange="updateProduct(${id}, 'name', this.value)">
+                        <div class="field-group" style="flex: 2;">
+                            <label>Producto</label>
+                            <input type="text" class="edit-input" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)" style="width: 100%; box-sizing: border-box; font-weight: bold;">
                         </div>
-                        <div class="field-group">
+                        <div class="field-group" style="flex: 1.5;">
                             <label>Categoría</label>
-                            <input type="text" value="${p.category}" class="edit-input" style="width:100%;" onchange="updateProduct(${id}, 'category', this.value)">
+                            <select class="edit-input" onchange="updateProduct(${p.id}, 'category', this.value)" style="width: 100%; box-sizing: border-box;">
+                                ${catOptions}
+                            </select>
                         </div>
                     </div>
                     <div class="product-card-bottom">
-                        <div class="field-group">
-                            <label>Precio</label>
-                            <input type="number" value="${p.price}" class="edit-input" style="width:100%;" onchange="updateProduct(${id}, 'price', this.value)">
+                        <div class="field-group" style="flex: 1;">
+                            <label>Precio ($)</label>
+                            <input type="number" class="edit-input" value="${p.price}" onchange="updateProduct(${p.id}, 'price', this.value)" style="width: 100%; box-sizing: border-box; color: #e74c3c; font-weight: bold;">
                         </div>
-                        <div class="field-group">
+                        <div class="field-group" style="flex: 1;">
                             <label>Stock</label>
-                            <input type="number" value="${p.stock}" class="edit-input" style="width:100%;" onchange="updateProduct(${id}, 'stock', this.value)">
+                            <input type="number" class="edit-input" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)" style="width: 100%; box-sizing: border-box; color: #3498db; font-weight: bold; text-align: center;">
                         </div>
-                        <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">🗑️</button>
+                        <div style="display: flex; align-items: flex-end;">
+                            <label style="opacity: 0; font-size: 0.7rem; display: block; margin-bottom: 2px;">Del</label>
+                            <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
+                        </div>
                     </div>
                 </div>
             `;
         });
-        priceList.innerHTML = prodHtml;
+        container.innerHTML = html;
+    }
 
-        // Renderizado de Tickets Activos
-        const ticketsContainer = document.getElementById('tickets-container');
-        const searchClient = document.getElementById('search-client').value.toLowerCase();
-        let ticketsHtml = '';
+    function renderTickets() {
+        const container = document.getElementById('tickets-container');
+        const filtro = document.getElementById('search-client').value.toLowerCase();
+        let html = '';
 
-        tickets.filter(t => t.name.toLowerCase().includes(searchClient)).forEach(t => {
+        const ticketsFiltrados = tickets.filter(t => t.name.toLowerCase().includes(filtro));
+
+        if(ticketsFiltrados.length === 0) {
+            container.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay tickets activos o coincidentes.</p>';
+            return;
+        }
+
+        ticketsFiltrados.forEach(t => {
             const total = calcularTotalTicket(t);
-            ticketsHtml += `
+            html += `
                 <div class="ticket" id="ticket-${t.id}">
-                    <button class="btn-delete" onclick="confirmRemove(${t.id})">×</button>
-                    <div class="client-title">${t.name}</div>
+                    <button class="btn-delete" onclick="confirmRemove(${t.id})" title="Eliminar Ticket">×</button>
+                    <div class="client-title">👤 ${t.name}</div>
+                    
                     <div class="ticket-prod-search-container">
                         <div class="ticket-search-wrapper">
-                            <input type="text" placeholder="Añadir producto..." class="edit-input ticket-search-input" oninput="buscarProdEnTicket(${t.id}, this.value)">
-                            <div class="ticket-search-results" id="results-${t.id}"></div>
+                            <input type="text" placeholder="🔍 Buscar producto para agregar..." class="edit-input ticket-search-input" oninput="filtrarProductosTicket(this, ${t.id})">
+                            <div class="ticket-search-results"></div>
                         </div>
-                        <input type="number" value="1" id="qty-${t.id}" class="edit-input ticket-qty-input">
+                        <input type="number" value="1" min="1" class="edit-input ticket-qty-input" id="qty-${t.id}">
                     </div>
+
+                    <div id="items-list-${t.id}">
             `;
 
             productos.forEach(p => {
                 const qty = t.items[p.id] || 0;
                 if(qty > 0) {
-                    ticketsHtml += `
+                    html += `
                         <div class="items-grid">
-                            <div class="prod-name">${p.name}</div>
+                            <div>
+                                <span class="prod-name">${p.name}</span>
+                            </div>
                             <div class="prod-qty-price">
-                                <input type="number" value="${qty}" onchange="cambiarCantidadTicket(${t.id}, ${p.id}, this.value)">
-                                <div class="price-text">$${qty * p.price}</div>
+                                <input type="number" value="${qty}" min="0" onchange="cambiarCantidadTicket(${t.id}, ${p.id}, this.value)">
+                                <span class="price-text">$${qty * p.price}</span>
                             </div>
                         </div>
                     `;
                 }
             });
 
-            ticketsHtml += `
+            html += `
+                    </div>
                     <div class="total-display">Total: $<span id="total-val-${t.id}">${total}</span></div>
+                    
                     <div class="payment-section">
                         <select class="payment-select" onchange="cambiarMetodoPago(${t.id}, this.value)">
-                            <option value="Efectivo" ${t.payment==='Efectivo'?'selected':''}>Efectivo</option>
-                            <option value="Tarjeta" ${t.payment==='Tarjeta'?'selected':''}>Tarjeta</option>
-                            <option value="Fiado" ${t.payment==='Fiado'?'selected':''}>Fiado</option>
+                            <option value="Efectivo" ${t.payment === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
+                            <option value="Tarjeta" ${t.payment === 'Tarjeta' ? 'selected' : ''}>Tarjeta</option>
+                            <option value="Fiado" ${t.payment === 'Fiado' ? 'selected' : ''}>Fiado (Cuenta Corriente)</option>
                         </select>
-                        ${t.payment==='Tarjeta' ? `<input type="number" placeholder="Recargo %" class="edit-input surcharge-input" value="${t.surcharge}" onchange="cambiarRecargo(${t.id}, this.value)">` : ''}
+                        ${t.payment === 'Tarjeta' ? `<input type="number" class="edit-input surcharge-input" placeholder="% Recargo" value="${t.surcharge || 0}" onchange="cambiarRecargo(${t.id}, this.value)">` : ''}
                     </div>
+
+                    <div style="margin-top:10px;">
+                        <input type="text" class="edit-input" placeholder="Nota opcional (ej: Entregar a las 15hs)" value="${t.note || ''}" oninput="cambiarNota(${t.id}, this.value)" style="width:100%; box-sizing:border-box;">
+                    </div>
+
                     <div class="ticket-actions">
-                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">Enviar WhatsApp</button>
+                        <button class="btn-action btn-whatsapp" onclick="enviarWhatsApp(${t.id})">WhatsApp</button>
                         <button class="btn-action btn-print" onclick="imprimirTicket(${t.id})">Imprimir</button>
-                        <button class="btn-action btn-cobrar" onclick="cobrarTicket(${t.id})">Cobrar</button>
+                        <button class="btn-cobrar" onclick="cobrarTicket(${t.id})">Cobrar / Registrar</button>
                     </div>
                 </div>
             `;
         });
-        ticketsContainer.innerHTML = ticketsHtml;
+        container.innerHTML = html;
+    }
+
+    window.filtrarProductosTicket = function(input, ticketId) {
+        const query = input.value.toLowerCase();
+        const resultsContainer = input.nextElementSibling;
+        
+        if(!query) {
+            resultsContainer.classList.remove('active');
+            return;
+        }
+
+        const matches = productos.filter(p => p.name.toLowerCase().includes(query) || (p.category && p.category.toLowerCase().includes(query)));
+        let html = '';
+
+        if(matches.length === 0) {
+            html = '<div class="ticket-search-item">No se encontraron productos</div>';
+        } else {
+            matches.forEach(p => {
+                html += `<div class="ticket-search-item" onclick="agregarProductoTicket(${ticketId}, ${p.id})">
+                    <div>
+                        <strong>${p.name}</strong> 
+                    </div>
+                    <span style="color:#27ae60; font-weight:bold;">$${p.price} <span style="color:#3498db; font-size:0.8rem;">(Stock: ${p.stock})</span></span>
+                </div>`;
+            });
+        }
+
+        resultsContainer.innerHTML = html;
+        resultsContainer.classList.add('active');
+    }
+
+    window.agregarProductoTicket = function(ticketId, prodId) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        const prod = productos.find(p => p.id === prodId);
+        const qtyInput = document.getElementById(`qty-${ticketId}`);
+        const qty = parseInt(qtyInput.value) || 1;
+
+        if (!prod) return;
+
+        const cantidadActualEnTicket = ticket.items[prodId] || 0;
+        const totalRequerido = cantidadActualEnTicket + qty;
+
+        if (prod.stock < totalRequerido) {
+            alert(`⚠️ Stock insuficiente. Solo quedan ${prod.stock} unidades disponibles de "${prod.name}" (ya tienes ${cantidadActualEnTicket} en este ticket).`);
+            return;
+        }
+
+        ticket.items[prodId] = totalRequerido;
+        qtyInput.value = 1;
+        
+        const activeResults = document.querySelector(`#ticket-${ticketId} .ticket-search-results`);
+        if (activeResults) activeResults.classList.remove('active');
+
+        save();
+    }
+
+    window.cambiarCantidadTicket = function(ticketId, prodId, val) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        const prod = productos.find(p => p.id == prodId);
+        const nuevaCant = parseInt(val) || 0;
+
+        if(!ticket || !prod) return;
+
+        if(nuevaCant <= 0) {
+            delete ticket.items[prodId];
+        } else {
+            if (prod.stock < nuevaCant) {
+                alert(`⚠️ Stock insuficiente. El stock máximo disponible para "${prod.name}" es ${prod.stock}.`);
+                save();
+                return;
+            }
+            ticket.items[prodId] = nuevaCant;
+        }
+        save();
+    }
+
+    window.cambiarMetodoPago = function(ticketId, metodo) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        if(ticket) {
+            ticket.payment = metodo;
+            if(metodo !== 'Tarjeta') ticket.surcharge = 0;
+            save();
+        }
+    }
+
+    window.cambiarRecargo = function(ticketId, val) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        if(ticket) {
+            ticket.surcharge = parseFloat(val) || 0;
+            save();
+        }
+    }
+
+    window.cambiarNota = function(ticketId, val) {
+        const ticket = tickets.find(t => t.id === ticketId);
+        if(ticket) {
+            ticket.note = val;
+            localStorage.setItem('tickets', JSON.stringify(tickets));
+        }
     }
 
     function renderFiados() {
         const container = document.getElementById('fiados-container');
         let html = '';
+
         if(fiados.length === 0) {
             container.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay cuentas corrientes pendientes.</p>';
             return;
         }
+
         fiados.forEach(f => {
             html += `
                 <div class="ticket fiado-ticket">
-                    <div class="client-title">${f.name}</div>
-                    <div class="total-display fiado-total">Deuda Pendiente: $${f.deuda}</div>
-                    <p style="font-size:0.85rem; opacity:0.8;">Fecha de origen: ${f.fecha}</p>
-                    <div class="partial-payment-container">
-                        <input type="number" id="abono-${f.id}" placeholder="Monto a abonar" class="edit-input partial-input">
-                        <button class="btn-pagar-fiado" onclick="abonarFiado(${f.id})">Abonar / Parcial</button>
+                    <button class="btn-delete" onclick="eliminarFiado(${f.id})" title="Eliminar registro">×</button>
+                    <div class="client-title" style="color:#e74c3c;">📝 ${f.name}</div>
+            `;
+
+            let cargasAMostrar = f.historialCargas;
+            if (!cargasAMostrar && f.items) {
+                cargasAMostrar = [{
+                    fecha: f.fecha || 'Sin fecha',
+                    items: f.items,
+                    note: f.note || ''
+                }];
+            }
+
+            if (cargasAMostrar && cargasAMostrar.length > 0) {
+                cargasAMostrar.forEach((carga, cIndex) => {
+                    html += `
+                        <div style="margin-top:10px; border-top:1px dashed var(--input-border); padding-top:6px;">
+                            <p style="font-size:0.8rem; color:#6bb6ff; font-weight:bold; margin:0 0 4px 0;">🕒 Carga #${cIndex + 1} - ${carga.fecha}</p>
+                            ${carga.note ? `<p style="font-size:0.85rem; margin:2px 0; opacity:0.8;">Nota: ${carga.note}</p>` : ''}
+                    `;
+
+                    productos.forEach(p => {
+                        const qty = carga.items[p.id] || 0;
+                        if(qty > 0) {
+                            html += `
+                                <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:3px; padding-left:10px;">
+                                    <span>• ${p.name} (x${qty})</span>
+                                    <span style="font-weight:bold;">$${qty * p.price}</span>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    html += `</div>`;
+                });
+            }
+
+            html += `
+                    <div class="total-display fiado-total" style="margin-top:15px;">Saldo Pendiente: $${f.total}</div>
+                    
+                    <div style="display:flex; gap:8px; align-items:center; margin-top:10px;">
+                        <input type="number" id="input-abono-${f.id}" placeholder="Monto a abonar" class="edit-input" style="flex:1;">
+                        <button class="btn-action" style="background:#27ae60; flex:1;" onclick="abonarFiado(${f.id})">Abonar / Parcial</button>
                     </div>
+
+                    <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">Liquidar / Pagar Totalidad ($${f.total})</button>
                 </div>
             `;
         });
@@ -678,17 +1057,58 @@
     function renderHistorial() {
         const container = document.getElementById('history-container');
         let html = '';
+
         if(historial.length === 0) {
             container.innerHTML = '<p style="text-align:center; opacity:0.7;">No hay ventas registradas en el historial.</p>';
             return;
         }
+
         historial.forEach(h => {
             html += `
                 <div class="ticket history-ticket">
-                    <div class="client-title">${h.cliente}</div>
-                    <p style="font-size:0.85rem; opacity:0.8; margin-top:0;">Fecha: ${h.fecha}</p>
-                    <div class="total-display history-total">Total Cobrado: $${h.subtotal}</div>
-                    <div class="payment-badge">Pago: ${h.metodo}</div>
+                    <div class="client-title" style="color:#2ecc71;">✅ ${h.name}</div>
+                    <p style="font-size:0.85rem; opacity:0.8; margin:2px 0;">Fecha: ${h.fechaPago || h.fecha || 'N/A'}</p>
+                    <span class="payment-badge">${h.payment || 'Cobrado'}</span>
+            `;
+
+            if (h.historialCargas && h.historialCargas.length > 0) {
+                h.historialCargas.forEach((carga, cIndex) => {
+                    html += `
+                        <div style="margin-top:8px; border-top:1px dashed var(--input-border); padding-top:6px;">
+                            <p style="font-size:0.8rem; color:#2ecc71; font-weight:bold; margin:0 0 3px 0;">${carga.note ? '' : '🕒 Carga #' + (cIndex + 1) + ' - '} ${carga.fecha}</p>
+                            ${carga.note ? `<p style="font-size:0.85rem; margin:2px 0; opacity:0.9;">${carga.note}</p>` : ''}
+                    `;
+                    productos.forEach(p => {
+                        const qty = carga.items[p.id] || 0;
+                        if(qty > 0) {
+                            html += `
+                                <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:2px; padding-left:10px;">
+                                    <span>• ${p.name} (x${qty})</span>
+                                    <span>$${qty * p.price}</span>
+                                </div>
+                            `;
+                        }
+                    });
+                    html += `</div>`;
+                });
+            } else if(h.items) {
+                html += `<div style="margin-top:10px; border-top:1px solid var(--input-border); padding-top:8px;">`;
+                productos.forEach(p => {
+                    const qty = h.items[p.id] || 0;
+                    if(qty > 0) {
+                        html += `
+                            <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:4px;">
+                                <span>${p.name} (x${qty})</span>
+                                <span style="font-weight:bold;">$${qty * p.price}</span>
+                            </div>
+                        `;
+                    }
+                });
+                html += `</div>`;
+            }
+
+            html += `
+                    <div class="total-display history-total">Monto: $${h.total}</div>
                 </div>
             `;
         });
@@ -696,80 +1116,67 @@
     }
 
     function renderReportes() {
-        let totalIngresos = historial.reduce((acc, curr) => acc + curr.subtotal, 0);
-        let totalTransacciones = historial.length;
-        let promedio = totalTransacciones > 0 ? Math.round(totalIngresos / totalTransacciones) : 0;
-        let stockTotal = productos.reduce((acc, curr) => acc + curr.stock, 0);
+        let totalIngresos = 0;
+        historial.forEach(h => {
+            totalIngresos += (h.total || 0);
+        });
+
+        const totalTransacciones = historial.length;
+        const ticketPromedio = totalTransacciones > 0 ? Math.round(totalIngresos / totalTransacciones) : 0;
+
+        let stockTotal = 0;
+        productos.forEach(p => {
+            stockTotal += (p.stock || 0);
+        });
 
         document.getElementById('stat-total-ingresos').innerText = `$${totalIngresos}`;
         document.getElementById('stat-total-transacciones').innerText = totalTransacciones;
-        document.getElementById('stat-ticket-promedio').innerText = `$${promedio}`;
+        document.getElementById('stat-ticket-promedio').innerText = `$${ticketPromedio}`;
         document.getElementById('stat-stock-total').innerText = `${stockTotal} un.`;
 
-        // Ranking de productos vendidos
-        let ventasProd = {};
+        const ventasPorProducto = {};
         historial.forEach(h => {
-            if(h.items) {
+            if(h.historialCargas) {
+                h.historialCargas.forEach(c => {
+                    if(c.items) {
+                        Object.keys(c.items).forEach(pId => {
+                            ventasPorProducto[pId] = (ventasPorProducto[pId] || 0) + c.items[pId];
+                        });
+                    }
+                });
+            } else if(h.items) {
                 Object.keys(h.items).forEach(pId => {
-                    ventasProd[pId] = (ventasProd[pId] || 0) + h.items[pId];
+                    ventasPorProducto[pId] = (ventasPorProducto[pId] || 0) + h.items[pId];
                 });
             }
         });
 
-        let rankingArr = Object.keys(ventasProd).map(pId => {
-            let prod = productos.find(p => p.id == pId);
-            return { name: prod ? prod.name : 'Desconocido', qty: ventasProd[pId] };
+        const rankingArray = Object.keys(ventasPorProducto).map(pId => {
+            const prod = productos.find(p => p.id == pId);
+            return {
+                name: prod ? prod.name : 'Producto Eliminado',
+                qty: ventasPorProducto[pId]
+            };
         }).sort((a, b) => b.qty - a.qty);
 
+        const rankingContainer = document.getElementById('ranking-productos');
+        if(rankingArray.length === 0) {
+            rankingContainer.innerHTML = '<p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>';
+            return;
+        }
+
         let rankingHtml = '';
-        if(rankingArr.length === 0) {
-            rankingHtml = '<p style="text-align:center; opacity: 0.7; font-size: 0.9rem;">Sin datos suficientes todavía.</p>';
-        } else {
-            rankingArr.forEach((item, index) => {
-                rankingHtml += `<div class="ranking-item"><span>${index + 1}. ${item.name}</span><strong>${item.qty} un.</strong></div>`;
-            });
-        }
-        document.getElementById('ranking-productos').innerHTML = rankingHtml;
+        rankingArray.slice(0, 5).forEach((item, index) => {
+            rankingHtml += `
+                <div class="ranking-item">
+                    <span><strong>#${index + 1}</strong> ${item.name}</span>
+                    <span style="color:#2ecc71; font-weight:bold;">${item.qty} unidades</span>
+                </div>
+            `;
+        });
+        rankingContainer.innerHTML = rankingHtml;
     }
 
-    function exportarBackup() {
-        const data = { productos, tickets, fiados, historial };
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `backup_sistema_ventas_${new Date().toISOString().slice(0,10)}.json`;
-        a.click();
-    }
-
-    function importarBackup(e) {
-        const file = e.target.files[0];
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            try {
-                const data = JSON.parse(evt.target.result);
-                if(data.productos) productos = data.productos;
-                if(data.tickets) tickets = data.tickets;
-                if(data.fiados) fiados = data.fiados;
-                if(data.historial) historial = data.historial;
-                save();
-                alert('¡Backup importado correctamente!');
-            } catch(err) {
-                alert('Error al leer el archivo JSON.');
-            }
-        };
-        reader.readAsText(file);
-    }
-
-    function limpiarHistorial() {
-        if(confirm("¿Seguro que deseas borrar todo el historial de ventas?")) {
-            historial = [];
-            save();
-        }
-    }
-
-    // Inicializar visualización base al cargar
     render();
 </script>
 </body>
