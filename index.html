@@ -1072,9 +1072,9 @@
             html += `
                     <div class="total-display fiado-total" style="margin-top:15px;">Saldo Pendiente: $${f.total}</div>
                     
-                    <div style="display:flex; gap:8px; align-items:center; margin-top:10px;">
-                        <input type="number" id="input-abono-${f.id}" placeholder="Monto a abonar" class="edit-input" style="flex:1;">
-                        <button class="btn-action" style="background:#27ae60; flex:1;" onclick="abonarFiado(${f.id})">Abonar / Parcial</button>
+                    <div style="display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap: wrap;">
+                        <input type="number" id="input-abono-${f.id}" placeholder="Monto a abonar" class="edit-input" style="flex: 1 1 120px; min-width: 0;">
+                        <button class="btn-action" style="background:#27ae60; flex: 1 1 120px; min-width: 0;" onclick="abonarFiado(${f.id})">Abonar / Parcial</button>
                     </div>
 
                     <button class="btn-pagar-fiado" onclick="pagarFiadoCompleto(${f.id})">Liquidar / Pagar Totalidad ($${f.total})</button>
