@@ -226,7 +226,7 @@
                 <span>Importar Backup</span>
                 <span>📤</span>
             </button>
-            <input type="file" id="import-file" style="display: none;" accept=".json">
+            <input type="file" id="import-file" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;" accept=".json,application/json">
         </div>
     </div>
     
@@ -725,7 +725,7 @@
         }
     }
 
-    function exportarBackup() {
+    async function exportarBackup() {
         const datos = {
             productos: productos,
             tickets: tickets,
@@ -733,13 +733,38 @@
             historial: historial,
             fechaBackup: new Date().toLocaleString()
         };
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(datos, null, 2));
+        const nombreArchivo = `backup_sistema_ventas_${new Date().toISOString().slice(0,10)}.json`;
+        const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+
+        // En iPhone, compartir el archivo (Guardar en Archivos, enviar por WhatsApp/Mail, etc.)
+        // es mucho más confiable que forzar una descarga directa.
+        try {
+            const file = new File([blob], nombreArchivo, { type: 'application/json' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: 'Backup Sistema de Ventas',
+                });
+                document.getElementById('settings-menu').classList.remove('active');
+                return;
+            }
+        } catch (err) {
+            // Si el usuario cancela el share sheet, no hacemos nada más.
+            if (err && err.name === 'AbortError') {
+                document.getElementById('settings-menu').classList.remove('active');
+                return;
+            }
+        }
+
+        // Alternativa (Android / Escritorio / navegadores sin Web Share): descarga directa con Blob.
+        const url = URL.createObjectURL(blob);
         const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `backup_sistema_ventas_${new Date().toISOString().slice(0,10)}.json`);
+        downloadAnchor.href = url;
+        downloadAnchor.download = nombreArchivo;
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
         document.getElementById('settings-menu').classList.remove('active');
     }
 
