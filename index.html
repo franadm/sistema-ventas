@@ -54,8 +54,9 @@
         .app-container { max-width: 500px; margin: 0 auto; padding: 10px; position: relative; }
 
         /* Evita que iOS Safari haga zoom automático al tocar un campo de texto.
-           iOS agranda la pantalla si el font-size del input es menor a 16px. */
-        input, select, textarea, button {
+           iOS agranda la pantalla si el font-size del input es menor a 16px.
+           (Los botones NO disparan ese zoom, así que quedan afuera para no agrandarlos). */
+        input, select, textarea {
             font-size: 16px;
         }
 
