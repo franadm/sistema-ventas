@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sistema de Ventas">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0f172a">
     <title>Sistema de Ventas con WhatsApp e Impresión</title>
     <style>
         :root {
@@ -35,21 +40,26 @@
 
         html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
+        html, body { height: 100%; }
+
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
             margin: 0;
             padding: 10px;
+            min-height: 100dvh;
             padding-top: calc(10px + env(safe-area-inset-top));
             padding-bottom: calc(10px + env(safe-area-inset-bottom));
             padding-left: calc(10px + env(safe-area-inset-left));
             padding-right: calc(10px + env(safe-area-inset-right));
             background-image: url('1044855.jpg');
             background-size: cover;
+            background-position: center;
             background-attachment: fixed;
             color: var(--text-color);
             transition: 0.3s;
             -webkit-tap-highlight-color: transparent;
             overscroll-behavior-y: contain;
+            box-sizing: border-box;
         }
         .app-container { max-width: 500px; margin: 0 auto; padding: 10px; position: relative; }
 
@@ -106,12 +116,13 @@
         .edit-input option { background: #2c3e50; color: #fff; }
         
         /* DISEÑO RESPONSIVE PARA PRODUCTOS */
-        .product-card-mobile { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .product-card-top { display: flex; gap: 8px; align-items: center; }
-        .product-card-bottom { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
-        .field-group { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-        .field-group label { font-size: 0.7rem; opacity: 0.7; font-weight: bold; text-transform: uppercase; }
-        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; font-weight: bold; height: 38px; display: flex; align-items: center; justify-content: center; }
+        .product-card-mobile { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 12px; padding: 8px 10px; margin-bottom: 8px; display: flex; flex-direction: column; gap: 5px; }
+        .product-card-top { display: flex; gap: 6px; align-items: center; }
+        .product-card-bottom { display: flex; gap: 6px; align-items: center; justify-content: space-between; }
+        .field-group { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+        .field-group label { font-size: 0.65rem; opacity: 0.7; font-weight: bold; text-transform: uppercase; }
+        .product-card-mobile .edit-input { padding: 5px 7px; }
+        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: bold; height: 32px; display: flex; align-items: center; justify-content: center; }
 
         @media (min-width: 768px) {
             .product-card-mobile { flex-direction: row; align-items: center; padding: 10px 12px; }
