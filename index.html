@@ -118,16 +118,18 @@
         /* DISEÑO RESPONSIVE PARA PRODUCTOS */
         .product-card-mobile { background: rgba(0, 0, 0, 0.25); border: 1px solid var(--input-border); border-radius: 12px; padding: 8px 10px; margin-bottom: 8px; display: flex; flex-direction: column; gap: 5px; }
         .product-card-top { display: flex; gap: 6px; align-items: center; }
+        .product-card-middle { display: flex; gap: 6px; align-items: center; }
         .product-card-bottom { display: flex; gap: 6px; align-items: center; justify-content: space-between; }
-        .field-group { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+        .field-group { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
         .field-group label { font-size: 0.65rem; opacity: 0.7; font-weight: bold; text-transform: uppercase; }
         .product-card-mobile .edit-input { padding: 5px 7px; }
-        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-weight: bold; height: 32px; display: flex; align-items: center; justify-content: center; }
+        .btn-delete-prod { background: #e74c3c; color: white; border: none; border-radius: 8px; padding: 0; width: 26px; height: 26px; min-width: 26px; cursor: pointer; font-weight: bold; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; flex: none; }
 
         @media (min-width: 768px) {
             .product-card-mobile { flex-direction: row; align-items: center; padding: 10px 12px; }
             .product-card-top { flex: 2; }
-            .product-card-bottom { flex: 2; }
+            .product-card-middle { flex: 1.2; }
+            .product-card-bottom { flex: 1.8; }
             .field-group label { display: none; }
         }
         
@@ -826,11 +828,13 @@
             html += `
                 <div class="product-card-mobile">
                     <div class="product-card-top">
-                        <div class="field-group" style="flex: 2;">
+                        <div class="field-group" style="flex: 1;">
                             <label>Producto</label>
-                            <input type="text" class="edit-input" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)" style="width: 100%; box-sizing: border-box; font-weight: bold;">
+                            <input type="text" class="edit-input" value="${p.name}" onchange="updateProduct(${p.id}, 'name', this.value)" style="width: 100%; box-sizing: border-box; font-weight: bold;" title="${p.name}">
                         </div>
-                        <div class="field-group" style="flex: 1.5;">
+                    </div>
+                    <div class="product-card-middle">
+                        <div class="field-group" style="flex: 1;">
                             <label>Categoría</label>
                             <select class="edit-input" onchange="updateProduct(${p.id}, 'category', this.value)" style="width: 100%; box-sizing: border-box;">
                                 ${catOptions}
@@ -846,9 +850,8 @@
                             <label>Stock</label>
                             <input type="number" class="edit-input" value="${p.stock}" onchange="updateProduct(${p.id}, 'stock', this.value)" style="width: 100%; box-sizing: border-box; color: #3498db; font-weight: bold; text-align: center;">
                         </div>
-                        <div style="display: flex; align-items: flex-end;">
-                            <label style="opacity: 0; font-size: 0.7rem; display: block; margin-bottom: 2px;">Del</label>
-                            <button class="btn-delete-prod" onclick="deleteProduct(${p.id})">❌</button>
+                        <div style="display: flex; align-items: center;">
+                            <button class="btn-delete-prod" onclick="deleteProduct(${p.id})" title="Eliminar producto">❌</button>
                         </div>
                     </div>
                 </div>
